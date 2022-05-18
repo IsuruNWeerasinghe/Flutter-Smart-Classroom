@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "290849937103",
+    "project_id": "smart-classroom-7d45e",
+    "storage_bucket": "smart-classroom-7d45e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:290849937103:android:ef5cfd71c958c1675a09ba",
+        "android_client_info": {
+          "package_name": "com.example.firebase_image"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "290849937103-pt8tv5mt0gqmad8trqr6nt9rc0tespqv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0KbGjmW31cCM1QijCqzKTyX8qLAd9bAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "290849937103-pt8tv5mt0gqmad8trqr6nt9rc0tespqv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:290849937103:android:6472c1fb3c8c890a5a09ba",
+        "android_client_info": {
+          "package_name": "com.example.littleclassroom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "290849937103-pt8tv5mt0gqmad8trqr6nt9rc0tespqv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0KbGjmW31cCM1QijCqzKTyX8qLAd9bAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "290849937103-pt8tv5mt0gqmad8trqr6nt9rc0tespqv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
