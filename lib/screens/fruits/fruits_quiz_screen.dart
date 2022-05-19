@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:littleclassroom/common_data/app_colors.dart';
@@ -25,6 +27,7 @@ class _FruitsQuizScreenState extends State<FruitsQuizScreen> {
   late int level;
   late double score;
   late List<FruitsList> fruitsList, quizAnswers, correctAnswer;
+  late List<String> quizQuestion, quizTries;
 
   late FlutterTts flutterTts;
 
@@ -50,6 +53,9 @@ class _FruitsQuizScreenState extends State<FruitsQuizScreen> {
                     (FruitsList(fruitName: AppStrings.papaya, fruitImage: "Fruits_papaya.png")),
                     (FruitsList(fruitName: AppStrings.pineapple, fruitImage: "Fruits_pineapple.png")),
                     (FruitsList(fruitName: AppStrings.strawberry, fruitImage: "Fruits_strawberry.png"))];
+
+    quizQuestion = List.filled(fruitsList.length, "",growable: true);
+    quizTries = List.filled(fruitsList.length, "",growable: true);
 
     selectFruitsForQuiz(
         speakText: AppStrings.intro_quiz + AppStrings.fruits + " , " + AppStrings.select,
@@ -210,13 +216,32 @@ class _FruitsQuizScreenState extends State<FruitsQuizScreen> {
                             if(quizAnswers[ind].fruitName == correctAnswer[0].fruitName){
                               if(tries == 1){
                                 score = score + 10;
+                                quizQuestion[level] = correctAnswer[0].fruitName;
+                                quizTries[level] = tries.toString();
                               } else if(tries == 2){
                                 score = score + 5;
+                                quizQuestion[level] = correctAnswer[0].fruitName;
+                                quizTries[level] = tries.toString();
+                              }else {
+                                score = score + 0;
+                                quizQuestion[level] = correctAnswer[0].fruitName;
+                                quizTries[level] = tries.toString();
                               }
                               level = level + 1;
 
                               setState(() {
                                 if(level == fruitsList.length){
+                                  final FirebaseAuth auth = FirebaseAuth.instance;
+                                  final String user = auth.currentUser!.uid;
+
+                                  FirebaseFirestore.instance.collection(AppStrings.fruits).doc(user)
+                                      .set({
+                                    'Result': score.toString(),
+                                    'Question': quizQuestion,
+                                    'Tries': quizTries,
+
+                                  });
+
                                   flutterTts.stop();
                                   flutterTts.speak(AppStrings.end_quiz);
                                   showAlertDialog(context);

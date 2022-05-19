@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:littleclassroom/common_data/app_colors.dart';
@@ -27,6 +29,7 @@ class _NumbersQuizScreenState extends State<NumbersQuizScreen> {
   late List<NumbersList> numbersList, quizAnswers, correctAnswer;
   late List<String> initialNumbersList, quizImages;
   late List<int> quizColors;
+  late List<String> quizQuestion, quizTries;
 
   late FlutterTts flutterTts;
   late Random random;
@@ -53,6 +56,9 @@ class _NumbersQuizScreenState extends State<NumbersQuizScreen> {
     for(int i=0; i<initialNumbersList.length; i++){
       numbersList[i] = NumbersList(numberName: initialNumbersList[i], numberImage: quizImages[random.nextInt(quizImages.length)]);
     }
+
+    quizQuestion = List.filled(initialNumbersList.length, "",growable: true);
+    quizTries = List.filled(initialNumbersList.length, "",growable: true);
 
     selectNumbersForQuiz(
         speakText: AppStrings.intro_quiz + AppStrings.numbers + " , " + AppStrings.select,
@@ -221,15 +227,34 @@ class _NumbersQuizScreenState extends State<NumbersQuizScreen> {
                               flutterTts.stop();
                               if(quizAnswers[ind].numberName == correctAnswer[0].numberName){
                                 if(tries == 1){
-                                  score = score + 5;
+                                  score = score + 10;
+                                  quizQuestion[level] = correctAnswer[0].numberName;
+                                  quizTries[level] = tries.toString();
                                 } else if(tries == 2){
-                                  score = score + 2.5;
+                                  score = score + 5;
+                                  quizQuestion[level] = correctAnswer[0].numberName;
+                                  quizTries[level] = tries.toString();
+                                }else {
+                                  score = score + 0;
+                                  quizQuestion[level] = correctAnswer[0].numberName;
+                                  quizTries[level] = tries.toString();
                                 }
                                 level = level + 1;
 
                                 setState(() {
                                   if(level == initialNumbersList.length){
                                     flutterTts.stop();
+                                    final FirebaseAuth auth = FirebaseAuth.instance;
+                                    final String user = auth.currentUser!.uid;
+
+                                    FirebaseFirestore.instance.collection(AppStrings.numbers).doc(user)
+                                        .set({
+                                      'Result': ((score/initialNumbersList.length)*10).toString(),
+                                      'Question': quizQuestion,
+                                      'Tries': quizTries,
+
+                                    });
+
                                     flutterTts.speak(AppStrings.end_quiz);
                                     showAlertDialog(context);
                                   } else{

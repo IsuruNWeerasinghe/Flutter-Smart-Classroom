@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:littleclassroom/common_data/app_colors.dart';
@@ -26,6 +28,7 @@ class _LowercaseQuizScreenState extends State<LowercaseQuizScreen> {
   late List<LettersList> lowercaseLettersList, quizAnswers, correctAnswer;
   late List<String> lowercaseLetters, quizImages;
   late List<int> quizColors;
+  late List<String> quizQuestion, quizTries;
 
   late FlutterTts flutterTts;
   late Random random;
@@ -53,6 +56,9 @@ class _LowercaseQuizScreenState extends State<LowercaseQuizScreen> {
     for(int i=0; i<lowercaseLetters.length; i++){
       lowercaseLettersList[i] = LettersList(letterName: lowercaseLetters[i], letterImage: quizImages[random.nextInt(quizImages.length)]);
     }
+
+    quizQuestion = List.filled(lowercaseLetters.length, "",growable: true);
+    quizTries = List.filled(lowercaseLetters.length, "",growable: true);
 
     selectLettersForQuiz(
         speakText: AppStrings.intro_quiz + AppStrings.lowercase + " , " + AppStrings.letters + " , " + AppStrings.select,
@@ -220,15 +226,34 @@ class _LowercaseQuizScreenState extends State<LowercaseQuizScreen> {
                             onPressed: (){
                               if(quizAnswers[ind].letterName == correctAnswer[0].letterName){
                                 if(tries == 1){
-                                  score = score + 5;
+                                  score = score + 10;
+                                  quizQuestion[level] = correctAnswer[0].letterName;
+                                  quizTries[level] = tries.toString();
                                 } else if(tries == 2){
-                                  score = score + 2.5;
+                                  score = score + 5;
+                                  quizQuestion[level] = correctAnswer[0].letterName;
+                                  quizTries[level] = tries.toString();
+                                }else {
+                                  score = score + 0;
+                                  quizQuestion[level] = correctAnswer[0].letterName;
+                                  quizTries[level] = tries.toString();
                                 }
                                 level = level + 1;
 
                                 setState(() {
                                   if(level == lowercaseLettersList.length){
                                     flutterTts.stop();
+                                    final FirebaseAuth auth = FirebaseAuth.instance;
+                                    final String user = auth.currentUser!.uid;
+
+                                    FirebaseFirestore.instance.collection(AppStrings.lowercase).doc(user)
+                                        .set({
+                                      'Result': ((score/lowercaseLettersList.length)*10).ceil().toString(),
+                                      'Question': quizQuestion,
+                                      'Tries': quizTries,
+
+                                    });
+
                                     flutterTts.speak(AppStrings.end_quiz);
                                     showAlertDialog(context);
                                   } else{

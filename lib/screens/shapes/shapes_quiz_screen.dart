@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:littleclassroom/common_data/app_colors.dart';
@@ -24,6 +26,7 @@ class _ShapesQuizScreenState extends State<ShapesQuizScreen> {
   late int level;
   late double score;
   late List<ShapesList> shapesList, quizAnswers, correctAnswer;
+  late List<String> quizQuestion, quizTries;
 
   late FlutterTts flutterTts;
 
@@ -46,6 +49,9 @@ class _ShapesQuizScreenState extends State<ShapesQuizScreen> {
       (ShapesList(shapeName: AppStrings.square, shapeImage: "shapes_square.png")),
       (ShapesList(shapeName: AppStrings.rectangle, shapeImage: "shapes_rectangle.png")),
       (ShapesList(shapeName: AppStrings.oval, shapeImage: "shapes_oval.png"))];
+
+    quizQuestion = List.filled(shapesList.length, "",growable: true);
+    quizTries = List.filled(shapesList.length, "",growable: true);
 
     selectVehiclesForQuiz(
         speakText: AppStrings.intro_quiz + AppStrings.shapes + " , " + AppStrings.select,
@@ -207,14 +213,34 @@ class _ShapesQuizScreenState extends State<ShapesQuizScreen> {
                             if(quizAnswers[ind].shapeName == correctAnswer[0].shapeName){
                               if(tries == 1){
                                 score = score + 10;
+                                quizQuestion[level] = correctAnswer[0].shapeName;
+                                quizTries[level] = tries.toString();
                               } else if(tries == 2){
                                 score = score + 5;
+                                quizQuestion[level] = correctAnswer[0].shapeName;
+                                quizTries[level] = tries.toString();
+                              }else {
+                                score = score + 0;
+                                quizQuestion[level] = correctAnswer[0].shapeName;
+                                quizTries[level] = tries.toString();
                               }
+
                               level = level + 1;
 
                               setState(() {
                                 if(level == shapesList.length){
                                   flutterTts.stop();
+                                  final FirebaseAuth auth = FirebaseAuth.instance;
+                                  final String user = auth.currentUser!.uid;
+
+                                  FirebaseFirestore.instance.collection(AppStrings.shapes).doc(user)
+                                      .set({
+                                    'Result': score.toString(),
+                                    'Question': quizQuestion,
+                                    'Tries': quizTries,
+
+                                  });
+
                                   flutterTts.speak(AppStrings.end_quiz);
                                   showAlertDialog(context);
                                 } else{

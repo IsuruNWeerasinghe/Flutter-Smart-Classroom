@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:littleclassroom/common_data/app_colors.dart';
@@ -24,6 +26,7 @@ class _VehiclesQuizScreenState extends State<VehiclesQuizScreen> {
   late int level;
   late double score;
   late List<VehiclesList> vehiclesList, quizAnswers, correctAnswer;
+  late List<String> quizQuestion, quizTries;
 
   late FlutterTts flutterTts;
 
@@ -49,6 +52,9 @@ class _VehiclesQuizScreenState extends State<VehiclesQuizScreen> {
                     (VehiclesList(vehicleName: AppStrings.tractor, vehicleImage: "Vehicles_tractor.png")),
                     (VehiclesList(vehicleName: AppStrings.train, vehicleImage: "Vehicles_train.png")),
                     (VehiclesList(vehicleName: AppStrings.van, vehicleImage: "Vehicles_van.png"))];
+
+    quizQuestion = List.filled(vehiclesList.length, "",growable: true);
+    quizTries = List.filled(vehiclesList.length, "",growable: true);
 
     selectVehiclesForQuiz(
         speakText: AppStrings.intro_quiz + AppStrings.vehicles + " , " + AppStrings.select,
@@ -209,14 +215,34 @@ class _VehiclesQuizScreenState extends State<VehiclesQuizScreen> {
                             if(quizAnswers[ind].vehicleName == correctAnswer[0].vehicleName){
                               if(tries == 1){
                                 score = score + 10;
+                                quizQuestion[level] = correctAnswer[0].vehicleName;
+                                quizTries[level] = tries.toString();
                               } else if(tries == 2){
                                 score = score + 5;
+                                quizQuestion[level] = correctAnswer[0].vehicleName;
+                                quizTries[level] = tries.toString();
+                              }else {
+                                score = score + 0;
+                                quizQuestion[level] = correctAnswer[0].vehicleName;
+                                quizTries[level] = tries.toString();
                               }
+
                               level = level + 1;
 
                               setState(() {
                                 if(level == vehiclesList.length){
                                   flutterTts.stop();
+                                  final FirebaseAuth auth = FirebaseAuth.instance;
+                                  final String user = auth.currentUser!.uid;
+
+                                  FirebaseFirestore.instance.collection(AppStrings.vehicles).doc(user)
+                                      .set({
+                                    'Result': score.toString(),
+                                    'Question': quizQuestion,
+                                    'Tries': quizTries,
+
+                                  });
+
                                   flutterTts.speak(AppStrings.end_quiz);
                                   showAlertDialog(context);
                                 } else{

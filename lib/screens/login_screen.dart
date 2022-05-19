@@ -8,6 +8,7 @@ import 'package:littleclassroom/common_widgets/common_rounded_textfield.dart';
 import 'package:littleclassroom/other/form_validation.dart';
 import 'package:littleclassroom/routes.dart';
 import 'package:littleclassroom/services/auth_model.dart';
+import 'package:littleclassroom/services/enum.dart';
 
 class LogInScreen extends StatefulWidget {
   static const String routeName = '/login_page';

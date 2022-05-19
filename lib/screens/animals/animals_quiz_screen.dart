@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:littleclassroom/common_data/app_colors.dart';
@@ -26,6 +28,7 @@ class _AnimalsQuizScreenState extends State<AnimalsQuizScreen> {
   late int level;
   late double score;
   late List<AnimalsList> animalsList, quizAnswers, correctAnswer;
+  late List<String> quizQuestion, quizTries;
 
   late FlutterTts flutterTts;
 
@@ -45,6 +48,9 @@ class _AnimalsQuizScreenState extends State<AnimalsQuizScreen> {
       (AnimalsList(animalName: AppStrings.elephant, animalImage: "Animals_elephant.png")), (AnimalsList(animalName: AppStrings.giraffe, animalImage: "Animals_giraffe.png")),
       (AnimalsList(animalName: AppStrings.horse, animalImage: "Animals_horse.png")), (AnimalsList(animalName: AppStrings.lion, animalImage: "Animals_lion.png")),
       (AnimalsList(animalName: AppStrings.tiger, animalImage: "Animals_tiger.png")),(AnimalsList(animalName: AppStrings.zebra, animalImage: "Animals_zebra.png"))];
+
+    quizQuestion = List.filled(animalsList.length, "",growable: true);
+    quizTries = List.filled(animalsList.length, "",growable: true);
 
     selectAnimalsForQuiz(
         speakText: AppStrings.intro_quiz + AppStrings.animals + " , " + AppStrings.select,
@@ -208,12 +214,24 @@ class _AnimalsQuizScreenState extends State<AnimalsQuizScreen> {
                           splashColor: AppColors.white,
                           onPressed: (){
                             if(quizAnswers[ind].animalName == correctAnswer[0].animalName){
-                              if(tries == 1){ score = score + 10;}
-                              else if(tries == 2){ score = score + 5;}
+                              if(tries == 1){ score = score + 10; quizQuestion[level] = correctAnswer[0].animalName; quizTries[level] = tries.toString();}
+                              else if(tries == 2){ score = score + 5; quizQuestion[level] = correctAnswer[0].animalName; quizTries[level] = tries.toString();}
+                              else { score = score + 0; quizQuestion[level] = correctAnswer[0].animalName; quizTries[level] = tries.toString();}
+
                               level = level + 1;
 
                               setState(() {
-                                if(level == 8){
+                                if(level == animalsList.length){
+                                  final FirebaseAuth auth = FirebaseAuth.instance;
+                                  final String user = auth.currentUser!.uid;
+
+                                  FirebaseFirestore.instance.collection(AppStrings.animals).doc(user)
+                                      .set({
+                                    'Result': score.toString(),
+                                    'Question': quizQuestion,
+                                    'Tries': quizTries,
+
+                                  });
                                   flutterTts.stop();
                                   flutterTts.speak(AppStrings.end_quiz);
                                   showAlertDialog(context);

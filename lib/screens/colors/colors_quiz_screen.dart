@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:littleclassroom/common_data/app_colors.dart';
@@ -24,6 +26,7 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
   late int level;
   late double score;
   late List<ColorsList> colorsList, quizAnswers, correctAnswer;
+  late List<String> quizQuestion, quizTries;
 
   late FlutterTts flutterTts;
 
@@ -50,6 +53,9 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
                     (ColorsList(colorName: AppStrings.white, colorImage: AppColors.white)),
                     (ColorsList(colorName: AppStrings.black, colorImage: AppColors.black)),
                   ];
+
+    quizQuestion = List.filled(colorsList.length, "",growable: true);
+    quizTries = List.filled(colorsList.length, "",growable: true);
 
     selectAnimalsForQuiz(
         speakText: AppStrings.intro_quiz + AppStrings.colours + " , " + AppStrings.select,
@@ -213,13 +219,32 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
                             if(quizAnswers[ind].colorName == correctAnswer[0].colorName){
                               if(tries == 1){
                                 score = score + 10;
+                                quizQuestion[level] = correctAnswer[0].colorName;
+                                quizTries[level] = tries.toString();
                               } else if(tries == 2){
                                 score = score + 5;
+                                quizQuestion[level] = correctAnswer[0].colorName;
+                                quizTries[level] = tries.toString();
+                              }else {
+                                score = score + 0;
+                                quizQuestion[level] = correctAnswer[0].colorName;
+                                quizTries[level] = tries.toString();
                               }
                               level = level + 1;
 
                               setState(() {
                                 if(level == colorsList.length){
+                                  final FirebaseAuth auth = FirebaseAuth.instance;
+                                  final String user = auth.currentUser!.uid;
+
+                                  FirebaseFirestore.instance.collection(AppStrings.colours).doc(user)
+                                      .set({
+                                    'Result': score.toString(),
+                                    'Question': quizQuestion,
+                                    'Tries': quizTries,
+
+                                  });
+
                                   flutterTts.stop();
                                   flutterTts.speak(AppStrings.end_quiz);
                                   showAlertDialog(context);

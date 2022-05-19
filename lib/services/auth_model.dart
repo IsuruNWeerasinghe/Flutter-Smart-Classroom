@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:littleclassroom/common_data/app_colors.dart';
 import 'package:littleclassroom/common_data/app_strings.dart';
 import 'package:littleclassroom/common_widgets/loading_widget.dart';
 import 'package:littleclassroom/common_widgets/show_otp_dialog.dart';
@@ -32,7 +34,7 @@ class AuthModel extends BaseModel {
   ///Register new user
   void createNewUser({required String email, required String password, required BuildContext context}) async {
     try{
-      const LoadingWidget();
+      //const LoadingWidget();
       setViewState(ViewState.Busy);
       await firebaseAuth.createUserWithEmailAndPassword(
           email: email,
@@ -53,7 +55,6 @@ class AuthModel extends BaseModel {
   ///log in using email & password
   void logIn({required String email, required String password, required BuildContext context}) async {
     try{
-      const LoadingWidget();
       setViewState(ViewState.Busy);
       await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
