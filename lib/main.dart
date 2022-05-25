@@ -5,6 +5,7 @@ import 'package:littleclassroom/screens/alphabet/alphabet_screen.dart';
 import 'package:littleclassroom/screens/alphabet/letter_practice_screen.dart';
 import 'package:littleclassroom/screens/alphabet/lowercase_screen.dart';
 import 'package:littleclassroom/screens/alphabet/phonics_screen.dart';
+import 'package:littleclassroom/screens/alphabet/phonics_song_screen.dart';
 import 'package:littleclassroom/screens/alphabet/uppercase_quiz_screen.dart';
 import 'package:littleclassroom/screens/alphabet/lowercase_quiz_screen.dart';
 import 'package:littleclassroom/screens/alphabet/uppercase_screen.dart';
@@ -58,6 +59,7 @@ void main() async{
       Routes.lowercase_page: (context) => const LowercaseScreen(),
       Routes.uppercase_page: (context) => const UppercaseScreen(),
       Routes.phonics_page: (context) => const PhonicsScreen(),
+      Routes.phonics_song_page: (context) => const PhonicsSongScreen(),
       Routes.uppercase_quiz_page: (context) => const UppercaseQuizScreen(),
       Routes.lowercase_quiz_page: (context) => const LowercaseQuizScreen(),
       Routes.letter_practice_page: (context) => const LetterPracticeScreen(),

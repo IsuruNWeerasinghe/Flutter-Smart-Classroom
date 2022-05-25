@@ -22,7 +22,7 @@ class ShapesQuizScreen extends StatefulWidget {
   _ShapesQuizScreenState createState() => _ShapesQuizScreenState();
 }
 
-class _ShapesQuizScreenState extends State<ShapesQuizScreen> {
+class _ShapesQuizScreenState extends State<ShapesQuizScreen> with SingleTickerProviderStateMixin{
   late int level;
   late double score;
   late List<ShapesList> shapesList, quizAnswers, correctAnswer;
@@ -58,12 +58,14 @@ class _ShapesQuizScreenState extends State<ShapesQuizScreen> {
         questionNo: level,
         listOfNamesAndImages: shapesList
     );
+
   }
 
   @override
   void dispose() {
     flutterTts.stop();
     super.dispose();
+
   }
 
   ///Select 3 Letters for Quiz
@@ -262,8 +264,8 @@ class _ShapesQuizScreenState extends State<ShapesQuizScreen> {
                             height: size.height * 0.2,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: AssetImage("assets/images/shapes/" + quizAnswers[ind].shapeImage),
-                                  fit: BoxFit.cover
+                                    image: AssetImage("assets/images/shapes/" + quizAnswers[ind].shapeImage),
+                                    fit: BoxFit.cover
                                   //fit: BoxFit.cover,
                                 )
                             ),

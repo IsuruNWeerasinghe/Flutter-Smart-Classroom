@@ -48,6 +48,7 @@ class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
 
     quizColors = List.filled(3,1,growable: true);
     uppercaseLetters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+    uppercaseLetters.shuffle();
     quizImages = ['quiz_fish_blue.png','quiz_fish_orange.png','quiz_fish_purple.png','quiz_fish_red.png','quiz_fish_yellow.png'];
     quizAnswers = List.filled(2, LettersList(letterImage: "", letterName: ""), growable: false);
     uppercaseLettersList= List.filled(uppercaseLetters.length, LettersList(letterImage: "", letterName: ""), growable: true);

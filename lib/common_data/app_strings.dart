@@ -122,7 +122,9 @@ class AppStrings{
   ///String in Alphabet screen
   static const String uppercase = "Uppercase";
   static const String lowercase = "Lowercase";
+  static const String alphabet_song = "Alphabet Song";
   static const String phonics = "Phonics";
+  static const String phonics_song = "Phonics Song";
   static const String quiz1 = "Quiz 1";
   static const String quiz2 = "Quiz 2";
   static const String practice = "Practice";
@@ -173,7 +175,7 @@ class AppStrings{
   static const String umbrella = "Umbrella";
   //static const String van = "Van";
   static const String watermelon = "Watermelon";
-  static const String xmas_tree = "X-mas Tree";
+  static const String xmas_tree = "X-mas\nTree";
   static const String yoyo = "Yoyo";
   //static const String zebra = "Zebra";
 

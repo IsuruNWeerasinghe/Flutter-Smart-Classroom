@@ -49,6 +49,7 @@ class _NumbersQuizScreenState extends State<NumbersQuizScreen> {
 
     quizColors = List.filled(3,1,growable: true);
     initialNumbersList = ['1','2','3','4','5','6','7','8','9'];
+    initialNumbersList.shuffle();
     quizImages = ['quiz_fish_blue.png','quiz_fish_orange.png','quiz_fish_purple.png','quiz_fish_red.png','quiz_fish_yellow.png'];
     quizAnswers = List.filled(2, NumbersList(numberImage: "", numberName: ""), growable: false);
     numbersList= List.filled(initialNumbersList.length, NumbersList(numberImage: "", numberName: ""), growable: true);
@@ -249,7 +250,7 @@ class _NumbersQuizScreenState extends State<NumbersQuizScreen> {
 
                                     FirebaseFirestore.instance.collection(AppStrings.numbers).doc(user)
                                         .set({
-                                      'Result': ((score/initialNumbersList.length)*10).toString(),
+                                      'Result': ((score/initialNumbersList.length)*10).ceil().toString(),
                                       'Question': quizQuestion,
                                       'Tries': quizTries,
 

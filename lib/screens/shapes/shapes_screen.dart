@@ -23,9 +23,10 @@ class _ShapesScreenState extends State<ShapesScreen> {
 
   late FlutterTts flutterTts;
 
+  late Map <String, String> ttsVoices = {'name': 'Karen', 'locale':'en-AU'};
+
   @override
   void initState()  {
-    // TODO: implement initState
     super.initState();
     index = 0;
     namesShapes = [AppStrings.circle, AppStrings.triangle, AppStrings.square, AppStrings.rectangle, AppStrings.oval];
@@ -36,12 +37,13 @@ class _ShapesScreenState extends State<ShapesScreen> {
 
     flutterTts = FlutterTts();
     flutterTts.setSpeechRate(0.3);
-    flutterTts.setPitch(8.0);
+    //flutterTts.setPitch(1.5);
     flutterTts.setVolume(1);
-    flutterTts.setLanguage("en-GB");
+    flutterTts.setLanguage("en-US");
+    flutterTts.setVoice(ttsVoices);
 
     spellIntro(AppStrings.shapes);
-    spellShapeName(0);
+    //spellShapeName(0);
 
   }
 
@@ -49,18 +51,6 @@ class _ShapesScreenState extends State<ShapesScreen> {
   void dispose() {
     flutterTts.stop();
     super.dispose();
-  }
-
-  Future<List<Object?>> getVoices() async {
-    List<Object?> voice = await flutterTts.getVoices;
-    print(voice);
-    return voice  ;
-  }
-
-  Future<List<Object?>> getLanguages() async {
-    List<Object?> voice = await flutterTts.getLanguages;
-    print(voice);
-    return voice  ;
   }
 
   ///Spell Intro
@@ -90,11 +80,16 @@ class _ShapesScreenState extends State<ShapesScreen> {
   }
   /// ///////////////////////////////////////
 
+  Future getVoices() async {
+    print(await flutterTts.getVoices);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     getVoices();
-    getLanguages();
+
     return BackgroundImage(
       pageTitle: AppStrings.shapes,
       topMargin: size.height * 0.02,

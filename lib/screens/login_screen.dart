@@ -129,7 +129,7 @@ class _LogInScreenState extends State<LogInScreen> {
                       AppStrings.error_email,
                       style: TextStyle(
                         fontSize: 15,
-                        color: AppColors.listRed,
+                        color: AppColors.red,
                       ),
                     ),
                   ),
@@ -160,7 +160,7 @@ class _LogInScreenState extends State<LogInScreen> {
                       AppStrings.error_password,
                       style: TextStyle(
                         fontSize: 15,
-                        color: AppColors.listRed,
+                        color: AppColors.red,
                       ),
                     ),
                   ),

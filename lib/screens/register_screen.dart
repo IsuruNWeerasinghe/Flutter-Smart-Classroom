@@ -133,7 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       AppStrings.error_child_name,
                       style: TextStyle(
                         fontSize: 15,
-                        color: AppColors.listRed,
+                        color: AppColors.red,
                       ),
                     ),
                   ),
@@ -163,7 +163,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       AppStrings.error_email,
                       style: TextStyle(
                         fontSize: 15,
-                        color: AppColors.listRed,
+                        color: AppColors.red,
                       ),
                     ),
                   ),
@@ -194,7 +194,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       AppStrings.error_password,
                       style: TextStyle(
                         fontSize: 15,
-                        color: AppColors.listRed,
+                        color: AppColors.red,
                       ),
                     ),
                   ),
@@ -225,7 +225,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       AppStrings.error_confirm_password,
                       style: TextStyle(
                         fontSize: 15,
-                        color: AppColors.listRed,
+                        color: AppColors.red,
                       ),
                     ),
                   ),

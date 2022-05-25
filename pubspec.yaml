@@ -45,6 +45,9 @@ dependencies:
   google_sign_in: ^5.1.0
   signature: ^5.0.0
 
+  animate_do: ^2.1.0
+  youtube_player_flutter: ^8.0.0
+
 dependency_overrides:
   firebase_messaging_platform_interface: 3.1.6
   firebase_crashlytics_platform_interface: 3.1.13

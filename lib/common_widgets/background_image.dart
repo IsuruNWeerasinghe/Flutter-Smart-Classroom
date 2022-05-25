@@ -23,7 +23,7 @@ class BackgroundImage extends StatelessWidget {
       decoration: const BoxDecoration(
         image: DecorationImage(
           image: AssetImage(
-            "assets/images/background_image.png",
+            "assets/images/blue-sky.jpg",
           ),
             fit: BoxFit.cover
         ),
@@ -53,7 +53,7 @@ class BackgroundImage extends StatelessWidget {
               ],
             ) : null,
             body: Container(
-              alignment: Alignment.topCenter,
+              //alignment: Alignment.topCenter,
               height: height - keyboardHeight,
               width: width,
               margin: EdgeInsets.only(top: topMargin),

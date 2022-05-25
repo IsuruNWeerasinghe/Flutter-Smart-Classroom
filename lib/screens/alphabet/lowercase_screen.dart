@@ -1,5 +1,4 @@
-import 'dart:math';
-
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:littleclassroom/common_data/app_colors.dart';
@@ -15,17 +14,21 @@ class LowercaseScreen extends StatefulWidget {
   _LowercaseScreenState createState() => _LowercaseScreenState();
 }
 
-class _LowercaseScreenState extends State<LowercaseScreen> {
+class _LowercaseScreenState extends State<LowercaseScreen> with SingleTickerProviderStateMixin{
   late List<Color> colors;
   late List<String> lowercaseLetters;
   late FlutterTts flutterTts;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
-    colors = [AppColors.red, AppColors.orange, AppColors.yellow, AppColors.darkPink, AppColors.pink, AppColors.darkBlue, AppColors.blue, AppColors.darkGreen, AppColors.green, AppColors.brown, AppColors.purple, AppColors.darkBrown];
+    colors = [AppColors.lightPink, AppColors.pink, AppColors.darkPink, AppColors.lightBlue, AppColors.blue, AppColors.darkBlue,
+      AppColors.lightGreen, AppColors.green, AppColors.darkPink, AppColors.brown, AppColors.orange, AppColors.yellow,
+      AppColors.purple, AppColors.lightPink, AppColors.pink, AppColors.darkPink, AppColors.lightBlue, AppColors.blue, AppColors.darkBlue,
+      AppColors.lightGreen, AppColors.green, AppColors.darkPink, AppColors.brown, AppColors.orange, AppColors.yellow,
+      AppColors.purple];
+    colors.shuffle();
     lowercaseLetters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
 
     flutterTts = FlutterTts();
@@ -34,6 +37,7 @@ class _LowercaseScreenState extends State<LowercaseScreen> {
     flutterTts.setVolume(1);
     flutterTts.setLanguage("en-US");
     flutterTts.speak(AppStrings.intro_text + AppStrings.lowercase + AppStrings.alphabet);
+
   }
 
   @override
@@ -73,33 +77,38 @@ class _LowercaseScreenState extends State<LowercaseScreen> {
       height: size.height,
       isActiveAppBar: true,
 
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-        child: GridView.count(
-          crossAxisCount: 4,
-          //crossAxisSpacing: 8.0,
-          //mainAxisSpacing: 5.0,
-          shrinkWrap: true,
-          children: List.generate(lowercaseLetters.length, (index){
-            return TextButton(
-              style: ButtonStyle(
-                overlayColor: MaterialStateProperty.all<Color>(AppColors.purple),
-              ),
-              child: Text(
-                lowercaseLetters[index],
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: size.height * 0.065,
-                    fontFamily: 'Muli',
-                    fontWeight: FontWeight.w600,
-                  color: colors[Random().nextInt(10)]
+      child: JelloIn(
+        duration: const Duration(milliseconds: 1000),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+          child: GridView.count(
+            crossAxisCount: 4,
+            //crossAxisSpacing: 8.0,
+            //mainAxisSpacing: 5.0,
+            shrinkWrap: true,
+            children: List.generate(lowercaseLetters.length, (index){
+              return TextButton(
+                /*style: ButtonStyle(
+                        overlayColor: MaterialStateProperty.all<Color>(AppColors.purple),
+                      ),*/
+                child: Text(
+                  lowercaseLetters[index],
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: size.height * 0.065,
+                      fontFamily: 'Muli',
+                      fontWeight: FontWeight.w600,
+                      color: colors[index]
+                  ),
                 ),
-              ),
-              onPressed: (){
-                spellLetter(index);
-              },
-            );
-          }),
+                onPressed: (){
+                  setState(() {
+                  });
+                  spellLetter(index);
+                },
+              );
+            }),
+          ),
         ),
       ),
     );

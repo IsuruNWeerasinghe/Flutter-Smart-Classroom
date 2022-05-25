@@ -4,6 +4,7 @@ import 'package:littleclassroom/screens/alphabet/alphabet_screen.dart';
 import 'package:littleclassroom/screens/alphabet/letter_practice_screen.dart';
 import 'package:littleclassroom/screens/alphabet/lowercase_screen.dart';
 import 'package:littleclassroom/screens/alphabet/phonics_screen.dart';
+import 'package:littleclassroom/screens/alphabet/phonics_song_screen.dart';
 import 'package:littleclassroom/screens/alphabet/uppercase_quiz_screen.dart';
 import 'package:littleclassroom/screens/alphabet/lowercase_quiz_screen.dart';
 import 'package:littleclassroom/screens/alphabet/uppercase_screen.dart';
@@ -47,6 +48,7 @@ class Routes {
   static const String lowercase_page = LowercaseScreen.routeName;
   static const String uppercase_page = UppercaseScreen.routeName;
   static const String phonics_page = PhonicsScreen.routeName;
+  static const String phonics_song_page = PhonicsSongScreen.routeName;
   static const String uppercase_quiz_page = UppercaseQuizScreen.routeName;
   static const String lowercase_quiz_page = LowercaseQuizScreen.routeName;
   static const String letter_practice_page = LetterPracticeScreen.routeName;

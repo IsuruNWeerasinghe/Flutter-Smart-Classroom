@@ -49,6 +49,7 @@ class _LowercaseQuizScreenState extends State<LowercaseQuizScreen> {
 
     quizColors = List.filled(3,1,growable: true);
     lowercaseLetters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+    lowercaseLetters.shuffle();
     quizImages = ['quiz_fish_blue.png','quiz_fish_orange.png','quiz_fish_purple.png','quiz_fish_red.png','quiz_fish_yellow.png'];
     quizAnswers = List.filled(2, LettersList(letterImage: "", letterName: ""), growable: false);
     lowercaseLettersList= List.filled(lowercaseLetters.length, LettersList(letterImage: "", letterName: ""), growable: true);

@@ -112,7 +112,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       AppStrings.error_email,
                       style: TextStyle(
                         fontSize: 15,
-                        color: AppColors.listRed,
+                        color: AppColors.red,
                       ),
                     ),
                   ),

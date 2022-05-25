@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:littleclassroom/common_data/app_colors.dart';
 import 'package:littleclassroom/common_data/app_strings.dart';
 import 'package:littleclassroom/common_widgets/background_image.dart';
 import 'package:littleclassroom/common_widgets/common_action_button.dart';
@@ -68,7 +69,7 @@ class _PhonicsScreenState extends State<PhonicsScreen> {
 
     return BackgroundImage(
       pageTitle: AppStrings.phonics,
-      topMargin: size.height * 0.02,
+      topMargin: 0,
       width: size.width,
       height: size.height,
       isActiveAppBar: true,
@@ -76,41 +77,43 @@ class _PhonicsScreenState extends State<PhonicsScreen> {
       child: Column(
         children: <Widget>[
           Container(
-            width: size.width * 0.8,
+            width: size.width,
             height: size.height * 0.75,
             alignment: Alignment.topCenter,
-            margin: EdgeInsets.only(top: size.height * 0.01, bottom: size.height * 0.01),
-            padding: EdgeInsets.only(top: size.height * 0.015),
             decoration: const BoxDecoration(
               image: DecorationImage(
                 alignment: Alignment.center,
                 image: AssetImage(
-                  "assets/images/common_blackboard.png",
+                  "assets/images/alphabet/woodern_board.png",
                 ),
                 fit: BoxFit.fill,
               ),
             ),
             child: Column(
               children: <Widget>[
+                SizedBox(height: size.height * 0.1,),
                 Text(
                   currentUppercaseLetter,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontSize: size.height * 0.075,
-                      fontFamily: 'Muli',
-                      fontWeight: FontWeight.w600
+                    color: AppColors.white,
+                    fontSize: size.height * 0.075,
+                    fontFamily: 'Muli',
+                    fontWeight: FontWeight.w600
                   ),
                 ),
+                SizedBox(height: size.height * 0.05,),
                 Image.asset(
                   currentPhonicImage,
-                  width: size.width * 0.7,
-                  height: size.height * 0.42,
+                  width: size.width * 0.55,
+                  height: size.height * 0.3,
                   alignment: Alignment.topCenter,
                 ),
                 Text(
                   currentPhonicName,
                   textAlign: TextAlign.center,
                   style: TextStyle(
+                      color: AppColors.white,
                       fontSize: size.height * 0.06,
                       fontFamily: 'Muli',
                       fontWeight: FontWeight.w600
@@ -119,7 +122,7 @@ class _PhonicsScreenState extends State<PhonicsScreen> {
               ],
             ),
           ),
-
+          SizedBox(height: size.height * 0.07,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[

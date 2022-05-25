@@ -6,6 +6,14 @@ import 'package:littleclassroom/common_widgets/background_image.dart';
 import 'package:littleclassroom/common_widgets/common_button.dart';
 import 'package:littleclassroom/routes.dart';
 
+class AlphabetList{
+  String topics;
+  Color colors;
+  String routes;
+  String images;
+  AlphabetList({required this.topics, required this.colors, required this.routes, required this.images});
+}
+
 class AlphabetScreen extends StatelessWidget {
   static const String routeName = '/alphabet_page';
   const AlphabetScreen({Key? key}) : super(key: key);
@@ -21,38 +29,42 @@ class AlphabetScreen extends StatelessWidget {
 
     Size size = MediaQuery.of(context).size;
 
-    List<Color> colors = [AppColors.purple, AppColors.brown, AppColors.pink, AppColors.blue, AppColors.darkGreen, AppColors.yellow];
-    List<String> topics = [AppStrings.uppercase, AppStrings.lowercase, AppStrings.phonics, AppStrings.quiz1, AppStrings.quiz2, AppStrings.practice];
-    List<String> routes = [Routes.uppercase_page, Routes.lowercase_page, Routes.phonics_page, Routes.uppercase_quiz_page, Routes.lowercase_quiz_page, Routes.letter_practice_page];
-    List<String> images = ["alphabet_upper.png", "alphabet_lower.png", "alphabet_phonics.png", "alphabet_quiz_1.png", "alphabet_quiz_2.png", "alphabet_upper.png"];
+    List<AlphabetList> alphabet = [AlphabetList(topics:AppStrings.uppercase, colors: AppColors.purple, routes: Routes.uppercase_page, images: "alphabet_upper.png"),
+                                    AlphabetList(topics:AppStrings.lowercase, colors: AppColors.brown, routes: Routes.lowercase_page, images: "alphabet_lower.png"),
+                                    AlphabetList(topics:AppStrings.alphabet_song, colors: AppColors.blue, routes: Routes.phonics_page, images: "alphabet_phonics.png"),
+                                    AlphabetList(topics:AppStrings.phonics, colors: AppColors.blue, routes: Routes.phonics_page, images: "alphabet_phonics.png"),
+                                    AlphabetList(topics:AppStrings.phonics_song, colors: AppColors.blue, routes: Routes.phonics_song_page, images: "alphabet_phonics.png"),
+                                    AlphabetList(topics:AppStrings.quiz1, colors: AppColors.darkGreen, routes: Routes.uppercase_quiz_page, images: "alphabet_quiz_1.png"),
+                                    AlphabetList(topics:AppStrings.quiz2, colors: AppColors.yellow, routes: Routes.lowercase_quiz_page, images: "alphabet_quiz_2.png"),
+                                    AlphabetList(topics:AppStrings.practice, colors: AppColors.pink, routes: Routes.letter_practice_page, images: "alphabet_upper.png"),
+                                  ];
 
     return BackgroundImage(
       topMargin: 0.0,
       pageTitle: AppStrings.alphabet,
       width: size.width,
       height: size.height,
-      isActiveAppBar: true,
-
+      isActiveAppBar: false,
       child: GridView.count(
-        crossAxisCount: 2,
-        //crossAxisSpacing: 8.0,
-        //mainAxisSpacing: 5.0,
-        shrinkWrap: true,
-        children: List.generate(topics.length, (index){
-          return Padding(
-            padding: const EdgeInsets.all(25.0),
-            child: CommonButton(
-              buttonColor: colors[index],
-              buttonText: topics[index],
-              buttonImage: "assets/images/alphabet/" + images[index],
+              crossAxisCount: 2,
+              //crossAxisSpacing: 8.0,
+              //mainAxisSpacing: 5.0,
+              shrinkWrap: true,
+              children: List.generate(alphabet.length, (index){
+                return Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: CommonButton(
+                    buttonColor: alphabet[index].colors,
+                    buttonText: alphabet[index].topics,
+                    buttonImage: "assets/images/alphabet/" + alphabet[index].images,
 
-              onTap: (){
-                Navigator.pushNamed(context, routes[index]);
-              },
+                    onTap: (){
+                      Navigator.pushNamed(context, alphabet[index].routes);
+                    },
+                  ),
+                );
+              }),
             ),
-          );
-        }),
-      ),
     );
   }
 }

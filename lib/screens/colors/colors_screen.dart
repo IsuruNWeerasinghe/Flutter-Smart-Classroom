@@ -30,7 +30,7 @@ class _ColorsScreenState extends State<ColorsScreen> {
     super.initState();
     index = 0;
     namesColors = [AppStrings.red, AppStrings.green, AppStrings.blue, AppStrings.yellow, AppStrings.pink, AppStrings.brown, AppStrings.white, AppStrings.black];
-    listColors = [AppColors.listRed, AppColors.listGreen, AppColors.listBlue, AppColors.listYellow, AppColors.listPink, AppColors.listBrown, AppColors.listWhite, AppColors.listBlack];
+    listColors = [AppColors.red, AppColors.green, AppColors.blue, AppColors.yellow, AppColors.pink, AppColors.brown, AppColors.white, AppColors.black];
 
     nameCurrentColor = namesColors[0];
     currentColor = listColors[0];

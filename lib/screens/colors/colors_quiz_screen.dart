@@ -46,7 +46,7 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
                     (ColorsList(colorName: AppStrings.green, colorImage: AppColors.green)),
                     (ColorsList(colorName: AppStrings.blue, colorImage: AppColors.blue)),
                     (ColorsList(colorName: AppStrings.yellow, colorImage: AppColors.yellow)),
-                    (ColorsList(colorName: AppStrings.pink, colorImage: AppColors.pink)),
+                    (ColorsList(colorName: AppStrings.pink, colorImage: AppColors.darkPink)),
                     (ColorsList(colorName: AppStrings.brown, colorImage: AppColors.brown)),
                     (ColorsList(colorName: AppStrings.purple, colorImage: AppColors.purple)),
                     (ColorsList(colorName: AppStrings.orange, colorImage: AppColors.orange)),
