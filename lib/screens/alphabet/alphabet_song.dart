@@ -4,30 +4,31 @@ import 'package:littleclassroom/common_data/app_strings.dart';
 import 'package:littleclassroom/common_widgets/background_image.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class PhonicsSongScreen extends StatefulWidget {
-  static const String routeName = '/phonics_song_page';
-  const PhonicsSongScreen({Key? key}) : super(key: key);
+class AlphabetSongScreen extends StatefulWidget {
+  static const String routeName = '/alphabet_song_page';
+  const AlphabetSongScreen({Key? key}) : super(key: key);
 
   @override
-  _PhonicsSongScreenState createState() => _PhonicsSongScreenState();
+  _AlphabetSongScreenState createState() => _AlphabetSongScreenState();
 }
 
-class _PhonicsSongScreenState extends State<PhonicsSongScreen>{
+class _AlphabetSongScreenState extends State<AlphabetSongScreen>{
   late YoutubePlayerController youtubePlayerController;
 
   @override
   void initState() {
     super.initState();
+
     youtubePlayerController = YoutubePlayerController(
-      initialVideoId: 'ryss1kT9RZc',
-      flags: const YoutubePlayerFlags(
-        hideControls: false,
-        loop: true,
-        controlsVisibleAtStart: false,
-        autoPlay: true,
-        mute: false,
-      ),
-    );
+                                  initialVideoId: 'TTWh52HcHQg',
+                                  flags: const YoutubePlayerFlags(
+                                    hideControls: false,
+                                    loop: true,
+                                    controlsVisibleAtStart: false,
+                                    autoPlay: true,
+                                    mute: false,
+                                  ),
+                                );
 
   }
 
@@ -43,7 +44,7 @@ class _PhonicsSongScreenState extends State<PhonicsSongScreen>{
 
     return BackgroundImage(
       topMargin: 0.0,
-      pageTitle: AppStrings.phonics_song,
+      pageTitle: AppStrings.alphabet_song,
       width: size.width,
       height: size.height,
       isActiveAppBar: true,
@@ -86,19 +87,3 @@ class _PhonicsSongScreenState extends State<PhonicsSongScreen>{
   }
 
 }
-
-
-/*YoutubePlayer(
-                  controller: YoutubePlayerController(
-                    initialVideoId: 'ryss1kT9RZc', //Add videoID.
-                    flags: YoutubePlayerFlags(
-                      hideControls: false,
-                      controlsVisibleAtStart: true,
-                      autoPlay: true,
-                      mute: false,
-                    ),
-                  ),
-                  width: size.width * 0.7,
-                  showVideoProgressIndicator: true,
-                  progressIndicatorColor: AppColors.blue,
-                ),*/

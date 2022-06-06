@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,8 +25,7 @@ class UppercaseQuizScreen extends StatefulWidget {
 }
 
 class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
-  late int level;
-  late double score;
+  late int level, score;
   late List<LettersList> uppercaseLettersList, quizAnswers, correctAnswer;
   late List<String> uppercaseLetters, quizImages;
   late List<int> quizColors;
@@ -33,6 +33,7 @@ class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
 
   late FlutterTts flutterTts;
   late Random random;
+  late Timer _timer;
 
   @override
   void initState() {
@@ -226,47 +227,100 @@ class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
                         child: TextButton(
                             onPressed: (){
                               if(quizAnswers[ind].letterName == correctAnswer[0].letterName){
-                                if(tries == 1){
-                                  score = score + 10;
-                                  quizQuestion[level] = correctAnswer[0].letterName;
-                                  quizTries[level] = tries.toString();
-                                } else if(tries == 2){
-                                  score = score + 5;
-                                  quizQuestion[level] = correctAnswer[0].letterName;
-                                  quizTries[level] = tries.toString();
-                                }else {
-                                  score = score + 0;
-                                  quizQuestion[level] = correctAnswer[0].letterName;
-                                  quizTries[level] = tries.toString();
-                                }
-                                level = level + 1;
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext builderContext) {
+                                      _timer = Timer(const Duration(seconds: 2), () {
+                                        Navigator.of(context).pop();
 
-                                setState(() {
-                                  if(level == uppercaseLettersList.length){
-                                    flutterTts.stop();
-                                    final FirebaseAuth auth = FirebaseAuth.instance;
-                                    final String user = auth.currentUser!.uid;
+                                        ///
+                                        if(tries == 1){
+                                          score = score + 1;
+                                          quizQuestion[level] = correctAnswer[0].letterName;
+                                          quizTries[level] = tries.toString();
+                                        }else {
+                                          score = score;
+                                          quizQuestion[level] = correctAnswer[0].letterName;
+                                          quizTries[level] = tries.toString();
+                                        }
+                                        level = level + 1;
 
-                                    FirebaseFirestore.instance.collection(AppStrings.uppercase).doc(user)
-                                        .set({
-                                      'Result': ((score/uppercaseLettersList.length)*10).ceil().toString(),
-                                      'Question': quizQuestion,
-                                      'Tries': quizTries,
+                                        setState(() {
+                                          if(level == uppercaseLettersList.length){
+                                            flutterTts.stop();
+                                            final FirebaseAuth auth = FirebaseAuth.instance;
+                                            final String user = auth.currentUser!.uid;
 
-                                    });
+                                            FirebaseFirestore.instance.collection(user).doc(AppStrings.uppercase)
+                                                .set({
+                                              'Result': score.toString(),
+                                              'QuestionCount': uppercaseLettersList.length.toString(),
+                                              'Question': quizQuestion,
+                                              'Tries': quizTries,
 
-                                    flutterTts.speak(AppStrings.end_quiz);
-                                    showAlertDialog(context);
-                                  } else{
-                                    flutterTts.stop();
-                                    selectLettersForQuiz(
-                                        speakText: AppStrings.select,
-                                        questionNo: level,
-                                        listOfNamesAndImages: uppercaseLettersList);
-                                    print("Passed...... Level = " + level.toString()  + " Score = " + score.toString());
+                                            });
+
+                                            flutterTts.speak(AppStrings.end_quiz);
+                                            showAlertDialog(context);
+                                          } else{
+                                            flutterTts.stop();
+                                            selectLettersForQuiz(
+                                                speakText: AppStrings.select,
+                                                questionNo: level,
+                                                listOfNamesAndImages: uppercaseLettersList);
+                                            print("Passed...... Level = " + level.toString()  + " Score = " + score.toString());
+                                          }
+                                        });
+                                      });
+
+                                      return AlertDialog(
+                                          backgroundColor: AppColors.white,
+                                          title: const Text(
+                                            AppStrings.very_good,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          content: Image.asset(
+                                            "assets/images/quiz/skype-like.gif",
+                                            width: size.width * 0.4,
+                                            height: size.height * 0.3,
+                                          ),
+                                        );
+                                    }
+                                ).then((val){
+                                  if (_timer.isActive) {
+                                    _timer.cancel();
                                   }
                                 });
+
                               } else {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext builderContext) {
+                                      _timer = Timer(const Duration(seconds: 2), () {
+                                        Navigator.of(context).pop();
+                                        flutterTts.speak(AppStrings.select + correctAnswer[0].letterName);
+                                      });
+
+                                      return
+                                        AlertDialog(
+                                          backgroundColor: AppColors.white,
+                                          contentPadding: const EdgeInsets.all(0),
+                                          title: const Text(
+                                            AppStrings.try_again,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          content: Image.asset(
+                                            "assets/images/quiz/skype-speechless.gif",
+                                            width: size.width * 0.4,
+                                            height: size.height * 0.3,
+                                          ),
+                                        );
+                                    }
+                                ).then((val){
+                                  if (_timer.isActive) {
+                                    _timer.cancel();
+                                  }
+                                });
                                 tries = tries + 1;
                                 print("Failed..............");
                               }

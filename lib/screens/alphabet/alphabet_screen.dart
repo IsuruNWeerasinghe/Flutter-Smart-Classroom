@@ -31,7 +31,7 @@ class AlphabetScreen extends StatelessWidget {
 
     List<AlphabetList> alphabet = [AlphabetList(topics:AppStrings.uppercase, colors: AppColors.purple, routes: Routes.uppercase_page, images: "alphabet_upper.png"),
                                     AlphabetList(topics:AppStrings.lowercase, colors: AppColors.brown, routes: Routes.lowercase_page, images: "alphabet_lower.png"),
-                                    AlphabetList(topics:AppStrings.alphabet_song, colors: AppColors.blue, routes: Routes.phonics_page, images: "alphabet_phonics.png"),
+                                    AlphabetList(topics:AppStrings.alphabet_song, colors: AppColors.blue, routes: Routes.alphabet_song_page, images: "alphabet_phonics.png"),
                                     AlphabetList(topics:AppStrings.phonics, colors: AppColors.blue, routes: Routes.phonics_page, images: "alphabet_phonics.png"),
                                     AlphabetList(topics:AppStrings.phonics_song, colors: AppColors.blue, routes: Routes.phonics_song_page, images: "alphabet_phonics.png"),
                                     AlphabetList(topics:AppStrings.quiz1, colors: AppColors.darkGreen, routes: Routes.uppercase_quiz_page, images: "alphabet_quiz_1.png"),
@@ -44,7 +44,7 @@ class AlphabetScreen extends StatelessWidget {
       pageTitle: AppStrings.alphabet,
       width: size.width,
       height: size.height,
-      isActiveAppBar: false,
+      isActiveAppBar: true,
       child: GridView.count(
               crossAxisCount: 2,
               //crossAxisSpacing: 8.0,

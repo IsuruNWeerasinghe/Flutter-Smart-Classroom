@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,13 +26,12 @@ class AnimalsQuizScreen extends StatefulWidget {
 }
 
 class _AnimalsQuizScreenState extends State<AnimalsQuizScreen> {
-  late int level;
-  late double score;
+  late int level, score;
   late List<AnimalsList> animalsList, quizAnswers, correctAnswer;
   late List<String> quizQuestion, quizTries;
 
   late FlutterTts flutterTts;
-  bool _animate = true;
+  late Timer _timer;
 
   final key = GlobalKey<AnimatedListState>();
 
@@ -214,65 +214,115 @@ class _AnimalsQuizScreenState extends State<AnimalsQuizScreen> {
                       key: key,
                       initialItemCount: quizAnswers.length,
                       itemBuilder: (BuildContext context,int ind, animation){
-                        return AnimatedOpacity(
-                          duration: const Duration(milliseconds: 1000),
-                          key: UniqueKey(),
-                            curve: Curves.bounceInOut,
-                          opacity: _animate ? 1 : 0,
-                          child: FlatButton(
-                            splashColor: AppColors.white,
-                            onPressed: (){
-                              _animate = true;
-                              Future.delayed(const Duration(milliseconds: 800), () {
-                                _animate = false;
-                              });
-                              if(quizAnswers[ind].animalName == correctAnswer[0].animalName){
-                                if(tries == 1){ score = score + 10; quizQuestion[level] = correctAnswer[0].animalName; quizTries[level] = tries.toString();}
-                                else if(tries == 2){ score = score + 5; quizQuestion[level] = correctAnswer[0].animalName; quizTries[level] = tries.toString();}
-                                else { score = score + 0; quizQuestion[level] = correctAnswer[0].animalName; quizTries[level] = tries.toString();}
+                        return FlatButton(
+                          splashColor: AppColors.white,
+                          onPressed: (){
+                            ///Correct Answer
+                            if(quizAnswers[ind].animalName == correctAnswer[0].animalName){
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext builderContext) {
+                                    _timer = Timer(const Duration(seconds: 2), () {
+                                      Navigator.of(context).pop();
+                                      ///
+                                      if(tries == 1){
+                                        score = score + 1;
+                                        quizQuestion[level] = correctAnswer[0].animalName;
+                                        quizTries[level] = tries.toString();}
+                                      else {
+                                        score = score;
+                                        quizQuestion[level] = correctAnswer[0].animalName;
+                                        quizTries[level] = tries.toString();}
+                                      level = level + 1;
+                                      setState(() {
+                                        if(level == animalsList.length){
+                                          final FirebaseAuth auth = FirebaseAuth.instance;
+                                          final String user = auth.currentUser!.uid;
 
-                                level = level + 1;
+                                          FirebaseFirestore.instance.collection(user).doc(AppStrings.animals)
+                                              .set({
+                                            'Result': score.toString(),
+                                            'QuestionCount': animalsList.length.toString(),
+                                            'Question': quizQuestion,
+                                            'Tries': quizTries,
 
-                                setState(() {
-                                  if(level == animalsList.length){
-                                    final FirebaseAuth auth = FirebaseAuth.instance;
-                                    final String user = auth.currentUser!.uid;
-
-                                    FirebaseFirestore.instance.collection(AppStrings.animals).doc(user)
-                                        .set({
-                                      'Result': score.toString(),
-                                      'Question': quizQuestion,
-                                      'Tries': quizTries,
-
+                                          });
+                                          flutterTts.stop();
+                                          flutterTts.speak(AppStrings.end_quiz);
+                                          showAlertDialog(context);
+                                        } else{
+                                          flutterTts.stop();
+                                          selectAnimalsForQuiz(
+                                              speakText: AppStrings.select,
+                                              questionNo: level,
+                                              listOfNamesAndImages: animalsList);
+                                          print("Passed...... Level = " + level.toString()  + " Score = " + score.toString());
+                                        }
+                                      });
                                     });
-                                    flutterTts.stop();
-                                    flutterTts.speak(AppStrings.end_quiz);
-                                    showAlertDialog(context);
-                                  } else{
-                                    flutterTts.stop();
-                                    selectAnimalsForQuiz(
-                                        speakText: AppStrings.select,
-                                        questionNo: level,
-                                        listOfNamesAndImages: animalsList);
-                                    print("Passed...... Level = " + level.toString()  + " Score = " + score.toString());
+
+                                    return AlertDialog(
+                                      backgroundColor: AppColors.white,
+                                      title: const Text(
+                                        AppStrings.very_good,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      content: Image.asset(
+                                        "assets/images/quiz/skype-like.gif",
+                                        width: size.width * 0.4,
+                                        height: size.height * 0.3,
+                                      ),
+                                    );
                                   }
-                                });
-                              } else {
-                                tries = tries + 1;
-                                print("Failed..............");
-                              }
-                            },
-                            child: Container(
-                              width: size.width * 0.3,
-                              height: size.height * 0.2,
-                              margin: const EdgeInsets.symmetric(vertical: 5),
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage("assets/images/animals/" + quizAnswers[ind].animalImage),
-                                    fit: BoxFit.cover,
-                                    //fit: BoxFit.cover,
-                                  )
-                              ),
+                              ).then((val){
+                                if (_timer.isActive) {
+                                  _timer.cancel();
+                                }
+                              });
+                            ///Wrong Answer
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext builderContext) {
+                                    _timer = Timer(const Duration(seconds: 2), () {
+                                      Navigator.of(context).pop();
+                                      flutterTts.speak(AppStrings.select + correctAnswer[0].animalName);
+                                    });
+
+                                    return
+                                      AlertDialog(
+                                        backgroundColor: AppColors.white,
+                                        contentPadding: const EdgeInsets.all(0),
+                                        title: const Text(
+                                          AppStrings.try_again,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        content: Image.asset(
+                                          "assets/images/quiz/skype-speechless.gif",
+                                          width: size.width * 0.4,
+                                          height: size.height * 0.3,
+                                        ),
+                                      );
+                                  }
+                              ).then((val){
+                                if (_timer.isActive) {
+                                  _timer.cancel();
+                                }
+                              });
+                              tries = tries + 1;
+                              print("Failed..............");
+                            }
+                          },
+                          child: Container(
+                            width: size.width * 0.3,
+                            height: size.height * 0.2,
+                            margin: const EdgeInsets.symmetric(vertical: 5),
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage("assets/images/animals/" + quizAnswers[ind].animalImage),
+                                  fit: BoxFit.cover,
+                                  //fit: BoxFit.cover,
+                                )
                             ),
                           ),
                         );
@@ -286,21 +336,6 @@ class _AnimalsQuizScreenState extends State<AnimalsQuizScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              /*CommonActionButton(
-                onPressed: (){
-                  index = index - 1;
-                  if(index < 0){
-                    index = animalsNameList.length - 1;
-                  }
-                  setState(() {
-                    currentLowercaseLetter = lowercaseLetters[index];
-                    currentAnimal = animalsNameList[index];
-                    spellPhonics(index);
-                  });
-                },
-                icon: "assets/images/button_icons/button_previous.png",
-              ),*/
-
               CommonActionButton(
                 onPressed: (){
                   flutterTts.stop();
@@ -311,23 +346,6 @@ class _AnimalsQuizScreenState extends State<AnimalsQuizScreen> {
                 },
                 icon: "assets/images/button_icons/button_re_play.png",
               ),
-
-              /*CommonActionButton(
-                onPressed: (){
-                  index = index + 1;
-                  if(index > animalsNameList.length - 1){
-                    index = 0;
-                  }
-                  setState(() {
-                    currentLowercaseLetter = lowercaseLetters[index];
-                    currentAnimal = animalsNameList[index];
-                    spellPhonics(index);
-                  });
-
-                },
-                icon: "assets/images/button_icons/button_next.png",
-              ),*/
-
             ],
           ),
         ],

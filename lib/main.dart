@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:littleclassroom/routes.dart';
 import 'package:littleclassroom/screens/alphabet/alphabet_screen.dart';
+import 'package:littleclassroom/screens/alphabet/alphabet_song.dart';
 import 'package:littleclassroom/screens/alphabet/letter_practice_screen.dart';
 import 'package:littleclassroom/screens/alphabet/lowercase_screen.dart';
 import 'package:littleclassroom/screens/alphabet/phonics_screen.dart';
@@ -27,6 +28,7 @@ import 'package:littleclassroom/screens/numbers/numbers_count_screen.dart';
 import 'package:littleclassroom/screens/numbers/numbers_screen.dart';
 import 'package:littleclassroom/screens/numbers/numbers_quiz_screen.dart';
 import 'package:littleclassroom/screens/register_screen.dart';
+import 'package:littleclassroom/screens/scores/scores_screen.dart';
 import 'package:littleclassroom/screens/shapes/shapes_home_screen.dart';
 import 'package:littleclassroom/screens/shapes/shapes_quiz_screen.dart';
 import 'package:littleclassroom/screens/shapes/shapes_screen.dart';
@@ -58,6 +60,7 @@ void main() async{
       Routes.alphabet_page: (context) => const AlphabetScreen(),
       Routes.lowercase_page: (context) => const LowercaseScreen(),
       Routes.uppercase_page: (context) => const UppercaseScreen(),
+      Routes.alphabet_song_page: (context) => const AlphabetSongScreen(),
       Routes.phonics_page: (context) => const PhonicsScreen(),
       Routes.phonics_song_page: (context) => const PhonicsSongScreen(),
       Routes.uppercase_quiz_page: (context) => const UppercaseQuizScreen(),
@@ -94,7 +97,7 @@ void main() async{
       Routes.colors_page: (context) => const ColorsScreen(),
       Routes.colors_quiz_page: (context) => const ColorsQuizScreen(),
 
-
+      Routes.scores_page: (context) => const ScoresScreen(),
     },
   ));
 

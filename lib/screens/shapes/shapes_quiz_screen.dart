@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,12 +24,12 @@ class ShapesQuizScreen extends StatefulWidget {
 }
 
 class _ShapesQuizScreenState extends State<ShapesQuizScreen> with SingleTickerProviderStateMixin{
-  late int level;
-  late double score;
+  late int level, score;
   late List<ShapesList> shapesList, quizAnswers, correctAnswer;
   late List<String> quizQuestion, quizTries;
 
   late FlutterTts flutterTts;
+  late Timer _timer;
 
   @override
   void initState() {
@@ -212,49 +213,102 @@ class _ShapesQuizScreenState extends State<ShapesQuizScreen> with SingleTickerPr
                       itemBuilder: (BuildContext context,int ind){
                         return FlatButton(
                           onPressed: (){
+                            ///Correct Answer
                             if(quizAnswers[ind].shapeName == correctAnswer[0].shapeName){
-                              if(tries == 1){
-                                score = score + 10;
-                                quizQuestion[level] = correctAnswer[0].shapeName;
-                                quizTries[level] = tries.toString();
-                              } else if(tries == 2){
-                                score = score + 5;
-                                quizQuestion[level] = correctAnswer[0].shapeName;
-                                quizTries[level] = tries.toString();
-                              }else {
-                                score = score + 0;
-                                quizQuestion[level] = correctAnswer[0].shapeName;
-                                quizTries[level] = tries.toString();
-                              }
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext builderContext) {
+                                    _timer = Timer(const Duration(seconds: 2), () {
+                                      Navigator.of(context).pop();
 
-                              level = level + 1;
+                                      ///
+                                      if(tries == 1){
+                                        score = score + 1;
+                                        quizQuestion[level] = correctAnswer[0].shapeName;
+                                        quizTries[level] = tries.toString();
+                                      }else {
+                                        score = score;
+                                        quizQuestion[level] = correctAnswer[0].shapeName;
+                                        quizTries[level] = tries.toString();
+                                      }
+                                      level = level + 1;
+                                      setState(() {
+                                        if(level == shapesList.length){
+                                          flutterTts.stop();
+                                          final FirebaseAuth auth = FirebaseAuth.instance;
+                                          final String user = auth.currentUser!.uid;
 
-                              setState(() {
-                                if(level == shapesList.length){
-                                  flutterTts.stop();
-                                  final FirebaseAuth auth = FirebaseAuth.instance;
-                                  final String user = auth.currentUser!.uid;
+                                          FirebaseFirestore.instance.collection(user).doc(AppStrings.shapes)
+                                              .set({
+                                            'Result': score.toString(),
+                                            'QuestionCount': shapesList.length.toString(),
+                                            'Question': quizQuestion,
+                                            'Tries': quizTries,
 
-                                  FirebaseFirestore.instance.collection(AppStrings.shapes).doc(user)
-                                      .set({
-                                    'Result': score.toString(),
-                                    'Question': quizQuestion,
-                                    'Tries': quizTries,
+                                          });
 
-                                  });
+                                          flutterTts.speak(AppStrings.end_quiz);
+                                          showAlertDialog(context);
+                                        } else{
+                                          flutterTts.stop();
+                                          selectVehiclesForQuiz(
+                                              speakText: AppStrings.select,
+                                              questionNo: level,
+                                              listOfNamesAndImages: shapesList);
+                                          print("Passed...... Level = " + level.toString()  + " Score = " + score.toString());
+                                        }
+                                      });
+                                    });
 
-                                  flutterTts.speak(AppStrings.end_quiz);
-                                  showAlertDialog(context);
-                                } else{
-                                  flutterTts.stop();
-                                  selectVehiclesForQuiz(
-                                      speakText: AppStrings.select,
-                                      questionNo: level,
-                                      listOfNamesAndImages: shapesList);
-                                  print("Passed...... Level = " + level.toString()  + " Score = " + score.toString());
+                                    return AlertDialog(
+                                      backgroundColor: AppColors.white,
+                                      title: const Text(
+                                        AppStrings.very_good,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      content: Image.asset(
+                                        "assets/images/quiz/skype-like.gif",
+                                        width: size.width * 0.4,
+                                        height: size.height * 0.3,
+                                      ),
+                                    );
+                                  }
+                              ).then((val){
+                                if (_timer.isActive) {
+                                  _timer.cancel();
                                 }
                               });
+
+                            ///Wrong Answer
                             } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext builderContext) {
+                                    _timer = Timer(const Duration(seconds: 2), () {
+                                      Navigator.of(context).pop();
+                                      flutterTts.speak(AppStrings.select + correctAnswer[0].shapeName);
+                                    });
+
+                                    return
+                                      AlertDialog(
+                                        backgroundColor: AppColors.white,
+                                        contentPadding: const EdgeInsets.all(0),
+                                        title: const Text(
+                                          AppStrings.try_again,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        content: Image.asset(
+                                          "assets/images/quiz/skype-speechless.gif",
+                                          width: size.width * 0.4,
+                                          height: size.height * 0.3,
+                                        ),
+                                      );
+                                  }
+                              ).then((val){
+                                if (_timer.isActive) {
+                                  _timer.cancel();
+                                }
+                              });
                               tries = tries + 1;
                               print("Failed..............");
                             }
@@ -281,44 +335,12 @@ class _ShapesQuizScreenState extends State<ShapesQuizScreen> with SingleTickerPr
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              /*CommonActionButton(
-                onPressed: (){
-                  index = index - 1;
-                  if(index < 0){
-                    index = shapesNameList.length - 1;
-                  }
-                  setState(() {
-                    currentLowercaseLetter = lowercaseLetters[index];
-                    currentShape = shapesNameList[index];
-                    spellPhonics(index);
-                  });
-                },
-                icon: "assets/images/button_icons/button_previous.png",
-              ),*/
-
               CommonActionButton(
                 onPressed: (){
                   flutterTts.speak(AppStrings.select + correctAnswer[0].shapeName);
                 },
                 icon: "assets/images/button_icons/button_re_play.png",
               ),
-
-              /*CommonActionButton(
-                onPressed: (){
-                  index = index + 1;
-                  if(index > shapesNameList.length - 1){
-                    index = 0;
-                  }
-                  setState(() {
-                    currentLowercaseLetter = lowercaseLetters[index];
-                    currentShape = shapesNameList[index];
-                    spellPhonics(index);
-                  });
-
-                },
-                icon: "assets/images/button_icons/button_next.png",
-              ),*/
-
             ],
           ),
         ],

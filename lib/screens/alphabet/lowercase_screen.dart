@@ -52,7 +52,7 @@ class _LowercaseScreenState extends State<LowercaseScreen> with SingleTickerProv
     List<String> speakLetter;
 
     speakLetter = singleWord;
-    ConvertLettersToSpeakable convert = ConvertLettersToSpeakable(
+    ConvertSimpleLettersToSpeakable convert = ConvertSimpleLettersToSpeakable(
       letters: singleWord,
     );
     speakLetter = convert.convertSoundBased();

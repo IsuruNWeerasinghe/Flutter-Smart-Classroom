@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,12 +24,12 @@ class ColorsQuizScreen extends StatefulWidget {
 }
 
 class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
-  late int level;
-  late double score;
+  late int level, score;
   late List<ColorsList> colorsList, quizAnswers, correctAnswer;
   late List<String> quizQuestion, quizTries;
 
   late FlutterTts flutterTts;
+  late Timer _timer;
 
   @override
   void initState() {
@@ -74,7 +75,6 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
 
   ///Select 3 Letters for Quiz
   void selectAnimalsForQuiz({required String speakText, required int questionNo, required List<ColorsList> listOfNamesAndImages}) {
-    //print("Index = " + questionNo.toString());
     Random random = Random();
     int wrongAnswerOne, wrongAnswerTwo;
 
@@ -82,9 +82,6 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
       wrongAnswerOne = random.nextInt(listOfNamesAndImages.length);
       wrongAnswerTwo = random.nextInt(listOfNamesAndImages.length);
     } while (wrongAnswerOne == questionNo || wrongAnswerTwo == questionNo || wrongAnswerOne == wrongAnswerTwo);
-
-    //print("Random No 1: " + wrongAnswerOne.toString());
-    //print("Random No 2 : " + wrongAnswerTwo.toString());
 
     correctAnswer = [listOfNamesAndImages[questionNo]];
     quizAnswers = [listOfNamesAndImages[questionNo], listOfNamesAndImages[wrongAnswerOne], listOfNamesAndImages[wrongAnswerTwo]];
@@ -216,49 +213,103 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
                       itemBuilder: (BuildContext context,int ind){
                         return FlatButton(
                           onPressed: (){
+                            ///Correct Answer
                             if(quizAnswers[ind].colorName == correctAnswer[0].colorName){
-                              if(tries == 1){
-                                score = score + 10;
-                                quizQuestion[level] = correctAnswer[0].colorName;
-                                quizTries[level] = tries.toString();
-                              } else if(tries == 2){
-                                score = score + 5;
-                                quizQuestion[level] = correctAnswer[0].colorName;
-                                quizTries[level] = tries.toString();
-                              }else {
-                                score = score + 0;
-                                quizQuestion[level] = correctAnswer[0].colorName;
-                                quizTries[level] = tries.toString();
-                              }
-                              level = level + 1;
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext builderContext) {
+                                    _timer = Timer(const Duration(seconds: 2), () {
+                                      Navigator.of(context).pop();
+                                      ///
+                                      if(tries == 1){
+                                        score = score + 1;
+                                        quizQuestion[level] = correctAnswer[0].colorName;
+                                        quizTries[level] = tries.toString();
+                                      } else {
+                                        score = score;
+                                        quizQuestion[level] = correctAnswer[0].colorName;
+                                        quizTries[level] = tries.toString();
+                                      }
+                                      level = level + 1;
 
-                              setState(() {
-                                if(level == colorsList.length){
-                                  final FirebaseAuth auth = FirebaseAuth.instance;
-                                  final String user = auth.currentUser!.uid;
+                                      setState(() {
+                                        if(level == colorsList.length){
+                                          final FirebaseAuth auth = FirebaseAuth.instance;
+                                          final String user = auth.currentUser!.uid;
 
-                                  FirebaseFirestore.instance.collection(AppStrings.colours).doc(user)
-                                      .set({
-                                    'Result': score.toString(),
-                                    'Question': quizQuestion,
-                                    'Tries': quizTries,
+                                          FirebaseFirestore.instance.collection(user).doc(AppStrings.colours)
+                                              .set({
+                                            'Result': score.toString(),
+                                            'QuestionCount': colorsList.length.toString(),
+                                            'Question': quizQuestion,
+                                            'Tries': quizTries,
 
-                                  });
+                                          });
 
-                                  flutterTts.stop();
-                                  flutterTts.speak(AppStrings.end_quiz);
-                                  showAlertDialog(context);
-                                } else{
-                                  flutterTts.stop();
-                                  selectAnimalsForQuiz(
-                                      speakText: AppStrings.select,
-                                      questionNo: level,
-                                      listOfNamesAndImages: colorsList
-                                  );
-                                  print("Passed...... Level = " + level.toString()  + " Score = " + score.toString());
+                                          flutterTts.stop();
+                                          flutterTts.speak(AppStrings.end_quiz);
+                                          showAlertDialog(context);
+                                        } else{
+                                          flutterTts.stop();
+                                          selectAnimalsForQuiz(
+                                              speakText: AppStrings.select,
+                                              questionNo: level,
+                                              listOfNamesAndImages: colorsList
+                                          );
+                                          print("Passed...... Level = " + level.toString()  + " Score = " + score.toString());
+                                        }
+                                      });
+                                    });
+
+                                    return AlertDialog(
+                                      backgroundColor: AppColors.white,
+                                      title: const Text(
+                                        AppStrings.very_good,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      content: Image.asset(
+                                        "assets/images/quiz/skype-like.gif",
+                                        width: size.width * 0.4,
+                                        height: size.height * 0.3,
+                                      ),
+                                    );
+                                  }
+                              ).then((val){
+                                if (_timer.isActive) {
+                                  _timer.cancel();
                                 }
                               });
+
+                            ///Wrong Answer
                             } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext builderContext) {
+                                    _timer = Timer(const Duration(seconds: 2), () {
+                                      Navigator.of(context).pop();
+                                      flutterTts.speak(AppStrings.select + correctAnswer[0].colorName);
+                                    });
+
+                                    return
+                                      AlertDialog(
+                                        backgroundColor: AppColors.white,
+                                        contentPadding: const EdgeInsets.all(0),
+                                        title: const Text(
+                                          AppStrings.try_again,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        content: Image.asset(
+                                          "assets/images/quiz/skype-speechless.gif",
+                                          width: size.width * 0.4,
+                                          height: size.height * 0.3,
+                                        ),
+                                      );
+                                  }
+                              ).then((val){
+                                if (_timer.isActive) {
+                                  _timer.cancel();
+                                }
+                              });
                               tries = tries + 1;
                               print("Failed..............");
                             }

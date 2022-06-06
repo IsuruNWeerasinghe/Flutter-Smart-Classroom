@@ -99,6 +99,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  emoji_alert:
+    dependency: "direct main"
+    description:
+      name: emoji_alert
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   fake_async:
     dependency: transitive
     description:
@@ -359,6 +366,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
+  percent_indicator:
+    dependency: "direct main"
+    description:
+      name: percent_indicator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.2.1"
   petitparser:
     dependency: transitive
     description:
@@ -380,6 +394,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.2"
+  pushable_button:
+    dependency: "direct main"
+    description:
+      name: pushable_button
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.3"
   quiver:
     dependency: transitive
     description:

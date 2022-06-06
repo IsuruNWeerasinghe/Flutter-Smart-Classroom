@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:littleclassroom/common_data/app_colors.dart';
+import 'package:littleclassroom/common_data/app_strings.dart';
+import 'package:littleclassroom/routes.dart';
 import 'package:littleclassroom/services/auth_model.dart';
 
 class BackgroundImage extends StatelessWidget {
@@ -18,6 +20,7 @@ class BackgroundImage extends StatelessWidget {
     authModel.userStateCheck();
 
     final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+
     return Container(
       alignment: Alignment.center,
       decoration: const BoxDecoration(
@@ -38,17 +41,21 @@ class BackgroundImage extends StatelessWidget {
             resizeToAvoidBottomInset: false,
             appBar: isActiveAppBar ? AppBar(
               title: Text(pageTitle),
-              backgroundColor: AppColors.appBarRed,
+              backgroundColor: AppColors.transparent,
+              elevation: 0.0,
               actions: <Widget>[
-                FlatButton(
-                  textColor: Colors.white,
-                  child: Text("Log out"),
-                  shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-                  onPressed: () {
-                    authModel.logOut(
-                        context: context
-                    );
-                  },
+                PopupMenuButton<int>(
+                  onSelected: (item) => selectedItem(context, authModel, item),
+                  itemBuilder: (context) => [
+                    const PopupMenuItem<int>(
+                        value: 0,
+                        child: Text(AppStrings.parents_view)
+                    ),
+                    const PopupMenuItem<int>(
+                      value: 1,
+                      child: Text(AppStrings.log_out)
+                    ),
+                  ],
                 ),
               ],
             ) : null,
@@ -63,5 +70,19 @@ class BackgroundImage extends StatelessWidget {
         ),
       ),
     );
+
   }
+
+  void selectedItem(BuildContext context,AuthModel authModel, item) {
+    switch (item) {
+      case 0:
+        Navigator.pushNamed(context, Routes.scores_page);
+        break;
+      case 1:
+        authModel.logOut(context: context);
+        break;
+    }
+  }
+
 }
+

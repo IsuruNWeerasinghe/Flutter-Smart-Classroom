@@ -1,6 +1,7 @@
 
 
 import 'package:littleclassroom/screens/alphabet/alphabet_screen.dart';
+import 'package:littleclassroom/screens/alphabet/alphabet_song.dart';
 import 'package:littleclassroom/screens/alphabet/letter_practice_screen.dart';
 import 'package:littleclassroom/screens/alphabet/lowercase_screen.dart';
 import 'package:littleclassroom/screens/alphabet/phonics_screen.dart';
@@ -26,6 +27,7 @@ import 'package:littleclassroom/screens/numbers/numbers_count_screen.dart';
 import 'package:littleclassroom/screens/numbers/numbers_screen.dart';
 import 'package:littleclassroom/screens/numbers/numbers_quiz_screen.dart';
 import 'package:littleclassroom/screens/register_screen.dart';
+import 'package:littleclassroom/screens/scores/scores_screen.dart';
 import 'package:littleclassroom/screens/shapes/shapes_home_screen.dart';
 import 'package:littleclassroom/screens/shapes/shapes_quiz_screen.dart';
 import 'package:littleclassroom/screens/shapes/shapes_screen.dart';
@@ -47,6 +49,7 @@ class Routes {
   static const String alphabet_page = AlphabetScreen.routeName;
   static const String lowercase_page = LowercaseScreen.routeName;
   static const String uppercase_page = UppercaseScreen.routeName;
+  static const String alphabet_song_page = AlphabetSongScreen.routeName;
   static const String phonics_page = PhonicsScreen.routeName;
   static const String phonics_song_page = PhonicsSongScreen.routeName;
   static const String uppercase_quiz_page = UppercaseQuizScreen.routeName;
@@ -83,4 +86,5 @@ class Routes {
   static const String colors_page = ColorsScreen.routeName;
   static const String colors_quiz_page = ColorsQuizScreen.routeName;
 
+  static const String scores_page = ScoresScreen.routeName;
 }

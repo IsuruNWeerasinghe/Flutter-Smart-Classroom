@@ -3,6 +3,12 @@ import 'dart:core';
 class AppStrings{
   static const intro_text = "Let's learn ";
   static const letters = " Letters";
+  static const very_good = "Very Good...";
+  static const good = "Good...";
+  static const try_again = "Let's Try Again...";
+
+  ///Strings in App Bar
+  static const String log_out = "Log Out";
 
   ///Strings in Welcome Screen
   static const String smart_classroom = "Smart Classroom";
@@ -200,4 +206,12 @@ class AppStrings{
   static const String enter_otp = "Enter OTP";
   //static const String submit = "Submit";
   static const String please_type_the_6_digit= "Please enter the 6 digit OTP that sent to your mobile number.";
+
+  ///Quiz popup screen
+  static const String question = "Question";
+  static const String tries = "Tries";
+  static const String parents_view = "Parent's View";
+  static const String score = "Score";
+  //static const String ok = "Ok";
+
 }

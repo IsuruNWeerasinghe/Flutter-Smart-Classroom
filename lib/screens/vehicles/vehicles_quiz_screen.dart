@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,12 +24,12 @@ class VehiclesQuizScreen extends StatefulWidget {
 }
 
 class _VehiclesQuizScreenState extends State<VehiclesQuizScreen> {
-  late int level;
-  late double score;
+  late int level, score;
   late List<VehiclesList> vehiclesList, quizAnswers, correctAnswer;
   late List<String> quizQuestion, quizTries;
 
   late FlutterTts flutterTts;
+  late Timer _timer;
 
   @override
   void initState() {
@@ -71,7 +72,6 @@ class _VehiclesQuizScreenState extends State<VehiclesQuizScreen> {
 
   ///Select 3 Letters for Quiz
   void selectVehiclesForQuiz({required String speakText, required int questionNo, required List<VehiclesList> listOfNamesAndImages}) {
-    //print("Index = " + questionNo.toString());
     Random random = Random();
     int wrongAnswerOne, wrongAnswerTwo;
 
@@ -80,8 +80,6 @@ class _VehiclesQuizScreenState extends State<VehiclesQuizScreen> {
       wrongAnswerTwo = random.nextInt(listOfNamesAndImages.length);
     } while (wrongAnswerOne == questionNo || wrongAnswerTwo == questionNo || wrongAnswerOne == wrongAnswerTwo);
 
-    //print("Random No 1: " + wrongAnswerOne.toString());
-    //print("Random No 2 : " + wrongAnswerTwo.toString());
 
     correctAnswer = [listOfNamesAndImages[questionNo]];
     quizAnswers = [listOfNamesAndImages[questionNo], listOfNamesAndImages[wrongAnswerOne], listOfNamesAndImages[wrongAnswerTwo]];
@@ -212,49 +210,103 @@ class _VehiclesQuizScreenState extends State<VehiclesQuizScreen> {
                       itemBuilder: (BuildContext context,int ind){
                         return FlatButton(
                           onPressed: (){
+                            ///Correct Answer
                             if(quizAnswers[ind].vehicleName == correctAnswer[0].vehicleName){
-                              if(tries == 1){
-                                score = score + 10;
-                                quizQuestion[level] = correctAnswer[0].vehicleName;
-                                quizTries[level] = tries.toString();
-                              } else if(tries == 2){
-                                score = score + 5;
-                                quizQuestion[level] = correctAnswer[0].vehicleName;
-                                quizTries[level] = tries.toString();
-                              }else {
-                                score = score + 0;
-                                quizQuestion[level] = correctAnswer[0].vehicleName;
-                                quizTries[level] = tries.toString();
-                              }
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext builderContext) {
+                                    _timer = Timer(const Duration(seconds: 2), () {
+                                      Navigator.of(context).pop();
 
-                              level = level + 1;
+                                      ///
+                                      if(tries == 1){
+                                        score = score + 1;
+                                        quizQuestion[level] = correctAnswer[0].vehicleName;
+                                        quizTries[level] = tries.toString();
+                                      } else {
+                                        score = score;
+                                        quizQuestion[level] = correctAnswer[0].vehicleName;
+                                        quizTries[level] = tries.toString();
+                                      }
+                                      level = level + 1;
+                                      setState(() {
+                                        if(level == vehiclesList.length){
+                                          flutterTts.stop();
+                                          final FirebaseAuth auth = FirebaseAuth.instance;
+                                          final String user = auth.currentUser!.uid;
 
-                              setState(() {
-                                if(level == vehiclesList.length){
-                                  flutterTts.stop();
-                                  final FirebaseAuth auth = FirebaseAuth.instance;
-                                  final String user = auth.currentUser!.uid;
+                                          FirebaseFirestore.instance.collection(user).doc(AppStrings.vehicles)
+                                              .set({
+                                            'Result': score.toString(),
+                                            'QuestionCount': vehiclesList.length.toString(),
+                                            'Question': quizQuestion,
+                                            'Tries': quizTries,
 
-                                  FirebaseFirestore.instance.collection(AppStrings.vehicles).doc(user)
-                                      .set({
-                                    'Result': score.toString(),
-                                    'Question': quizQuestion,
-                                    'Tries': quizTries,
+                                          });
 
-                                  });
+                                          flutterTts.speak(AppStrings.end_quiz);
+                                          showAlertDialog(context);
+                                        } else{
+                                          flutterTts.stop();
+                                          selectVehiclesForQuiz(
+                                              speakText: AppStrings.select,
+                                              questionNo: level,
+                                              listOfNamesAndImages: vehiclesList);
+                                          print("Passed...... Level = " + level.toString()  + " Score = " + score.toString());
+                                        }
+                                      });
 
-                                  flutterTts.speak(AppStrings.end_quiz);
-                                  showAlertDialog(context);
-                                } else{
-                                  flutterTts.stop();
-                                  selectVehiclesForQuiz(
-                                      speakText: AppStrings.select,
-                                      questionNo: level,
-                                      listOfNamesAndImages: vehiclesList);
-                                  print("Passed...... Level = " + level.toString()  + " Score = " + score.toString());
+                                    });
+
+                                    return AlertDialog(
+                                      backgroundColor: AppColors.white,
+                                      title: const Text(
+                                        AppStrings.very_good,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      content: Image.asset(
+                                        "assets/images/quiz/skype-like.gif",
+                                        width: size.width * 0.4,
+                                        height: size.height * 0.3,
+                                      ),
+                                    );
+                                  }
+                              ).then((val){
+                                if (_timer.isActive) {
+                                  _timer.cancel();
                                 }
                               });
+
+                              ///Wrong Answer
                             } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext builderContext) {
+                                    _timer = Timer(const Duration(seconds: 2), () {
+                                      Navigator.of(context).pop();
+                                      flutterTts.speak(AppStrings.select + correctAnswer[0].vehicleName);
+                                    });
+
+                                    return
+                                      AlertDialog(
+                                        backgroundColor: AppColors.white,
+                                        contentPadding: const EdgeInsets.all(0),
+                                        title: const Text(
+                                          AppStrings.try_again,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        content: Image.asset(
+                                          "assets/images/quiz/skype-speechless.gif",
+                                          width: size.width * 0.4,
+                                          height: size.height * 0.3,
+                                        ),
+                                      );
+                                  }
+                              ).then((val){
+                                if (_timer.isActive) {
+                                  _timer.cancel();
+                                }
+                              });
                               tries = tries + 1;
                               print("Failed..............");
                             }
@@ -282,44 +334,12 @@ class _VehiclesQuizScreenState extends State<VehiclesQuizScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              /*CommonActionButton(
-                onPressed: (){
-                  index = index - 1;
-                  if(index < 0){
-                    index = vehiclesNameList.length - 1;
-                  }
-                  setState(() {
-                    currentLowercaseLetter = lowercaseLetters[index];
-                    currentVehicle = vehiclesNameList[index];
-                    spellPhonics(index);
-                  });
-                },
-                icon: "assets/images/button_icons/button_previous.png",
-              ),*/
-
               CommonActionButton(
                 onPressed: (){
                   flutterTts.speak(AppStrings.select + correctAnswer[0].vehicleName);
                 },
                 icon: "assets/images/button_icons/button_re_play.png",
               ),
-
-              /*CommonActionButton(
-                onPressed: (){
-                  index = index + 1;
-                  if(index > vehiclesNameList.length - 1){
-                    index = 0;
-                  }
-                  setState(() {
-                    currentLowercaseLetter = lowercaseLetters[index];
-                    currentVehicle = vehiclesNameList[index];
-                    spellPhonics(index);
-                  });
-
-                },
-                icon: "assets/images/button_icons/button_next.png",
-              ),*/
-
             ],
           ),
         ],
