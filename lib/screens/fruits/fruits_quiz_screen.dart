@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:emoji_alert/arrays.dart';
-import 'package:emoji_alert/emoji_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -15,7 +14,8 @@ import 'package:littleclassroom/routes.dart';
 class FruitsList{
   String fruitName;
   String fruitImage;
-  FruitsList({required this.fruitName, required this.fruitImage});
+  Color backgroundColor;
+  FruitsList({required this.fruitName, required this.fruitImage, required this.backgroundColor});
 }
 
 class FruitsQuizScreen extends StatefulWidget {
@@ -42,20 +42,20 @@ class _FruitsQuizScreenState extends State<FruitsQuizScreen> {
     level = 0;
 
     flutterTts  = FlutterTts();
-    flutterTts.setSpeechRate(0.3);
+    flutterTts.setSpeechRate(0.2);
     flutterTts.setPitch(8.0);
     flutterTts.setVolume(1);
-    flutterTts.setLanguage("en-US");
+    flutterTts.setLanguage("en-Us");
 
-    quizAnswers = List.filled(2, FruitsList(fruitImage: "", fruitName: ""), growable: false);
-    fruitsList = [(FruitsList(fruitName: AppStrings.apple, fruitImage: "Fruits_apples.png")),
-                    (FruitsList(fruitName: AppStrings.banana, fruitImage: "Fruits_banana.png")),
-                    (FruitsList(fruitName: AppStrings.grapes, fruitImage: "Fruits_grapes.png")),
-                    (FruitsList(fruitName: AppStrings.mango, fruitImage: "Fruits_mango.png")),
-                    (FruitsList(fruitName: AppStrings.orange, fruitImage: "Fruits_orange.png")),
-                    (FruitsList(fruitName: AppStrings.papaya, fruitImage: "Fruits_papaya.png")),
-                    (FruitsList(fruitName: AppStrings.pineapple, fruitImage: "Fruits_pineapple.png")),
-                    (FruitsList(fruitName: AppStrings.strawberry, fruitImage: "Fruits_strawberry.png"))];
+    quizAnswers = List.filled(2, FruitsList(fruitImage: "", fruitName: "", backgroundColor: AppColors.blue), growable: false);
+    fruitsList = [(FruitsList(fruitName: AppStrings.apple, fruitImage: "Fruits_apples.png", backgroundColor: AppColors.blue)),
+                    (FruitsList(fruitName: AppStrings.banana, fruitImage: "Fruits_banana.png", backgroundColor: AppColors.green)),
+                    (FruitsList(fruitName: AppStrings.grapes, fruitImage: "Fruits_grapes.png", backgroundColor: AppColors.red)),
+                    (FruitsList(fruitName: AppStrings.mango, fruitImage: "Fruits_mango.png", backgroundColor: AppColors.purple)),
+                    (FruitsList(fruitName: AppStrings.orange, fruitImage: "Fruits_orange.png", backgroundColor: AppColors.pink)),
+                    (FruitsList(fruitName: AppStrings.papaya, fruitImage: "Fruits_papaya.png", backgroundColor: AppColors.darkGreen)),
+                    (FruitsList(fruitName: AppStrings.pineapple, fruitImage: "Fruits_pineapple.png", backgroundColor: AppColors.darkBlue)),
+                    (FruitsList(fruitName: AppStrings.strawberry, fruitImage: "Fruits_strawberry.png", backgroundColor: AppColors.brown))];
 
     quizQuestion = List.filled(fruitsList.length, "",growable: true);
     quizTries = List.filled(fruitsList.length, "",growable: true);
@@ -84,14 +84,14 @@ class _FruitsQuizScreenState extends State<FruitsQuizScreen> {
       wrongAnswerTwo = random.nextInt(listOfNamesAndImages.length);
     } while (wrongAnswerOne == questionNo || wrongAnswerTwo == questionNo || wrongAnswerOne == wrongAnswerTwo);
 
-    //print("Random No 1: " + wrongAnswerOne.toString());
-    //print("Random No 2 : " + wrongAnswerTwo.toString());
 
     correctAnswer = [listOfNamesAndImages[questionNo]];
     quizAnswers = [listOfNamesAndImages[questionNo], listOfNamesAndImages[wrongAnswerOne], listOfNamesAndImages[wrongAnswerTwo]];
     quizAnswers.shuffle();
 
-    flutterTts.speak(speakText + correctAnswer[0].fruitName);
+    Future.delayed(Duration(seconds: 1), (){
+      flutterTts.speak(speakText + correctAnswer[0].fruitName);
+    });
   }
   /// ////////////////////////////////////////
 
@@ -182,151 +182,142 @@ class _FruitsQuizScreenState extends State<FruitsQuizScreen> {
         children: <Widget>[
           Container(
             width: size.width * 0.8,
-            height: size.height * 0.75,
+            height: size.height * 0.79,
             alignment: Alignment.topCenter,
-            margin: EdgeInsets.only(top: size.height * 0.01, bottom: size.height * 0.01),
-            padding: EdgeInsets.only(top: size.height * 0.015),
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                alignment: Alignment.center,
-                image: AssetImage(
-                  "assets/images/common_blackboard.png",
-                ),
-                fit: BoxFit.fill,
-              ),
-            ),
             child: Column(
               children: <Widget>[
-                SizedBox(
-                  height: size.height * 0.01,
-                ),
                 Text(
                   AppStrings.select_ + correctAnswer[0].fruitName ,
                   style: TextStyle(
-                      fontSize: size.height * 0.03,
+                      fontSize: size.height * 0.035,
                       fontFamily: 'Muli',
                       fontWeight: FontWeight.w600
                   ),
                 ),
+
                 Expanded(
                   child: ListView.builder(
                       itemCount: quizAnswers.length,
                       itemBuilder: (BuildContext context,int ind){
-                        return FlatButton(
-                          onPressed: (){
-                            ///Answer Correct
-                            if(quizAnswers[ind].fruitName == correctAnswer[0].fruitName){
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext builderContext) {
-                                    _timer = Timer(const Duration(seconds: 2), () {
-                                      Navigator.of(context).pop();
+                        return AvatarGlow(
+                            endRadius: 100.0,
+                            child: Material(     // Replace this child with your own
+                              elevation: 20.0,
+                              shape: const CircleBorder(),
+                              child: CircleAvatar(
+                                backgroundColor: quizAnswers[ind].backgroundColor,
+                                foregroundColor: AppColors.white,
+                                radius: 60,
+                                child: IconButton(
+                                  iconSize: 100,
+                                  icon: Image.asset(
+                                    "assets/images/fruits/" + quizAnswers[ind].fruitImage,
+                                  ),
+                                  onPressed: (){
+                                    ///Answer Correct
+                                    if(quizAnswers[ind].fruitName == correctAnswer[0].fruitName){
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext builderContext) {
+                                            _timer = Timer(const Duration(seconds: 2), () {
+                                              Navigator.of(context).pop();
 
-                                      ///
-                                      if(tries == 1){
-                                        score = score + 1;
-                                        quizQuestion[level] = correctAnswer[0].fruitName;
-                                        quizTries[level] = tries.toString();
-                                      } else {
-                                        score = score;
-                                        quizQuestion[level] = correctAnswer[0].fruitName;
-                                        quizTries[level] = tries.toString();
-                                      }
-                                      level = level + 1;
-                                      setState(() {
-                                        if(level == fruitsList.length){
-                                          final FirebaseAuth auth = FirebaseAuth.instance;
-                                          final String user = auth.currentUser!.uid;
+                                              ///
+                                              if(tries == 1){
+                                                score = score + 1;
+                                                quizQuestion[level] = correctAnswer[0].fruitName;
+                                                quizTries[level] = tries.toString();
+                                              } else {
+                                                score = score;
+                                                quizQuestion[level] = correctAnswer[0].fruitName;
+                                                quizTries[level] = tries.toString();
+                                              }
+                                              level = level + 1;
+                                              setState(() {
+                                                if(level == fruitsList.length){
+                                                  final FirebaseAuth auth = FirebaseAuth.instance;
+                                                  final String user = auth.currentUser!.uid;
 
-                                          FirebaseFirestore.instance.collection(user).doc(AppStrings.fruits)
-                                              .set({
-                                            'Result': score.toString(),
-                                            'QuestionCount': fruitsList.length.toString(),
-                                            'Question': quizQuestion,
-                                            'Tries': quizTries,
+                                                  FirebaseFirestore.instance.collection(user).doc(AppStrings.fruits)
+                                                      .set({
+                                                    'Result': score.toString(),
+                                                    'QuestionCount': fruitsList.length.toString(),
+                                                    'Question': quizQuestion,
+                                                    'Tries': quizTries,
 
-                                          });
+                                                  });
 
-                                          flutterTts.stop();
-                                          flutterTts.speak(AppStrings.end_quiz);
-                                          showAlertDialog(context);
-                                        } else{
-                                          flutterTts.stop();
-                                          selectFruitsForQuiz(
-                                              speakText: AppStrings.select,
-                                              questionNo: level,
-                                              listOfNamesAndImages: fruitsList);
-                                          print("Passed...... Level = " + level.toString()  + " Score = " + score.toString());
+                                                  flutterTts.stop();
+                                                  flutterTts.speak(AppStrings.end_quiz);
+                                                  showAlertDialog(context);
+                                                } else{
+                                                  flutterTts.stop();
+                                                  selectFruitsForQuiz(
+                                                      speakText: AppStrings.select,
+                                                      questionNo: level,
+                                                      listOfNamesAndImages: fruitsList);
+                                                  print("Passed...... Level = " + level.toString()  + " Score = " + score.toString());
+                                                }
+                                              });
+                                            });
+
+                                            return
+                                              AlertDialog(
+                                                backgroundColor: AppColors.white,
+                                                title: const Text(
+                                                  AppStrings.very_good,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                content: Image.asset(
+                                                  "assets/images/quiz/skype-like.gif",
+                                                  width: size.width * 0.4,
+                                                  height: size.height * 0.3,
+                                                ),
+                                              );
+                                          }
+                                      ).then((val){
+                                        if (_timer.isActive) {
+                                          _timer.cancel();
                                         }
                                       });
-                                    });
 
-                                    return
-                                      AlertDialog(
-                                        backgroundColor: AppColors.white,
-                                        title: const Text(
-                                          AppStrings.very_good,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        content: Image.asset(
-                                          "assets/images/quiz/skype-like.gif",
-                                          width: size.width * 0.4,
-                                          height: size.height * 0.3,
-                                        ),
-                                      );
-                                  }
-                              ).then((val){
-                                if (_timer.isActive) {
-                                  _timer.cancel();
-                                }
-                              });
+                                      ///Answer Wrong
+                                    } else {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext builderContext) {
+                                            _timer = Timer(const Duration(seconds: 2), () {
+                                              Navigator.of(context).pop();
+                                              flutterTts.speak(AppStrings.select + correctAnswer[0].fruitName);
+                                            });
 
-                            ///Answer Wrong
-                            } else {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext builderContext) {
-                                    _timer = Timer(const Duration(seconds: 2), () {
-                                      Navigator.of(context).pop();
-                                      flutterTts.speak(AppStrings.select + correctAnswer[0].fruitName);
-                                    });
-
-                                    return
-                                      AlertDialog(
-                                        backgroundColor: AppColors.white,
-                                        contentPadding: const EdgeInsets.all(0),
-                                        title: const Text(
-                                          AppStrings.try_again,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        content: Image.asset(
-                                          "assets/images/quiz/skype-speechless.gif",
-                                          width: size.width * 0.4,
-                                          height: size.height * 0.3,
-                                        ),
-                                    );
-                                  }
-                              ).then((val){
-                                if (_timer.isActive) {
-                                  _timer.cancel();
-                                }
-                              });
-                              tries = tries + 1;
-                              print("Failed..............");
-                            }
-                          },
-                          child: Container(
-                            width: size.width * 0.3,
-                            height: size.height * 0.2,
-                            margin: const EdgeInsets.symmetric(vertical: 5),
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage("assets/images/fruits/" + quizAnswers[ind].fruitImage),
-                                  fit: BoxFit.cover,
-                                  //fit: BoxFit.cover,
-                                )
-                            ),
-                          ),
+                                            return
+                                              AlertDialog(
+                                                backgroundColor: AppColors.white,
+                                                contentPadding: const EdgeInsets.all(0),
+                                                title: const Text(
+                                                  AppStrings.try_again,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                content: Image.asset(
+                                                  "assets/images/quiz/skype-speechless.gif",
+                                                  width: size.width * 0.4,
+                                                  height: size.height * 0.3,
+                                                ),
+                                              );
+                                          }
+                                      ).then((val){
+                                        if (_timer.isActive) {
+                                          _timer.cancel();
+                                        }
+                                      });
+                                      tries = tries + 1;
+                                      print("Failed..............");
+                                    }
+                                  },
+                                ),
+                              ),
+                            )
                         );
                       }),
                 ),

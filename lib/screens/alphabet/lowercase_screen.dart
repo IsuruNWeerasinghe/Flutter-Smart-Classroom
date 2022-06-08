@@ -32,11 +32,14 @@ class _LowercaseScreenState extends State<LowercaseScreen> with SingleTickerProv
     lowercaseLetters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
 
     flutterTts = FlutterTts();
-    flutterTts.setSpeechRate(0.3);
+    flutterTts.setSpeechRate(0.2);
     flutterTts.setPitch(8.0);
     flutterTts.setVolume(1);
-    flutterTts.setLanguage("en-US");
-    flutterTts.speak(AppStrings.intro_text + AppStrings.lowercase + AppStrings.alphabet);
+    flutterTts.setLanguage("en-Us");
+    Future.delayed(Duration(seconds: 1), (){
+      flutterTts.speak(AppStrings.intro_text + AppStrings.lowercase + AppStrings.alphabet);
+    });
+
 
   }
 

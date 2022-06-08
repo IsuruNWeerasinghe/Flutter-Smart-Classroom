@@ -14,11 +14,14 @@ class ShapesHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FlutterTts flutterTts = FlutterTts();
-    flutterTts.setSpeechRate(0.3);
+    flutterTts.setSpeechRate(0.2);
     flutterTts.setPitch(8.0);
     flutterTts.setVolume(1);
-    flutterTts.setLanguage("en-GB");
-    flutterTts.speak(AppStrings.intro_text + AppStrings.shapes);
+    flutterTts.setLanguage("en-Us");
+    Future.delayed(Duration(seconds: 1), (){
+      flutterTts.speak(AppStrings.intro_text + AppStrings.shapes);
+    });
+
 
     Size size = MediaQuery.of(context).size;
 
@@ -26,35 +29,6 @@ class ShapesHomeScreen extends StatelessWidget {
     List<String> topics = [AppStrings.shapes, AppStrings.quiz1];
     List<String> routes = [Routes.shapes_page, Routes.shapes_quiz_page];
     List<String> images = ["home icons/home_shapes.png", "alphabet/alphabet_quiz_2.png"];
-/*
-    Future<List<Object?>> getVoices() async {
-      List<Object?> voice = await flutterTts.getVoices;
-      print(voice);
-      return voice  ;
-    }
-
-    Future<List<Object?>> getLanguages() async {
-      List<Object?> voice = await flutterTts.getLanguages;
-      print(voice);
-      return voice  ;
-    }
-
-    Future<List<Object?>> getEngines() async {
-      List<Object?> voice = await flutterTts.getEngines;
-      print(voice);
-      return voice  ;
-    }
-    Future<String> getDefaultEngines() async {
-      String voice = await flutterTts.getDefaultEngine;
-      print(voice);
-
-      return voice  ;
-    }
-
-    getVoices();
-    getLanguages();
-    getEngines();
-    getDefaultEngines();*/
 
     return BackgroundImage(
       topMargin: 0.0,
@@ -65,8 +39,6 @@ class ShapesHomeScreen extends StatelessWidget {
 
       child: GridView.count(
         crossAxisCount: 2,
-        //crossAxisSpacing: 8.0,
-        //mainAxisSpacing: 5.0,
         shrinkWrap: true,
         children: List.generate(topics.length, (index){
           return Padding(

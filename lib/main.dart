@@ -23,7 +23,6 @@ import 'package:littleclassroom/screens/fruits/fruits_screen.dart';
 import 'package:littleclassroom/screens/home_screen.dart';
 import 'package:littleclassroom/screens/login_screen.dart';
 import 'package:littleclassroom/screens/numbers/counting_1_screen.dart';
-import 'package:littleclassroom/screens/numbers/counting_2_screen.dart';
 import 'package:littleclassroom/screens/numbers/numbers_count_screen.dart';
 import 'package:littleclassroom/screens/numbers/numbers_screen.dart';
 import 'package:littleclassroom/screens/numbers/numbers_quiz_screen.dart';
@@ -70,7 +69,6 @@ void main() async{
       Routes.numbers_page: (context) => const NumbersScreen(),
       Routes.numbers_count_page: (context) => const NumbersCountScreen(),
       Routes.counting1_page: (context) => const Counting1Screen(),
-      Routes.counting2_page: (context) => const Counting2Screen(),
       Routes.numbers_quiz_page: (context) => const NumbersQuizScreen(),
 
       Routes.animals_home_page: (context) => const AnimalsHomeScreen(),

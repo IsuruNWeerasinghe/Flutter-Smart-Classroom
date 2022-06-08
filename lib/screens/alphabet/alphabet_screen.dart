@@ -21,11 +21,14 @@ class AlphabetScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FlutterTts flutterTts = FlutterTts();
-    flutterTts.setSpeechRate(0.3);
+    flutterTts.setSpeechRate(0.2);
     flutterTts.setPitch(8.0);
     flutterTts.setVolume(1);
-    flutterTts.setLanguage("en-GB");
-    flutterTts.speak(AppStrings.intro_text + AppStrings.alphabet);
+    flutterTts.setLanguage("en-Us");
+
+    Future.delayed(Duration(seconds: 1), (){
+      flutterTts.speak(AppStrings.intro_text + AppStrings.alphabet);
+    });
 
     Size size = MediaQuery.of(context).size;
 

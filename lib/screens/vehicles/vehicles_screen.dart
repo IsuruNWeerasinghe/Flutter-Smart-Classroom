@@ -33,12 +33,14 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
     imageCurrentVehicle = "assets/images/vehicles/" + imagesVehicles[0];
 
     flutterTts = FlutterTts();
-    flutterTts.setSpeechRate(0.3);
+    flutterTts.setSpeechRate(0.2);
     flutterTts.setPitch(8.0);
     flutterTts.setVolume(1);
-    flutterTts.setLanguage("en-GB");
+    flutterTts.setLanguage("en-Us");
 
-    spellIntro(AppStrings.vehicles);
+    Future.delayed(Duration(seconds: 1), (){
+      flutterTts.speak(AppStrings.intro_text + AppStrings.vehicles);
+    });
     spellVehicleName(0);
   }
 
@@ -47,14 +49,6 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
     flutterTts.stop();
     super.dispose();
   }
-
-  ///Spell Intro
-  Future<void> spellIntro(String speakString) async {
-    flutterTts.speak(speakString);
-    await Future.delayed(const Duration(seconds: 5));
-  }
-  /// ///////////////////////////////////////
-
 
   ///Spell Animal's Name letter by letter
   Future<void> spellVehicleName(int vehicleIndex) async {
@@ -72,7 +66,10 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
       print(speakLetter[i]);
       await Future.delayed(const Duration(seconds: 1));
     }
-    flutterTts.speak(namesVehicles[vehicleIndex]);
+    Future.delayed(Duration(milliseconds: 500), (){
+      flutterTts.speak(namesVehicles[vehicleIndex]);
+    });
+
   }
   /// ///////////////////////////////////////
 

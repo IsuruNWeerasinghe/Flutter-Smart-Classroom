@@ -14,18 +14,21 @@ class NumbersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FlutterTts flutterTts = FlutterTts();
-    flutterTts.setSpeechRate(0.3);
+    flutterTts.setSpeechRate(0.2);
     flutterTts.setPitch(8.0);
     flutterTts.setVolume(1);
-    flutterTts.setLanguage("en-GB");
-    flutterTts.speak(AppStrings.intro_text + AppStrings.numbers);
+    flutterTts.setLanguage("en-Us");
+
+    Future.delayed(Duration(seconds: 1), (){
+      flutterTts.speak(AppStrings.intro_text + AppStrings.numbers);
+    });
 
     Size size = MediaQuery.of(context).size;
 
-    List<Color> colors = [AppColors.red, AppColors.blue, AppColors.yellow, AppColors.green];
-    List<String> topics = [AppStrings.numbers, AppStrings.counting1, AppStrings.counting2, AppStrings.quiz1];
-    List<String> routes = [Routes.numbers_count_page, Routes.counting1_page, Routes.counting2_page, Routes.numbers_quiz_page];
-    List<String> images = ["numbers_numbers.png", "numbers_counting1.png", "numbers_counting1.png", "numbers_quiz1.png"];
+    List<Color> colors = [AppColors.red, AppColors.blue, AppColors.green];
+    List<String> topics = [AppStrings.numbers, AppStrings.counting1, AppStrings.quiz1];
+    List<String> routes = [Routes.numbers_count_page, Routes.counting1_page, Routes.numbers_quiz_page];
+    List<String> images = ["numbers_numbers.png", "numbers_counting1.png", "numbers_quiz1.png"];
 
     return BackgroundImage(
       topMargin: 0.0,

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ import 'package:littleclassroom/routes.dart';
 
 class LettersList{
   String letterName;
-  String letterImage;
+  Color letterImage;
   LettersList({required this.letterName, required this.letterImage});
 }
 
@@ -27,7 +28,8 @@ class UppercaseQuizScreen extends StatefulWidget {
 class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
   late int level, score;
   late List<LettersList> uppercaseLettersList, quizAnswers, correctAnswer;
-  late List<String> uppercaseLetters, quizImages;
+  late List<String> uppercaseLetters;
+  late List<Color> quizImages;
   late List<int> quizColors;
   late List<String> quizQuestion, quizTries;
 
@@ -42,17 +44,17 @@ class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
 
     random = Random();
     flutterTts  = FlutterTts();
-    flutterTts.setSpeechRate(0.3);
+    flutterTts.setSpeechRate(0.2);
     flutterTts.setPitch(8.0);
     flutterTts.setVolume(1);
-    flutterTts.setLanguage("en-GB");
+    flutterTts.setLanguage("en-Us");
 
     quizColors = List.filled(3,1,growable: true);
     uppercaseLetters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
     uppercaseLetters.shuffle();
-    quizImages = ['quiz_fish_blue.png','quiz_fish_orange.png','quiz_fish_purple.png','quiz_fish_red.png','quiz_fish_yellow.png'];
-    quizAnswers = List.filled(2, LettersList(letterImage: "", letterName: ""), growable: false);
-    uppercaseLettersList= List.filled(uppercaseLetters.length, LettersList(letterImage: "", letterName: ""), growable: true);
+    quizImages = [AppColors.blue, AppColors.green, AppColors.purple, AppColors.red, AppColors.pink];
+    quizAnswers = List.filled(2, LettersList(letterImage: AppColors.blue, letterName: ""), growable: false);
+    uppercaseLettersList= List.filled(uppercaseLetters.length, LettersList(letterImage: AppColors.blue, letterName: ""), growable: true);
 
     for(int i=0; i<uppercaseLetters.length; i++){
       uppercaseLettersList[i] = LettersList(letterName: uppercaseLetters[i], letterImage: quizImages[random.nextInt(quizImages.length)]);
@@ -77,7 +79,6 @@ class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
 
   ///Select 3 Letters for Quiz
   void selectLettersForQuiz({required String speakText, required int questionNo, required List<LettersList> listOfNamesAndImages}) {
-    //print("Index = " + questionNo.toString());
     Random random = Random();
     int wrongAnswerOne, wrongAnswerTwo;
     do {
@@ -85,8 +86,6 @@ class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
       wrongAnswerTwo = random.nextInt(listOfNamesAndImages.length);
     } while (wrongAnswerOne == questionNo || wrongAnswerTwo == questionNo || wrongAnswerOne == wrongAnswerTwo);
 
-    //print("Random No 1: " + wrongAnswerOne.toString());
-    //print("Random No 2 : " + wrongAnswerTwo.toString());
     correctAnswer = [listOfNamesAndImages[questionNo]];
     quizAnswers = [listOfNamesAndImages[questionNo], listOfNamesAndImages[wrongAnswerOne], listOfNamesAndImages[wrongAnswerTwo]];
     quizAnswers = [listOfNamesAndImages[questionNo], listOfNamesAndImages[wrongAnswerOne], listOfNamesAndImages[wrongAnswerTwo]];
@@ -100,9 +99,11 @@ class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
     for(int i=0; i<quizAnswers.length; i++){
       quizAnswers[i].letterImage = quizImages[quizColors[i]];
     }
-
     quizAnswers.shuffle();
-    flutterTts.speak(speakText + correctAnswer[0].letterName);
+    Future.delayed(Duration(seconds: 1), (){
+      flutterTts.speak(speakText + correctAnswer[0].letterName);
+    });
+
   }
   /// ////////////////////////////////////////
 
@@ -200,142 +201,141 @@ class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
             alignment: Alignment.topCenter,
             margin: EdgeInsets.only(top: size.height * 0.01, bottom: size.height * 0.01),
             padding: EdgeInsets.only(top: size.height * 0.015),
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                alignment: Alignment.center,
-                image: AssetImage(
-                  "assets/images/common_blackboard.png",
-                ),
-                fit: BoxFit.fill,
-              ),
-            ),
             child: Column(
               children: <Widget>[
                 Expanded(
                   child: ListView.builder(
                     itemCount: quizAnswers.length,
                     itemBuilder: (BuildContext context,int ind){
-                      return Container(
-                        width: size.width * 0.25,
-                        height: size.height * 0.2,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage("assets/images/quiz/" + quizAnswers[ind].letterImage),
-                            //fit: BoxFit.cover,
-                          )
-                        ),
-                        child: TextButton(
-                            onPressed: (){
-                              if(quizAnswers[ind].letterName == correctAnswer[0].letterName){
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext builderContext) {
-                                      _timer = Timer(const Duration(seconds: 2), () {
-                                        Navigator.of(context).pop();
+                      return AvatarGlow(
+                          endRadius: 100.0,
+                          child: Material(     // Replace this child with your own
+                            elevation: 20.0,
+                            shape: const CircleBorder(),
+                            child: CircleAvatar(
+                              backgroundColor: quizAnswers[ind].letterImage,
+                              foregroundColor: AppColors.white,
+                              radius: 50,
+                              child: TextButton(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5),
+                                  child: Text(
+                                    quizAnswers[ind].letterName,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: size.height * 0.07,
+                                        fontFamily: 'Muli',
+                                        color: AppColors.white,
+                                        fontWeight: FontWeight.w600
+                                    ),
+                                  ),
+                                ),
+                                onPressed: (){
+                                  ///Answer Correct
+                                  if(quizAnswers[ind].letterName == correctAnswer[0].letterName){
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext builderContext) {
+                                          _timer = Timer(const Duration(seconds: 2), () {
+                                            Navigator.of(context).pop();
 
-                                        ///
-                                        if(tries == 1){
-                                          score = score + 1;
-                                          quizQuestion[level] = correctAnswer[0].letterName;
-                                          quizTries[level] = tries.toString();
-                                        }else {
-                                          score = score;
-                                          quizQuestion[level] = correctAnswer[0].letterName;
-                                          quizTries[level] = tries.toString();
-                                        }
-                                        level = level + 1;
+                                            ///
+                                            if(tries == 1){
+                                              score = score + 1;
+                                              quizQuestion[level] = correctAnswer[0].letterName;
+                                              quizTries[level] = tries.toString();
+                                            } else {
+                                              score = score;
+                                              quizQuestion[level] = correctAnswer[0].letterName;
+                                              quizTries[level] = tries.toString();
+                                            }
+                                            level = level + 1;
 
-                                        setState(() {
-                                          if(level == uppercaseLettersList.length){
-                                            flutterTts.stop();
-                                            final FirebaseAuth auth = FirebaseAuth.instance;
-                                            final String user = auth.currentUser!.uid;
+                                            setState(() {
+                                              if(level == uppercaseLettersList.length){
+                                                flutterTts.stop();
+                                                final FirebaseAuth auth = FirebaseAuth.instance;
+                                                final String user = auth.currentUser!.uid;
 
-                                            FirebaseFirestore.instance.collection(user).doc(AppStrings.uppercase)
-                                                .set({
-                                              'Result': score.toString(),
-                                              'QuestionCount': uppercaseLettersList.length.toString(),
-                                              'Question': quizQuestion,
-                                              'Tries': quizTries,
+                                                FirebaseFirestore.instance.collection(user).doc(AppStrings.lowercase)
+                                                    .set({
+                                                  'Result': score.toString(),
+                                                  'QuestionCount': uppercaseLettersList.length.toString(),
+                                                  'Question': quizQuestion,
+                                                  'Tries': quizTries,
 
+                                                });
+
+                                                flutterTts.speak(AppStrings.end_quiz);
+                                                showAlertDialog(context);
+                                              } else{
+                                                flutterTts.stop();
+                                                selectLettersForQuiz(
+                                                    speakText: AppStrings.select,
+                                                    questionNo: level,
+                                                    listOfNamesAndImages: uppercaseLettersList);
+                                                print("Passed...... Level = " + level.toString()  + " Score = " + score.toString());
+                                              }
                                             });
+                                          });
 
-                                            flutterTts.speak(AppStrings.end_quiz);
-                                            showAlertDialog(context);
-                                          } else{
-                                            flutterTts.stop();
-                                            selectLettersForQuiz(
-                                                speakText: AppStrings.select,
-                                                questionNo: level,
-                                                listOfNamesAndImages: uppercaseLettersList);
-                                            print("Passed...... Level = " + level.toString()  + " Score = " + score.toString());
-                                          }
-                                        });
-                                      });
+                                          return
+                                            AlertDialog(
+                                              backgroundColor: AppColors.white,
+                                              title: const Text(
+                                                AppStrings.very_good,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              content: Image.asset(
+                                                "assets/images/quiz/skype-like.gif",
+                                                width: size.width * 0.4,
+                                                height: size.height * 0.3,
+                                              ),
+                                            );
+                                        }
+                                    ).then((val){
+                                      if (_timer.isActive) {
+                                        _timer.cancel();
+                                      }
+                                    });
 
-                                      return AlertDialog(
-                                          backgroundColor: AppColors.white,
-                                          title: const Text(
-                                            AppStrings.very_good,
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          content: Image.asset(
-                                            "assets/images/quiz/skype-like.gif",
-                                            width: size.width * 0.4,
-                                            height: size.height * 0.3,
-                                          ),
-                                        );
-                                    }
-                                ).then((val){
-                                  if (_timer.isActive) {
-                                    _timer.cancel();
+                                    ///Answer Wrong
+                                  } else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext builderContext) {
+                                          _timer = Timer(const Duration(seconds: 2), () {
+                                            Navigator.of(context).pop();
+                                            flutterTts.speak(AppStrings.select + correctAnswer[0].letterName);
+                                          });
+
+                                          return
+                                            AlertDialog(
+                                              backgroundColor: AppColors.white,
+                                              contentPadding: const EdgeInsets.all(0),
+                                              title: const Text(
+                                                AppStrings.try_again,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              content: Image.asset(
+                                                "assets/images/quiz/skype-speechless.gif",
+                                                width: size.width * 0.4,
+                                                height: size.height * 0.3,
+                                              ),
+                                            );
+                                        }
+                                    ).then((val){
+                                      if (_timer.isActive) {
+                                        _timer.cancel();
+                                      }
+                                    });
+                                    tries = tries + 1;
+                                    print("Failed..............");
                                   }
-                                });
-
-                              } else {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext builderContext) {
-                                      _timer = Timer(const Duration(seconds: 2), () {
-                                        Navigator.of(context).pop();
-                                        flutterTts.speak(AppStrings.select + correctAnswer[0].letterName);
-                                      });
-
-                                      return
-                                        AlertDialog(
-                                          backgroundColor: AppColors.white,
-                                          contentPadding: const EdgeInsets.all(0),
-                                          title: const Text(
-                                            AppStrings.try_again,
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          content: Image.asset(
-                                            "assets/images/quiz/skype-speechless.gif",
-                                            width: size.width * 0.4,
-                                            height: size.height * 0.3,
-                                          ),
-                                        );
-                                    }
-                                ).then((val){
-                                  if (_timer.isActive) {
-                                    _timer.cancel();
-                                  }
-                                });
-                                tries = tries + 1;
-                                print("Failed..............");
-                              }
-                            },
-                            child: Text(
-                              quizAnswers[ind].letterName,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: size.height * 0.06,
-                                  fontFamily: 'Muli',
-                                  color: AppColors.white,
-                                  fontWeight: FontWeight.w600
+                                },
                               ),
                             ),
-                        ),
+                          )
                       );
                     }),
                 ),
@@ -347,44 +347,12 @@ class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              /*CommonActionButton(
-                onPressed: (){
-                  index = index - 1;
-                  if(index < 0){
-                    index = uppercaseLetters.length - 1;
-                  }
-                  setState(() {
-                    currentLowercaseLetter = lowercaseLetters[index];
-                    currentUppercaseLetter = uppercaseLetters[index];
-                    spellPhonics(index);
-                  });
-                },
-                icon: "assets/images/button_icons/button_previous.png",
-              ),*/
-
               CommonActionButton(
                 onPressed: (){
                   flutterTts.speak(AppStrings.select + correctAnswer[0].letterName);
                 },
                 icon: "assets/images/button_icons/button_re_play.png",
               ),
-
-              /*CommonActionButton(
-                onPressed: (){
-                  index = index + 1;
-                  if(index > uppercaseLetters.length - 1){
-                    index = 0;
-                  }
-                  setState(() {
-                    currentLowercaseLetter = lowercaseLetters[index];
-                    currentUppercaseLetter = uppercaseLetters[index];
-                    spellPhonics(index);
-                  });
-
-                },
-                icon: "assets/images/button_icons/button_next.png",
-              ),*/
-
             ],
           ),
         ],

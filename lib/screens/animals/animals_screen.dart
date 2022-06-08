@@ -32,12 +32,14 @@ class _AnimalsScreenState extends State<AnimalsScreen> {
       imageCurrentAnimal = "assets/images/animals/" + imagesAnimals[0];
 
       flutterTts = FlutterTts();
-      flutterTts.setSpeechRate(0.3);
+      flutterTts.setSpeechRate(0.2);
       flutterTts.setPitch(8.0);
       flutterTts.setVolume(1);
-      flutterTts.setLanguage("en-GB");
+      flutterTts.setLanguage("en-Us");
 
-      spellIntro(AppStrings.animals);
+      Future.delayed(Duration(seconds: 1), (){
+        flutterTts.speak(AppStrings.intro_text + AppStrings.animals);
+      });
       spellAnimalName(0);
     }
 
@@ -46,14 +48,6 @@ class _AnimalsScreenState extends State<AnimalsScreen> {
     flutterTts.stop();
     super.dispose();
   }
-
-  ///Spell Intro
-    Future<void> spellIntro(String speakString) async {
-      flutterTts.speak(speakString);
-      await Future.delayed(const Duration(seconds: 5));
-    }
-    /// ///////////////////////////////////////
-
 
     ///Spell Animal's Name letter by letter
     Future<void> spellAnimalName(int animalIndex) async {
@@ -71,7 +65,10 @@ class _AnimalsScreenState extends State<AnimalsScreen> {
         print(speakLetter[i]);
         await Future.delayed(const Duration(seconds: 1));
       }
-      flutterTts.speak(namesAnimals[animalIndex]);
+      Future.delayed(Duration(milliseconds: 500), (){
+        flutterTts.speak(namesAnimals[animalIndex]);
+      });
+
     }
     /// ///////////////////////////////////////
 

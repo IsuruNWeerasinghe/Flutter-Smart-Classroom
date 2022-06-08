@@ -193,7 +193,7 @@ class ConvertSimpleLettersToSpeakable {
           letters[i] =  "a";
           break;
         case 'f':
-          letters[i] =  "fer";
+          letters[i] =  "far";
           break;
         case 'g':
           letters[i] =  "ger";
@@ -205,19 +205,19 @@ class ConvertSimpleLettersToSpeakable {
           letters[i] =  "e";
           break;
         case 'j':
-          letters[i] =  "jer";
+          letters[i] =  "jar";
           break;
         case 'k':
-          letters[i] =  "ker";
+          letters[i] =  "kar";
           break;
         case 'l':
           letters[i] =  "ler";
           break;
         case 'm':
-          letters[i] =  "mer";
+          letters[i] =  "mar";
           break;
         case 'n':
-          letters[i] =  "ner";
+          letters[i] =  "nar";
           break;
         case 'o':
           letters[i] =  "o";
@@ -226,31 +226,31 @@ class ConvertSimpleLettersToSpeakable {
           letters[i] =  "per";
           break;
         case 'q':
-          letters[i] =  "kwa";
+          letters[i] =  "qua";
           break;
         case 'r':
-          letters[i] =  "rer";
+          letters[i] =  "ra";
           break;
         case 's':
-          letters[i] =  "ser";
+          letters[i] =  "sa";
           break;
         case 't':
-          letters[i] =  "ter";
+          letters[i] =  "ta";
           break;
         case 'u':
           letters[i] =  "u";
           break;
         case 'v':
-          letters[i] =  "ver";
+          letters[i] =  "var";
           break;
         case 'w':
-          letters[i] =  "ver";
+          letters[i] =  "var";
           break;
         case 'x':
           letters[i] =  "ex";
           break;
         case 'y':
-          letters[i] =  "yr";
+          letters[i] =  "yar";
           break;
         case 'z':
           letters[i] =  "zar";

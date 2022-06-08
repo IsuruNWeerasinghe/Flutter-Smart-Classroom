@@ -28,11 +28,15 @@ class _NumbersCountScreenState extends State<NumbersCountScreen> {
     numbersList = ['1','2','3','4','5','6','7','8','9'];
 
     flutterTts = FlutterTts();
-    flutterTts.setSpeechRate(0.3);
+    flutterTts.setSpeechRate(0.2);
     flutterTts.setPitch(8.0);
     flutterTts.setVolume(1);
-    flutterTts.setLanguage("en-GB");
-    flutterTts.speak(AppStrings.intro_text + AppStrings.numbers);
+    flutterTts.setLanguage("en-Us");
+
+    Future.delayed(Duration(seconds: 1), (){
+      flutterTts.speak(AppStrings.intro_text + AppStrings.numbers);
+    });
+
   }
 
   @override

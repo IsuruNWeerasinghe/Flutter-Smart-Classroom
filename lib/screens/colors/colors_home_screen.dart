@@ -13,8 +13,14 @@ class ColorsHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FlutterTts flutterTts = FlutterTts();
-    flutterTts.setSpeechRate(0.4);
-    flutterTts.speak(AppStrings.intro_text + AppStrings.colours);
+    flutterTts.setSpeechRate(0.2);
+    flutterTts.setPitch(8.0);
+    flutterTts.setVolume(1);
+    flutterTts.setLanguage("en-Us");
+
+    Future.delayed(Duration(seconds: 1), (){
+      flutterTts.speak(AppStrings.intro_text + AppStrings.colours);
+    });
 
     Size size = MediaQuery.of(context).size;
 

@@ -36,12 +36,14 @@ class _ColorsScreenState extends State<ColorsScreen> {
     currentColor = listColors[0];
 
     flutterTts = FlutterTts();
-    flutterTts.setSpeechRate(0.3);
+    flutterTts.setSpeechRate(0.2);
     flutterTts.setPitch(8.0);
     flutterTts.setVolume(1);
-    flutterTts.setLanguage("en-GB");
+    flutterTts.setLanguage("en-Us");
 
-    spellIntro(AppStrings.animals);
+    Future.delayed(Duration(seconds: 1), (){
+      flutterTts.speak(AppStrings.intro_text + AppStrings.colours);
+    });
     spellColorName(0);
   }
 
@@ -50,14 +52,6 @@ class _ColorsScreenState extends State<ColorsScreen> {
     flutterTts.stop();
     super.dispose();
   }
-
-  ///Spell Intro
-  Future<void> spellIntro(String speakString) async {
-    flutterTts.speak(speakString);
-    await Future.delayed(const Duration(seconds: 5));
-  }
-  /// ///////////////////////////////////////
-
 
   ///Spell Animal's Name letter by letter
   Future<void> spellColorName(int animalIndex) async {
@@ -75,7 +69,10 @@ class _ColorsScreenState extends State<ColorsScreen> {
       print(speakLetter[i]);
       await Future.delayed(const Duration(seconds: 1));
     }
-    flutterTts.speak(namesColors[animalIndex]);
+    Future.delayed(Duration(milliseconds: 500), (){
+      flutterTts.speak(namesColors[animalIndex]);
+    });
+
   }
   /// ///////////////////////////////////////
 

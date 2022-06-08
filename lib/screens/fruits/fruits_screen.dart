@@ -32,12 +32,14 @@ class _FruitsScreenState extends State<FruitsScreen> {
     imageCurrentFruit = "assets/images/fruits/" + imagesFruits[0];
 
     flutterTts = FlutterTts();
-    flutterTts.setSpeechRate(0.3);
+    flutterTts.setSpeechRate(0.2);
     flutterTts.setPitch(8.0);
     flutterTts.setVolume(1);
-    flutterTts.setLanguage("en-GB");
+    flutterTts.setLanguage("en-Us");
 
-    spellIntro(AppStrings.fruits);
+    Future.delayed(Duration(seconds: 1), (){
+      flutterTts.speak(AppStrings.intro_text + AppStrings.fruits);
+    });
     spellFruitName(0);
   }
 
@@ -70,7 +72,9 @@ class _FruitsScreenState extends State<FruitsScreen> {
       print(speakLetter[i]);
       await Future.delayed(const Duration(seconds: 1));
     }
-    flutterTts.speak(namesFruits[animalIndex]);
+    Future.delayed(Duration(milliseconds: 500), (){
+      flutterTts.speak(namesFruits[animalIndex]);
+    });
   }
   /// ///////////////////////////////////////
 

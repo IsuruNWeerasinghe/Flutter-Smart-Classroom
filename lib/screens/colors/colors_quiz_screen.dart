@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -37,10 +38,10 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
     level = 0;
 
     flutterTts  = FlutterTts();
-    flutterTts.setSpeechRate(0.3);
+    flutterTts.setSpeechRate(0.2);
     flutterTts.setPitch(8.0);
     flutterTts.setVolume(1);
-    flutterTts.setLanguage("en-US");
+    flutterTts.setLanguage("en-Us");
 
     quizAnswers = List.filled(2, ColorsList(colorName: "", colorImage: AppColors.red), growable: false);
     colorsList = [(ColorsList(colorName: AppStrings.red, colorImage: AppColors.red)),
@@ -58,7 +59,7 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
     quizQuestion = List.filled(colorsList.length, "",growable: true);
     quizTries = List.filled(colorsList.length, "",growable: true);
 
-    selectAnimalsForQuiz(
+    selectColorsForQuiz(
         speakText: AppStrings.intro_quiz + AppStrings.colours + " , " + AppStrings.select,
         questionNo: level,
         listOfNamesAndImages: colorsList
@@ -74,7 +75,7 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
   }
 
   ///Select 3 Letters for Quiz
-  void selectAnimalsForQuiz({required String speakText, required int questionNo, required List<ColorsList> listOfNamesAndImages}) {
+  void selectColorsForQuiz({required String speakText, required int questionNo, required List<ColorsList> listOfNamesAndImages}) {
     Random random = Random();
     int wrongAnswerOne, wrongAnswerTwo;
 
@@ -87,7 +88,10 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
     quizAnswers = [listOfNamesAndImages[questionNo], listOfNamesAndImages[wrongAnswerOne], listOfNamesAndImages[wrongAnswerTwo]];
     quizAnswers.shuffle();
 
-    flutterTts.speak(speakText + correctAnswer[0].colorName);
+    Future.delayed(Duration(seconds: 1), (){
+      flutterTts.speak(speakText + correctAnswer[0].colorName);
+    });
+
   }
   /// ////////////////////////////////////////
 
@@ -181,28 +185,13 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
         children: <Widget>[
           Container(
             width: size.width * 0.8,
-            height: size.height * 0.75,
-            alignment: Alignment.topCenter,
-            margin: EdgeInsets.only(top: size.height * 0.01, bottom: size.height * 0.01),
-            padding: EdgeInsets.only(top: size.height * 0.015),
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                alignment: Alignment.center,
-                image: AssetImage(
-                  "assets/images/common_blackboard.png",
-                ),
-                fit: BoxFit.fill,
-              ),
-            ),
+            height: size.height * 0.79,
             child: Column(
               children: <Widget>[
-                SizedBox(
-                  height: size.height * 0.01,
-                ),
                 Text(
                   AppStrings.select_ + correctAnswer[0].colorName + " "+AppStrings.colour,
                   style: TextStyle(
-                      fontSize: size.height * 0.03,
+                      fontSize: size.height * 0.035,
                       fontFamily: 'Muli',
                       fontWeight: FontWeight.w600
                   ),
@@ -211,117 +200,122 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
                   child: ListView.builder(
                       itemCount: quizAnswers.length,
                       itemBuilder: (BuildContext context,int ind){
-                        return FlatButton(
-                          onPressed: (){
-                            ///Correct Answer
-                            if(quizAnswers[ind].colorName == correctAnswer[0].colorName){
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext builderContext) {
-                                    _timer = Timer(const Duration(seconds: 2), () {
-                                      Navigator.of(context).pop();
-                                      ///
-                                      if(tries == 1){
-                                        score = score + 1;
-                                        quizQuestion[level] = correctAnswer[0].colorName;
-                                        quizTries[level] = tries.toString();
-                                      } else {
-                                        score = score;
-                                        quizQuestion[level] = correctAnswer[0].colorName;
-                                        quizTries[level] = tries.toString();
-                                      }
-                                      level = level + 1;
+                        return AvatarGlow(
+                            endRadius: 100.0,
+                            child: Material(     // Replace this child with your own
+                              elevation: 20.0,
+                              shape: const CircleBorder(),
+                              child: CircleAvatar(
+                                backgroundColor: quizAnswers[ind].colorImage,
+                                foregroundColor: AppColors.white,
+                                radius: 60,
+                                child: FloatingActionButton(
+                                  backgroundColor: quizAnswers[ind].colorImage,
+                                  onPressed: (){
+                                    ///Answer Correct
+                                    if(quizAnswers[ind].colorName == correctAnswer[0].colorName){
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext builderContext) {
+                                            _timer = Timer(const Duration(seconds: 2), () {
+                                              Navigator.of(context).pop();
 
-                                      setState(() {
-                                        if(level == colorsList.length){
-                                          final FirebaseAuth auth = FirebaseAuth.instance;
-                                          final String user = auth.currentUser!.uid;
+                                              ///
+                                              if(tries == 1){
+                                                score = score + 1;
+                                                quizQuestion[level] = correctAnswer[0].colorName;
+                                                quizTries[level] = tries.toString();
+                                              } else {
+                                                score = score;
+                                                quizQuestion[level] = correctAnswer[0].colorName;
+                                                quizTries[level] = tries.toString();
+                                              }
+                                              level = level + 1;
+                                              setState(() {
+                                                if(level == colorsList.length){
+                                                  final FirebaseAuth auth = FirebaseAuth.instance;
+                                                  final String user = auth.currentUser!.uid;
 
-                                          FirebaseFirestore.instance.collection(user).doc(AppStrings.colours)
-                                              .set({
-                                            'Result': score.toString(),
-                                            'QuestionCount': colorsList.length.toString(),
-                                            'Question': quizQuestion,
-                                            'Tries': quizTries,
+                                                  FirebaseFirestore.instance.collection(user).doc(AppStrings.fruits)
+                                                      .set({
+                                                    'Result': score.toString(),
+                                                    'QuestionCount': colorsList.length.toString(),
+                                                    'Question': quizQuestion,
+                                                    'Tries': quizTries,
 
-                                          });
+                                                  });
 
-                                          flutterTts.stop();
-                                          flutterTts.speak(AppStrings.end_quiz);
-                                          showAlertDialog(context);
-                                        } else{
-                                          flutterTts.stop();
-                                          selectAnimalsForQuiz(
-                                              speakText: AppStrings.select,
-                                              questionNo: level,
-                                              listOfNamesAndImages: colorsList
-                                          );
-                                          print("Passed...... Level = " + level.toString()  + " Score = " + score.toString());
+                                                  flutterTts.stop();
+                                                  flutterTts.speak(AppStrings.end_quiz);
+                                                  showAlertDialog(context);
+                                                } else{
+                                                  flutterTts.stop();
+                                                  selectColorsForQuiz(
+                                                      speakText: AppStrings.select,
+                                                      questionNo: level,
+                                                      listOfNamesAndImages: colorsList);
+                                                  print("Passed...... Level = " + level.toString()  + " Score = " + score.toString());
+                                                }
+                                              });
+                                            });
+
+                                            return
+                                              AlertDialog(
+                                                backgroundColor: AppColors.white,
+                                                title: const Text(
+                                                  AppStrings.very_good,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                content: Image.asset(
+                                                  "assets/images/quiz/skype-like.gif",
+                                                  width: size.width * 0.4,
+                                                  height: size.height * 0.3,
+                                                ),
+                                              );
+                                          }
+                                      ).then((val){
+                                        if (_timer.isActive) {
+                                          _timer.cancel();
                                         }
                                       });
-                                    });
 
-                                    return AlertDialog(
-                                      backgroundColor: AppColors.white,
-                                      title: const Text(
-                                        AppStrings.very_good,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      content: Image.asset(
-                                        "assets/images/quiz/skype-like.gif",
-                                        width: size.width * 0.4,
-                                        height: size.height * 0.3,
-                                      ),
-                                    );
-                                  }
-                              ).then((val){
-                                if (_timer.isActive) {
-                                  _timer.cancel();
-                                }
-                              });
+                                      ///Answer Wrong
+                                    } else {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext builderContext) {
+                                            _timer = Timer(const Duration(seconds: 2), () {
+                                              Navigator.of(context).pop();
+                                              flutterTts.speak(AppStrings.select + correctAnswer[0].colorName);
+                                            });
 
-                            ///Wrong Answer
-                            } else {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext builderContext) {
-                                    _timer = Timer(const Duration(seconds: 2), () {
-                                      Navigator.of(context).pop();
-                                      flutterTts.speak(AppStrings.select + correctAnswer[0].colorName);
-                                    });
-
-                                    return
-                                      AlertDialog(
-                                        backgroundColor: AppColors.white,
-                                        contentPadding: const EdgeInsets.all(0),
-                                        title: const Text(
-                                          AppStrings.try_again,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        content: Image.asset(
-                                          "assets/images/quiz/skype-speechless.gif",
-                                          width: size.width * 0.4,
-                                          height: size.height * 0.3,
-                                        ),
-                                      );
-                                  }
-                              ).then((val){
-                                if (_timer.isActive) {
-                                  _timer.cancel();
-                                }
-                              });
-                              tries = tries + 1;
-                              print("Failed..............");
-                            }
-                          },
-                          child: Container(
-                            width: size.width * 0.3,
-                            height: size.height * 0.15,
-                            margin: const EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              color: quizAnswers[ind].colorImage,
-                            ),
-                          ),
+                                            return
+                                              AlertDialog(
+                                                backgroundColor: AppColors.white,
+                                                contentPadding: const EdgeInsets.all(0),
+                                                title: const Text(
+                                                  AppStrings.try_again,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                content: Image.asset(
+                                                  "assets/images/quiz/skype-speechless.gif",
+                                                  width: size.width * 0.4,
+                                                  height: size.height * 0.3,
+                                                ),
+                                              );
+                                          }
+                                      ).then((val){
+                                        if (_timer.isActive) {
+                                          _timer.cancel();
+                                        }
+                                      });
+                                      tries = tries + 1;
+                                      print("Failed..............");
+                                    }
+                                  },
+                                ),
+                              ),
+                            )
                         );
                       }),
                 ),
@@ -333,48 +327,16 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              /*CommonActionButton(
-                onPressed: (){
-                  index = index - 1;
-                  if(index < 0){
-                    index = colorsNameList.length - 1;
-                  }
-                  setState(() {
-                    currentLowercaseLetter = lowercaseLetters[index];
-                    currentColor = colorsNameList[index];
-                    spellPhonics(index);
-                  });
-                },
-                icon: "assets/images/button_icons/button_previous.png",
-              ),*/
-
               CommonActionButton(
                 onPressed: (){
                   flutterTts.stop();
-                  selectAnimalsForQuiz(
+                  selectColorsForQuiz(
                       speakText: AppStrings.select,
                       questionNo: level,
                       listOfNamesAndImages: colorsList);
                 },
                 icon: "assets/images/button_icons/button_re_play.png",
               ),
-
-              /*CommonActionButton(
-                onPressed: (){
-                  index = index + 1;
-                  if(index > colorsNameList.length - 1){
-                    index = 0;
-                  }
-                  setState(() {
-                    currentLowercaseLetter = lowercaseLetters[index];
-                    currentColor = colorsNameList[index];
-                    spellPhonics(index);
-                  });
-
-                },
-                icon: "assets/images/button_icons/button_next.png",
-              ),*/
-
             ],
           ),
         ],

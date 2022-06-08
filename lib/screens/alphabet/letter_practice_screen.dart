@@ -19,8 +19,6 @@ class _LetterPracticeScreenState extends State<LetterPracticeScreen> {
     penStrokeWidth: 5,
     penColor: AppColors.white,
     exportBackgroundColor: AppColors.black,
-    points: [Point(Offset(100,200), PointType.tap), Point(Offset(100, 300), PointType.tap),
-      Point(Offset(100,400), PointType.tap), Point(Offset(100, 500), PointType.tap)],
 
   );
 

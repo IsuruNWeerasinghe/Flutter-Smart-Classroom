@@ -36,14 +36,15 @@ class _ShapesScreenState extends State<ShapesScreen> {
     imageCurrentShape = "assets/images/shapes/" + imagesShapes[0];
 
     flutterTts = FlutterTts();
-    flutterTts.setSpeechRate(0.3);
-    //flutterTts.setPitch(1.5);
+    flutterTts.setSpeechRate(0.2);
+    flutterTts.setPitch(8.0);
     flutterTts.setVolume(1);
-    flutterTts.setLanguage("en-US");
-    flutterTts.setVoice(ttsVoices);
+    flutterTts.setLanguage("en-Us");
 
-    spellIntro(AppStrings.shapes);
-    //spellShapeName(0);
+    Future.delayed(Duration(seconds: 1), (){
+      flutterTts.speak(AppStrings.intro_text + AppStrings.shapes);
+    });
+    spellShapeName(0);
 
   }
 
@@ -52,13 +53,6 @@ class _ShapesScreenState extends State<ShapesScreen> {
     flutterTts.stop();
     super.dispose();
   }
-
-  ///Spell Intro
-  Future<void> spellIntro(String speakString) async {
-    flutterTts.speak(speakString);
-    await Future.delayed(const Duration(seconds: 5));
-  }
-  /// ///////////////////////////////////////
 
   ///Spell Animal's Name letter by letter
   Future<void> spellShapeName(int vegetableIndex) async {
@@ -76,7 +70,9 @@ class _ShapesScreenState extends State<ShapesScreen> {
       print(speakLetter[i]);
       await Future.delayed(const Duration(seconds: 1));
     }
-    flutterTts.speak(namesShapes[vegetableIndex]);
+    Future.delayed(Duration(milliseconds: 500), (){
+      flutterTts.speak(namesShapes[vegetableIndex]);
+    });
   }
   /// ///////////////////////////////////////
 

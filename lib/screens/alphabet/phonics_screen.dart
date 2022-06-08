@@ -35,11 +35,14 @@ class _PhonicsScreenState extends State<PhonicsScreen> {
     currentUppercaseLetter = uppercaseLetters[0];
 
     flutterTts = FlutterTts();
-    flutterTts.setSpeechRate(0.3);
+    flutterTts.setSpeechRate(0.2);
     flutterTts.setPitch(8.0);
     flutterTts.setVolume(1);
-    flutterTts.setLanguage("en-GB");
-    flutterTts.speak(AppStrings.intro_text + AppStrings.phonics + ", " + ", "+ ", "+ uppercaseLetters[0] + "   for  " + phonicsName[0]);
+    flutterTts.setLanguage("en-Us");
+    Future.delayed(Duration(seconds: 1), (){
+      flutterTts.speak(AppStrings.intro_text + AppStrings.phonics + ", " + ", "+ ", "+ uppercaseLetters[0] + "   for  " + phonicsName[0]);
+    });
+
   }
 
   @override

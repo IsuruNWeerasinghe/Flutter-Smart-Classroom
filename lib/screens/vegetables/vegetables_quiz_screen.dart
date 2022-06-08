@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,8 @@ import 'package:littleclassroom/routes.dart';
 class VegetablesList{
   String vegetableName;
   String vegetableImage;
-  VegetablesList({required this.vegetableName, required this.vegetableImage});
+  Color backgroundColor;
+  VegetablesList({required this.vegetableName, required this.vegetableImage, required this.backgroundColor});
 }
 
 class VegetablesQuizScreen extends StatefulWidget {
@@ -39,25 +41,25 @@ class _VegetablesQuizScreenState extends State<VegetablesQuizScreen> {
     level = 0;
 
     flutterTts  = FlutterTts();
-    flutterTts.setSpeechRate(0.3);
+    flutterTts.setSpeechRate(0.2);
     flutterTts.setPitch(8.0);
     flutterTts.setVolume(1);
-    flutterTts.setLanguage("en-US");
+    flutterTts.setLanguage("en-Us");
 
-    quizAnswers = List.filled(2, VegetablesList(vegetableImage: "", vegetableName: ""), growable: false);
-    vegetablesList = [(VegetablesList(vegetableName: AppStrings.beetroot, vegetableImage: "Vegetables_beetroot.png")),
-                      (VegetablesList(vegetableName: AppStrings.cabbage, vegetableImage: "Vegetables_cabbage.png")),
-                      (VegetablesList(vegetableName: AppStrings.carrot, vegetableImage: "Vegetables_carrot.png")),
-                      (VegetablesList(vegetableName: AppStrings.green_beans, vegetableImage: "Vegetables_green_beans.png")),
-                      (VegetablesList(vegetableName: AppStrings.leeks, vegetableImage: "Vegetables_leeks.png")),
-                      (VegetablesList(vegetableName: AppStrings.pumpkin, vegetableImage: "Vegetables_pumpkin.png")),
-                      (VegetablesList(vegetableName: AppStrings.radish, vegetableImage: "Vegetables_radish.png")),
-                      (VegetablesList(vegetableName: AppStrings.tomato, vegetableImage: "Vegetables_tomato.png"))];
+    quizAnswers = List.filled(2, VegetablesList(vegetableImage: "", vegetableName: "", backgroundColor: AppColors.blue), growable: false);
+    vegetablesList = [(VegetablesList(vegetableName: AppStrings.beetroot, vegetableImage: "Vegetables_beetroot.png", backgroundColor: AppColors.lightGreen)),
+                      (VegetablesList(vegetableName: AppStrings.cabbage, vegetableImage: "Vegetables_cabbage.png", backgroundColor: AppColors.lightBlue)),
+                      (VegetablesList(vegetableName: AppStrings.carrot, vegetableImage: "Vegetables_carrot.png", backgroundColor: AppColors.green)),
+                      (VegetablesList(vegetableName: AppStrings.green_beans, vegetableImage: "Vegetables_green_beans.png", backgroundColor: AppColors.yellow)),
+                      (VegetablesList(vegetableName: AppStrings.leeks, vegetableImage: "Vegetables_leeks.png", backgroundColor: AppColors.blue)),
+                      (VegetablesList(vegetableName: AppStrings.pumpkin, vegetableImage: "Vegetables_pumpkin.png", backgroundColor: AppColors.purple)),
+                      (VegetablesList(vegetableName: AppStrings.radish, vegetableImage: "Vegetables_radish.png", backgroundColor: AppColors.pink)),
+                      (VegetablesList(vegetableName: AppStrings.tomato, vegetableImage: "Vegetables_tomato.png", backgroundColor: AppColors.darkGreen))];
 
     quizQuestion = List.filled(vegetablesList.length, "",growable: true);
     quizTries = List.filled(vegetablesList.length, "",growable: true);
 
-    selectFruitsForQuiz(
+    selectVegetablesForQuiz(
         speakText: AppStrings.intro_quiz + AppStrings.vegetables + " , " + AppStrings.select,
         questionNo: level,
         listOfNamesAndImages: vegetablesList
@@ -71,8 +73,7 @@ class _VegetablesQuizScreenState extends State<VegetablesQuizScreen> {
   }
 
   ///Select 3 Letters for Quiz
-  void selectFruitsForQuiz({required String speakText, required int questionNo, required List<VegetablesList> listOfNamesAndImages}) {
-    //print("Index = " + questionNo.toString());
+  void selectVegetablesForQuiz({required String speakText, required int questionNo, required List<VegetablesList> listOfNamesAndImages}) {
     Random random = Random();
     int wrongAnswerOne, wrongAnswerTwo;
 
@@ -81,14 +82,13 @@ class _VegetablesQuizScreenState extends State<VegetablesQuizScreen> {
       wrongAnswerTwo = random.nextInt(listOfNamesAndImages.length);
     } while (wrongAnswerOne == questionNo || wrongAnswerTwo == questionNo || wrongAnswerOne == wrongAnswerTwo);
 
-    //print("Random No 1: " + wrongAnswerOne.toString());
-    //print("Random No 2 : " + wrongAnswerTwo.toString());
-
     correctAnswer = [listOfNamesAndImages[questionNo]];
     quizAnswers = [listOfNamesAndImages[questionNo], listOfNamesAndImages[wrongAnswerOne], listOfNamesAndImages[wrongAnswerTwo]];
     quizAnswers.shuffle();
 
-    flutterTts.speak(speakText + correctAnswer[0].vegetableName);
+    Future.delayed(Duration(seconds: 1), (){
+      flutterTts.speak(speakText + correctAnswer[0].vegetableName);
+    });
   }
   /// ////////////////////////////////////////
 
@@ -181,28 +181,13 @@ class _VegetablesQuizScreenState extends State<VegetablesQuizScreen> {
         children: <Widget>[
           Container(
             width: size.width * 0.8,
-            height: size.height * 0.75,
-            alignment: Alignment.topCenter,
-            margin: EdgeInsets.only(top: size.height * 0.01, bottom: size.height * 0.01),
-            padding: EdgeInsets.only(top: size.height * 0.015),
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                alignment: Alignment.center,
-                image: AssetImage(
-                  "assets/images/common_blackboard.png",
-                ),
-                fit: BoxFit.fill,
-              ),
-            ),
+            height: size.height * 0.79,
             child: Column(
               children: <Widget>[
-                SizedBox(
-                  height: size.height * 0.01,
-                ),
                 Text(
                   AppStrings.select_ + correctAnswer[0].vegetableName ,
                   style: TextStyle(
-                      fontSize: size.height * 0.03,
+                      fontSize: size.height * 0.035,
                       fontFamily: 'Muli',
                       fontWeight: FontWeight.w600
                   ),
@@ -211,120 +196,125 @@ class _VegetablesQuizScreenState extends State<VegetablesQuizScreen> {
                   child: ListView.builder(
                       itemCount: quizAnswers.length,
                       itemBuilder: (BuildContext context,int ind){
-                        return FlatButton(
-                          onPressed: (){
-                            ///Correct Answer
-                            if(quizAnswers[ind].vegetableName == correctAnswer[0].vegetableName){
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext builderContext) {
-                                    _timer = Timer(const Duration(seconds: 2), () {
-                                      Navigator.of(context).pop();
+                        return AvatarGlow(
+                            endRadius: 100.0,
+                            child: Material(     // Replace this child with your own
+                              elevation: 20.0,
+                              shape: const CircleBorder(),
+                              child: CircleAvatar(
+                                backgroundColor: quizAnswers[ind].backgroundColor,
+                                foregroundColor: AppColors.white,
+                                radius: 60,
+                                child: IconButton(
+                                  iconSize: 100,
+                                  icon: Image.asset(
+                                    "assets/images/vegetables/" + quizAnswers[ind].vegetableImage,
+                                  ),
+                                  onPressed: (){
+                                    ///Answer Correct
+                                    if(quizAnswers[ind].vegetableName == correctAnswer[0].vegetableName){
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext builderContext) {
+                                            _timer = Timer(const Duration(seconds: 2), () {
+                                              Navigator.of(context).pop();
 
-                                      ///
-                                      if(tries == 1){
-                                        score = score + 1;
-                                        quizQuestion[level] = correctAnswer[0].vegetableName;
-                                        quizTries[level] = tries.toString();
-                                      }else {
-                                        score = score + 0;
-                                        quizQuestion[level] = correctAnswer[0].vegetableName;
-                                        quizTries[level] = tries.toString();
-                                      }
-                                      level = level + 1;
-                                      setState(() {
-                                        if(level == vegetablesList.length){
-                                          flutterTts.stop();
-                                          final FirebaseAuth auth = FirebaseAuth.instance;
-                                          final String user = auth.currentUser!.uid;
+                                              ///
+                                              if(tries == 1){
+                                                score = score + 1;
+                                                quizQuestion[level] = correctAnswer[0].vegetableName;
+                                                quizTries[level] = tries.toString();
+                                              } else {
+                                                score = score;
+                                                quizQuestion[level] = correctAnswer[0].vegetableName;
+                                                quizTries[level] = tries.toString();
+                                              }
+                                              level = level + 1;
+                                              setState(() {
+                                                if(level == vegetablesList.length){
+                                                  final FirebaseAuth auth = FirebaseAuth.instance;
+                                                  final String user = auth.currentUser!.uid;
 
-                                          FirebaseFirestore.instance.collection(user).doc(AppStrings.vegetables)
-                                              .set({
-                                            'Result': score.toString(),
-                                            'QuestionCount': vegetablesList.length.toString(),
-                                            'Question': quizQuestion,
-                                            'Tries': quizTries,
+                                                  FirebaseFirestore.instance.collection(user).doc(AppStrings.fruits)
+                                                      .set({
+                                                    'Result': score.toString(),
+                                                    'QuestionCount': vegetablesList.length.toString(),
+                                                    'Question': quizQuestion,
+                                                    'Tries': quizTries,
 
-                                          });
+                                                  });
 
-                                          flutterTts.speak(AppStrings.end_quiz);
-                                          showAlertDialog(context);
-                                        } else{
-                                          flutterTts.stop();
-                                          selectFruitsForQuiz(
-                                              speakText: AppStrings.select,
-                                              questionNo: level,
-                                              listOfNamesAndImages: vegetablesList);
-                                          print("Passed...... Level = " + level.toString()  + " Score = " + score.toString());
+                                                  flutterTts.stop();
+                                                  flutterTts.speak(AppStrings.end_quiz);
+                                                  showAlertDialog(context);
+                                                } else{
+                                                  flutterTts.stop();
+                                                  selectVegetablesForQuiz(
+                                                      speakText: AppStrings.select,
+                                                      questionNo: level,
+                                                      listOfNamesAndImages: vegetablesList);
+                                                  print("Passed...... Level = " + level.toString()  + " Score = " + score.toString());
+                                                }
+                                              });
+                                            });
+
+                                            return
+                                              AlertDialog(
+                                                backgroundColor: AppColors.white,
+                                                title: const Text(
+                                                  AppStrings.very_good,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                content: Image.asset(
+                                                  "assets/images/quiz/skype-like.gif",
+                                                  width: size.width * 0.4,
+                                                  height: size.height * 0.3,
+                                                ),
+                                              );
+                                          }
+                                      ).then((val){
+                                        if (_timer.isActive) {
+                                          _timer.cancel();
                                         }
                                       });
-                                    });
 
-                                    return AlertDialog(
-                                      backgroundColor: AppColors.white,
-                                      title: const Text(
-                                        AppStrings.very_good,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      content: Image.asset(
-                                        "assets/images/quiz/skype-like.gif",
-                                        width: size.width * 0.4,
-                                        height: size.height * 0.3,
-                                      ),
-                                    );
-                                  }
-                              ).then((val){
-                                if (_timer.isActive) {
-                                  _timer.cancel();
-                                }
-                              });
+                                      ///Answer Wrong
+                                    } else {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext builderContext) {
+                                            _timer = Timer(const Duration(seconds: 2), () {
+                                              Navigator.of(context).pop();
+                                              flutterTts.speak(AppStrings.select + correctAnswer[0].vegetableName);
+                                            });
 
-                            ///Wrong Answer
-                            } else {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext builderContext) {
-                                    _timer = Timer(const Duration(seconds: 2), () {
-                                      Navigator.of(context).pop();
-                                      flutterTts.speak(AppStrings.select + correctAnswer[0].vegetableName);
-                                    });
-
-                                    return
-                                      AlertDialog(
-                                        backgroundColor: AppColors.white,
-                                        contentPadding: const EdgeInsets.all(0),
-                                        title: const Text(
-                                          AppStrings.try_again,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        content: Image.asset(
-                                          "assets/images/quiz/skype-speechless.gif",
-                                          width: size.width * 0.4,
-                                          height: size.height * 0.3,
-                                        ),
-                                      );
-                                  }
-                              ).then((val){
-                                if (_timer.isActive) {
-                                  _timer.cancel();
-                                }
-                              });
-                              tries = tries + 1;
-                              print("Failed..............");
-                            }
-                          },
-                          child: Container(
-                            width: size.width * 0.3,
-                            height: size.height * 0.2,
-                            margin: const EdgeInsets.symmetric(vertical: 5),
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage("assets/images/vegetables/" + quizAnswers[ind].vegetableImage),
-                                  fit: BoxFit.cover,
-                                  //fit: BoxFit.cover,
-                                )
-                            ),
-                          ),
+                                            return
+                                              AlertDialog(
+                                                backgroundColor: AppColors.white,
+                                                contentPadding: const EdgeInsets.all(0),
+                                                title: const Text(
+                                                  AppStrings.try_again,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                content: Image.asset(
+                                                  "assets/images/quiz/skype-speechless.gif",
+                                                  width: size.width * 0.4,
+                                                  height: size.height * 0.3,
+                                                ),
+                                              );
+                                          }
+                                      ).then((val){
+                                        if (_timer.isActive) {
+                                          _timer.cancel();
+                                        }
+                                      });
+                                      tries = tries + 1;
+                                      print("Failed..............");
+                                    }
+                                  },
+                                ),
+                              ),
+                            )
                         );
                       }),
                 ),

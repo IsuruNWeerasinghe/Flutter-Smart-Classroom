@@ -44,11 +44,10 @@ dependencies:
   flutter_facebook_auth: ^4.1.2
   google_sign_in: ^5.1.0
   signature: ^5.0.0
-  pushable_button: ^0.0.3
   animate_do: ^2.1.0
   youtube_player_flutter: ^8.0.0
   percent_indicator: ^4.2.0
-  emoji_alert:  1.1.0
+  avatar_glow: ^2.0.2
 
 dependency_overrides:
   firebase_messaging_platform_interface: 3.1.6
@@ -99,7 +98,7 @@ flutter:
     - assets/images/vegetables/
     - assets/images/vehicles/
     - assets/images/quiz/
-
+    - assets/images/alert/
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

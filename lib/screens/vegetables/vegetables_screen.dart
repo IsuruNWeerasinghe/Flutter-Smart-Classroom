@@ -24,7 +24,6 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     index = 0;
     namesVegetables = [AppStrings.beetroot, AppStrings.cabbage, AppStrings.carrot, AppStrings.green_beans, AppStrings.leeks, AppStrings.pumpkin, AppStrings.radish, AppStrings.tomato];
@@ -34,12 +33,13 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
     imageCurrentVegetable = "assets/images/vegetables/" + imagesVegetables[0];
 
     flutterTts = FlutterTts();
-    flutterTts.setSpeechRate(0.3);
+    flutterTts.setSpeechRate(0.2);
     flutterTts.setPitch(8.0);
     flutterTts.setVolume(1);
-    flutterTts.setLanguage("en-GB");
-
-    spellIntro(AppStrings.vehicles);
+    flutterTts.setLanguage("en-Us");
+    Future.delayed(Duration(seconds: 1), (){
+      flutterTts.speak(AppStrings.intro_text + AppStrings.vegetables);
+    });
     spellVegetableName(0);
 
   }
@@ -73,7 +73,9 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
       print(speakLetter[i]);
       await Future.delayed(const Duration(seconds: 1));
     }
-    flutterTts.speak(namesVegetables[vegetableIndex]);
+    Future.delayed(Duration(milliseconds: 500), (){
+      flutterTts.speak(namesVegetables[vegetableIndex]);
+    });
   }
   /// ///////////////////////////////////////
 

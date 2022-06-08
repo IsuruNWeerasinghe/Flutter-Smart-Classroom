@@ -1,5 +1,3 @@
-
-
 import 'package:littleclassroom/screens/alphabet/alphabet_screen.dart';
 import 'package:littleclassroom/screens/alphabet/alphabet_song.dart';
 import 'package:littleclassroom/screens/alphabet/letter_practice_screen.dart';
@@ -22,7 +20,6 @@ import 'package:littleclassroom/screens/fruits/fruits_screen.dart';
 import 'package:littleclassroom/screens/home_screen.dart';
 import 'package:littleclassroom/screens/login_screen.dart';
 import 'package:littleclassroom/screens/numbers/counting_1_screen.dart';
-import 'package:littleclassroom/screens/numbers/counting_2_screen.dart';
 import 'package:littleclassroom/screens/numbers/numbers_count_screen.dart';
 import 'package:littleclassroom/screens/numbers/numbers_screen.dart';
 import 'package:littleclassroom/screens/numbers/numbers_quiz_screen.dart';
@@ -59,7 +56,6 @@ class Routes {
   static const String numbers_page = NumbersScreen.routeName;
   static const String numbers_count_page = NumbersCountScreen.routeName;
   static const String counting1_page = Counting1Screen.routeName;
-  static const String counting2_page = Counting2Screen.routeName;
   static const String numbers_quiz_page = NumbersQuizScreen.routeName;
 
   static const String animals_home_page = AnimalsHomeScreen.routeName;

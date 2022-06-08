@@ -21,7 +21,6 @@ class _Counting1ScreenState extends State<Counting1Screen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     index = 0;
     namesNumbers = [AppStrings.one, AppStrings.two, AppStrings.three, AppStrings.four, AppStrings.five, AppStrings.six, AppStrings.seven, AppStrings.eight, AppStrings.nine];
@@ -31,7 +30,14 @@ class _Counting1ScreenState extends State<Counting1Screen> {
     currentNumber =  numbers[0];
 
     flutterTts = FlutterTts();
-    spellIntro(AppStrings.animals);
+    flutterTts.setSpeechRate(0.2);
+    flutterTts.setPitch(8.0);
+    flutterTts.setVolume(1);
+    flutterTts.setLanguage("en-Us");
+
+    Future.delayed(Duration(seconds: 1), (){
+      flutterTts.speak(AppStrings.intro_text + AppStrings.animals);
+    });
     spellNumberName(0);
   }
 
@@ -40,14 +46,6 @@ class _Counting1ScreenState extends State<Counting1Screen> {
     flutterTts.stop();
     super.dispose();
   }
-
-  ///Spell Intro
-  Future<void> spellIntro(String speakString) async {
-    flutterTts.speak(speakString);
-    await Future.delayed(const Duration(seconds: 5));
-  }
-  /// ///////////////////////////////////////
-
 
   ///Spell Animal's Name letter by letter
   Future<void> spellNumberName(int numberIndex) async {
@@ -65,7 +63,10 @@ class _Counting1ScreenState extends State<Counting1Screen> {
       print(speakLetter[i]);
       await Future.delayed(const Duration(seconds: 1));
     }
-    flutterTts.speak(namesNumbers[numberIndex]);
+    Future.delayed(Duration(milliseconds: 500), (){
+      flutterTts.speak(namesNumbers[numberIndex]);
+    });
+
   }
   /// ///////////////////////////////////////
 
