@@ -201,17 +201,18 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
                       itemCount: quizAnswers.length,
                       itemBuilder: (BuildContext context,int ind){
                         return AvatarGlow(
-                            endRadius: 100.0,
+                            endRadius: 90.0,
                             child: Material(     // Replace this child with your own
                               elevation: 20.0,
                               shape: const CircleBorder(),
                               child: CircleAvatar(
                                 backgroundColor: quizAnswers[ind].colorImage,
                                 foregroundColor: AppColors.white,
-                                radius: 60,
+                                radius: 70,
                                 child: FloatingActionButton(
                                   backgroundColor: quizAnswers[ind].colorImage,
                                   onPressed: (){
+                                    flutterTts.stop();
                                     ///Answer Correct
                                     if(quizAnswers[ind].colorName == correctAnswer[0].colorName){
                                       showDialog(
@@ -267,9 +268,9 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
                                                   textAlign: TextAlign.center,
                                                 ),
                                                 content: Image.asset(
-                                                  "assets/images/quiz/skype-like.gif",
-                                                  width: size.width * 0.4,
-                                                  height: size.height * 0.3,
+                                                  "assets/images/alert/alert_correct.gif",
+                                                  width: size.width * 0.3,
+                                                  height: size.height * 0.2,
                                                 ),
                                               );
                                           }
@@ -297,10 +298,13 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
                                                   AppStrings.try_again,
                                                   textAlign: TextAlign.center,
                                                 ),
-                                                content: Image.asset(
-                                                  "assets/images/quiz/skype-speechless.gif",
-                                                  width: size.width * 0.4,
-                                                  height: size.height * 0.3,
+                                                content: Padding(
+                                                  padding: const EdgeInsets.all(20),
+                                                  child: Image.asset(
+                                                    "assets/images/alert/alert_wrong.gif",
+                                                    width: size.width * 0.3,
+                                                    height: size.height * 0.2,
+                                                  ),
                                                 ),
                                               );
                                           }

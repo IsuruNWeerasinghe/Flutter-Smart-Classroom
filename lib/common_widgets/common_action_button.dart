@@ -43,13 +43,15 @@ class CommonActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
+    return FloatingActionButton(
       onPressed: onPressed,
       splashColor: AppColors.blue,
-      color: AppColors.purple,
-      iconSize: 20,
-      icon: Image.asset(
-        icon,
+      backgroundColor: AppColors.lightBlue,
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: Image.asset(
+          icon,
+        ),
       ),
     );
 

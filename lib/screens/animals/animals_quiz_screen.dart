@@ -48,9 +48,9 @@ class _AnimalsQuizScreenState extends State<AnimalsQuizScreen> {
     flutterTts.setLanguage("en-Us");
 
     quizAnswers = List.filled(2, AnimalsList(animalImage: "", animalName: "", backgroundColor: AppColors.blue), growable: false);
-    animalsList = [(AnimalsList(animalName: AppStrings.cat, animalImage: "Animals_cat.png", backgroundColor: AppColors.blue)),
+    animalsList = [(AnimalsList(animalName: AppStrings.cat, animalImage: "Animals_cat.png", backgroundColor: AppColors.red)),
                     (AnimalsList(animalName: AppStrings.dog, animalImage: "Animals_dog.png", backgroundColor: AppColors.green)),
-                    (AnimalsList(animalName: AppStrings.elephant, animalImage: "Animals_elephant.png", backgroundColor: AppColors.lightBlue)),
+                    (AnimalsList(animalName: AppStrings.elephant, animalImage: "Animals_elephant.png", backgroundColor: AppColors.gray)),
                     (AnimalsList(animalName: AppStrings.giraffe, animalImage: "Animals_giraffe.png", backgroundColor: AppColors.purple)),
                     (AnimalsList(animalName: AppStrings.horse, animalImage: "Animals_horse.png", backgroundColor: AppColors.lightGreen)),
                     (AnimalsList(animalName: AppStrings.lion, animalImage: "Animals_lion.png", backgroundColor: AppColors.darkGreen)),
@@ -65,15 +65,6 @@ class _AnimalsQuizScreenState extends State<AnimalsQuizScreen> {
         questionNo: level,
         listOfNamesAndImages: animalsList
     );
-    Future.delayed(Duration(milliseconds: 500), (){
-      showTipsAlert(
-        context: context,
-        width: 300,
-        height: 400,
-        text: AppStrings.intro_quiz + AppStrings.animals + ", " + AppStrings.select + correctAnswer[0].animalName,
-      );
-    });
-
 
     super.initState();
   }
@@ -183,14 +174,14 @@ class _AnimalsQuizScreenState extends State<AnimalsQuizScreen> {
   /// //////////////////////////////////////
 
   ///Tips Alerts
-  showTipsAlert({required BuildContext context, required double height, required double width, required String text}) {
+  /*showTipsAlert({required BuildContext context, required double height, required double width, required String text}) {
     Random rnd = Random();
     List<String> images = ['board_fish.png', 'board_lion.png', 'board_monkey.png', 'board_sheep.png', 'board_cat.png'];
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        _timer = Timer(const Duration(seconds: 3), () {
+        _timer = Timer(const Duration(seconds: 100), () {
           Navigator.of(context).pop();
         });
         return ElasticInDown(
@@ -228,7 +219,7 @@ class _AnimalsQuizScreenState extends State<AnimalsQuizScreen> {
         _timer.cancel();
       }
     });
-  }
+  }*/
   /// /////////////////////////////////////
 
 
@@ -265,28 +256,29 @@ class _AnimalsQuizScreenState extends State<AnimalsQuizScreen> {
                       itemCount: quizAnswers.length,
                       itemBuilder: (BuildContext context,int ind){
                         return AvatarGlow(
-                            endRadius: 100.0,
+                            endRadius: 90.0,
                             child: Material(     // Replace this child with your own
                               elevation: 20.0,
                               shape: const CircleBorder(),
                               child: CircleAvatar(
                                 backgroundColor: quizAnswers[ind].backgroundColor,
                                 foregroundColor: AppColors.white,
-                                radius: 60,
+                                radius: 70,
                                 child: IconButton(
-                                  iconSize: 100,
+                                  iconSize: 110,
                                   icon: Image.asset(
                                     "assets/images/animals/" + quizAnswers[ind].animalImage,
                                   ),
                                   onPressed: (){
+                                    flutterTts.stop();
                                     ///Answer Correct
                                     if(quizAnswers[ind].animalName == correctAnswer[0].animalName){
+
                                       showDialog(
                                           context: context,
                                           builder: (BuildContext builderContext) {
                                             _timer = Timer(const Duration(seconds: 2), () {
                                               Navigator.of(context).pop();
-
                                               ///
                                               if(tries == 1){
                                                 score = score + 1;
@@ -333,9 +325,9 @@ class _AnimalsQuizScreenState extends State<AnimalsQuizScreen> {
                                                   textAlign: TextAlign.center,
                                                 ),
                                                 content: Image.asset(
-                                                  "assets/images/quiz/skype-like.gif",
-                                                  width: size.width * 0.4,
-                                                  height: size.height * 0.3,
+                                                  "assets/images/alert/alert_correct.gif",
+                                                  width: size.width * 0.3,
+                                                  height: size.height * 0.2,
                                                 ),
                                               );
                                           }
@@ -358,15 +350,18 @@ class _AnimalsQuizScreenState extends State<AnimalsQuizScreen> {
                                             return
                                               AlertDialog(
                                                 backgroundColor: AppColors.white,
-                                                contentPadding: const EdgeInsets.all(0),
+                                                contentPadding: const EdgeInsets.all(10),
                                                 title: const Text(
                                                   AppStrings.try_again,
                                                   textAlign: TextAlign.center,
                                                 ),
-                                                content: Image.asset(
-                                                  "assets/images/quiz/skype-speechless.gif",
-                                                  width: size.width * 0.4,
-                                                  height: size.height * 0.3,
+                                                content: Padding(
+                                                  padding: const EdgeInsets.all(20),
+                                                  child: Image.asset(
+                                                    "assets/images/alert/alert_wrong.gif",
+                                                    width: size.width * 0.3,
+                                                    height: size.height * 0.2,
+                                                  ),
                                                 ),
                                               );
                                           }

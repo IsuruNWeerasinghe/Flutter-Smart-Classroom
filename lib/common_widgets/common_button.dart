@@ -96,10 +96,6 @@ class CommonButton extends StatelessWidget {
   Widget build(BuildContext context) {
     bool buttonClick = false;
 
-    AnimationController animationController;
-    Animation animation;
-    int currentState = 0;
-
     return InkWell(
       onTap: onTap,
 

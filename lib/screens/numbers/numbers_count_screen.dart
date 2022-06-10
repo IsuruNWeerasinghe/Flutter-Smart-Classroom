@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:littleclassroom/common_data/app_colors.dart';
@@ -24,7 +25,7 @@ class _NumbersCountScreenState extends State<NumbersCountScreen> {
     // TODO: implement initState
     super.initState();
 
-    colors = [AppColors.red, AppColors.orange, AppColors.yellow, AppColors.darkPink, AppColors.pink, AppColors.darkBlue, AppColors.blue, AppColors.darkGreen, AppColors.green, AppColors.brown, AppColors.purple, AppColors.darkBrown];
+    colors = [AppColors.red, AppColors.orange, AppColors.yellow, AppColors.darkPink, AppColors.pink, AppColors.purple, AppColors.green, AppColors.darkGreen, AppColors.green, AppColors.brown, AppColors.purple, AppColors.darkBrown];
     numbersList = ['1','2','3','4','5','6','7','8','9'];
 
     flutterTts = FlutterTts();
@@ -33,7 +34,7 @@ class _NumbersCountScreenState extends State<NumbersCountScreen> {
     flutterTts.setVolume(1);
     flutterTts.setLanguage("en-Us");
 
-    Future.delayed(Duration(seconds: 1), (){
+    Future.delayed(const Duration(seconds: 1), (){
       flutterTts.speak(AppStrings.intro_text + AppStrings.numbers);
     });
 
@@ -76,33 +77,36 @@ class _NumbersCountScreenState extends State<NumbersCountScreen> {
       height: size.height,
       isActiveAppBar: true,
 
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-        child: GridView.count(
-          crossAxisCount: 3,
-          //crossAxisSpacing: 8.0,
-          //mainAxisSpacing: 5.0,
-          shrinkWrap: true,
-          children: List.generate(numbersList.length, (index){
-            return TextButton(
-              style: ButtonStyle(
-                overlayColor: MaterialStateProperty.all<Color>(AppColors.purple),
-              ),
-              child: Text(
-                numbersList[index],
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: size.height * 0.065,
-                    fontFamily: 'Muli',
-                    fontWeight: FontWeight.w600,
-                    color: colors[Random().nextInt(10)]
+      child: JelloIn(
+        duration: const Duration(milliseconds: 1000),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+          child: GridView.count(
+            crossAxisCount: 3,
+            //crossAxisSpacing: 8.0,
+            //mainAxisSpacing: 5.0,
+            shrinkWrap: true,
+            children: List.generate(numbersList.length, (index){
+              return TextButton(
+                style: ButtonStyle(
+                  overlayColor: MaterialStateProperty.all<Color>(AppColors.purple),
                 ),
-              ),
-              onPressed: (){
-                spellLetter(index);
-              },
-            );
-          }),
+                child: Text(
+                  numbersList[index],
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: size.height * 0.065,
+                      fontFamily: 'Muli',
+                      fontWeight: FontWeight.w600,
+                      color: colors[Random().nextInt(10)]
+                  ),
+                ),
+                onPressed: (){
+                  spellLetter(index);
+                },
+              );
+            }),
+          ),
         ),
       ),
     );

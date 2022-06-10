@@ -208,14 +208,14 @@ class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
                     itemCount: quizAnswers.length,
                     itemBuilder: (BuildContext context,int ind){
                       return AvatarGlow(
-                          endRadius: 100.0,
+                          endRadius: 90.0,
                           child: Material(     // Replace this child with your own
                             elevation: 20.0,
                             shape: const CircleBorder(),
                             child: CircleAvatar(
                               backgroundColor: quizAnswers[ind].letterImage,
                               foregroundColor: AppColors.white,
-                              radius: 50,
+                              radius: 60,
                               child: TextButton(
                                 child: Padding(
                                   padding: const EdgeInsets.all(5),
@@ -223,7 +223,7 @@ class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
                                     quizAnswers[ind].letterName,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontSize: size.height * 0.07,
+                                        fontSize: size.height * 0.08,
                                         fontFamily: 'Muli',
                                         color: AppColors.white,
                                         fontWeight: FontWeight.w600
@@ -233,6 +233,7 @@ class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
                                 onPressed: (){
                                   ///Answer Correct
                                   if(quizAnswers[ind].letterName == correctAnswer[0].letterName){
+                                    flutterTts.stop();
                                     showDialog(
                                         context: context,
                                         builder: (BuildContext builderContext) {
@@ -287,9 +288,9 @@ class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
                                                 textAlign: TextAlign.center,
                                               ),
                                               content: Image.asset(
-                                                "assets/images/quiz/skype-like.gif",
-                                                width: size.width * 0.4,
-                                                height: size.height * 0.3,
+                                                "assets/images/alert/alert_correct.gif",
+                                                width: size.width * 0.3,
+                                                height: size.height * 0.2,
                                               ),
                                             );
                                         }
@@ -301,6 +302,7 @@ class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
 
                                     ///Answer Wrong
                                   } else {
+                                    flutterTts.stop();
                                     showDialog(
                                         context: context,
                                         builder: (BuildContext builderContext) {
@@ -317,10 +319,13 @@ class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
                                                 AppStrings.try_again,
                                                 textAlign: TextAlign.center,
                                               ),
-                                              content: Image.asset(
-                                                "assets/images/quiz/skype-speechless.gif",
-                                                width: size.width * 0.4,
-                                                height: size.height * 0.3,
+                                              content: Padding(
+                                                padding: const EdgeInsets.all(20),
+                                                child: Image.asset(
+                                                  "assets/images/alert/alert_wrong.gif",
+                                                  width: size.width * 0.3,
+                                                  height: size.height * 0.2,
+                                                ),
                                               ),
                                             );
                                         }

@@ -46,15 +46,15 @@ class _VehiclesQuizScreenState extends State<VehiclesQuizScreen> {
     flutterTts.setVolume(1);
     flutterTts.setLanguage("en-Us");
 
-    quizAnswers = List.filled(2, VehiclesList(vehicleImage: "", vehicleName: "", backgroundColor: AppColors.blue), growable: false);
-    vehiclesList = [(VehiclesList(vehicleName: AppStrings.aeroplane, vehicleImage: "Vehicles_aeroplane.png", backgroundColor: AppColors.lightBlue)),
+    quizAnswers = List.filled(2, VehiclesList(vehicleImage: "", vehicleName: "", backgroundColor: AppColors.lightGreen), growable: false);
+    vehiclesList = [(VehiclesList(vehicleName: AppStrings.aeroplane, vehicleImage: "Vehicles_aeroplane.png", backgroundColor: AppColors.lightGreen)),
                     (VehiclesList(vehicleName: AppStrings.bus, vehicleImage: "Vehicles_bus.png", backgroundColor: AppColors.green)),
                     (VehiclesList(vehicleName: AppStrings.car, vehicleImage: "Vehicles_car.png", backgroundColor: AppColors.red)),
                     (VehiclesList(vehicleName: AppStrings.motor_bicycle, vehicleImage: "Vehicles_Motor_Bicycle.png", backgroundColor: AppColors.purple)),
                     (VehiclesList(vehicleName: AppStrings.ship, vehicleImage: "Vehicles_ship.png", backgroundColor: AppColors.blue)),
                     (VehiclesList(vehicleName: AppStrings.tractor, vehicleImage: "Vehicles_tractor.png", backgroundColor: AppColors.orange)),
                     (VehiclesList(vehicleName: AppStrings.train, vehicleImage: "Vehicles_train.png", backgroundColor: AppColors.yellow)),
-                    (VehiclesList(vehicleName: AppStrings.van, vehicleImage: "Vehicles_van.png", backgroundColor: AppColors.blue))];
+                    (VehiclesList(vehicleName: AppStrings.van, vehicleImage: "Vehicles_van.png", backgroundColor: AppColors.brown))];
 
     quizQuestion = List.filled(vehiclesList.length, "",growable: true);
     quizTries = List.filled(vehiclesList.length, "",growable: true);
@@ -197,20 +197,21 @@ class _VehiclesQuizScreenState extends State<VehiclesQuizScreen> {
                       itemCount: quizAnswers.length,
                       itemBuilder: (BuildContext context,int ind){
                         return AvatarGlow(
-                            endRadius: 100.0,
+                            endRadius: 90.0,
                             child: Material(     // Replace this child with your own
                               elevation: 20.0,
                               shape: const CircleBorder(),
                               child: CircleAvatar(
                                 backgroundColor: quizAnswers[ind].backgroundColor,
                                 foregroundColor: AppColors.white,
-                                radius: 60,
+                                radius: 70,
                                 child: IconButton(
-                                  iconSize: 100,
+                                  iconSize: 110,
                                   icon: Image.asset(
                                     "assets/images/vehicles/" + quizAnswers[ind].vehicleImage,
                                   ),
                                   onPressed: (){
+                                    flutterTts.stop();
                                     ///Answer Correct
                                     if(quizAnswers[ind].vehicleName == correctAnswer[0].vehicleName){
                                       showDialog(
@@ -266,9 +267,9 @@ class _VehiclesQuizScreenState extends State<VehiclesQuizScreen> {
                                                   textAlign: TextAlign.center,
                                                 ),
                                                 content: Image.asset(
-                                                  "assets/images/quiz/skype-like.gif",
-                                                  width: size.width * 0.4,
-                                                  height: size.height * 0.3,
+                                                  "assets/images/alert/alert_correct.gif",
+                                                  width: size.width * 0.3,
+                                                  height: size.height * 0.2,
                                                 ),
                                               );
                                           }
@@ -296,10 +297,13 @@ class _VehiclesQuizScreenState extends State<VehiclesQuizScreen> {
                                                   AppStrings.try_again,
                                                   textAlign: TextAlign.center,
                                                 ),
-                                                content: Image.asset(
-                                                  "assets/images/quiz/skype-speechless.gif",
-                                                  width: size.width * 0.4,
-                                                  height: size.height * 0.3,
+                                                content: Padding(
+                                                  padding: const EdgeInsets.all(20),
+                                                  child: Image.asset(
+                                                    "assets/images/alert/alert_wrong.gif",
+                                                    width: size.width * 0.3,
+                                                    height: size.height * 0.2,
+                                                  ),
                                                 ),
                                               );
                                           }

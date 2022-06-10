@@ -75,7 +75,6 @@ class _FruitsQuizScreenState extends State<FruitsQuizScreen> {
 
   ///Select 3 Letters for Quiz
   void selectFruitsForQuiz({required String speakText, required int questionNo, required List<FruitsList> listOfNamesAndImages}) {
-    //print("Index = " + questionNo.toString());
     Random random = Random();
     int wrongAnswerOne, wrongAnswerTwo;
 
@@ -200,20 +199,21 @@ class _FruitsQuizScreenState extends State<FruitsQuizScreen> {
                       itemCount: quizAnswers.length,
                       itemBuilder: (BuildContext context,int ind){
                         return AvatarGlow(
-                            endRadius: 100.0,
+                            endRadius: 90.0,
                             child: Material(     // Replace this child with your own
                               elevation: 20.0,
                               shape: const CircleBorder(),
                               child: CircleAvatar(
                                 backgroundColor: quizAnswers[ind].backgroundColor,
                                 foregroundColor: AppColors.white,
-                                radius: 60,
+                                radius: 70,
                                 child: IconButton(
-                                  iconSize: 100,
+                                  iconSize: 110,
                                   icon: Image.asset(
                                     "assets/images/fruits/" + quizAnswers[ind].fruitImage,
                                   ),
                                   onPressed: (){
+                                    flutterTts.stop();
                                     ///Answer Correct
                                     if(quizAnswers[ind].fruitName == correctAnswer[0].fruitName){
                                       showDialog(
@@ -269,9 +269,9 @@ class _FruitsQuizScreenState extends State<FruitsQuizScreen> {
                                                   textAlign: TextAlign.center,
                                                 ),
                                                 content: Image.asset(
-                                                  "assets/images/quiz/skype-like.gif",
-                                                  width: size.width * 0.4,
-                                                  height: size.height * 0.3,
+                                                  "assets/images/alert/alert_correct.gif",
+                                                  width: size.width * 0.3,
+                                                  height: size.height * 0.2,
                                                 ),
                                               );
                                           }
@@ -299,10 +299,13 @@ class _FruitsQuizScreenState extends State<FruitsQuizScreen> {
                                                   AppStrings.try_again,
                                                   textAlign: TextAlign.center,
                                                 ),
-                                                content: Image.asset(
-                                                  "assets/images/quiz/skype-speechless.gif",
-                                                  width: size.width * 0.4,
-                                                  height: size.height * 0.3,
+                                                content: Padding(
+                                                  padding: const EdgeInsets.all(20),
+                                                  child: Image.asset(
+                                                    "assets/images/alert/alert_wrong.gif",
+                                                    width: size.width * 0.3,
+                                                    height: size.height * 0.2,
+                                                  ),
                                                 ),
                                               );
                                           }

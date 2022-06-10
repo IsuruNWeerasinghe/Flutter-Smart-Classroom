@@ -37,10 +37,12 @@ class _FruitsScreenState extends State<FruitsScreen> {
     flutterTts.setVolume(1);
     flutterTts.setLanguage("en-Us");
 
-    Future.delayed(Duration(seconds: 1), (){
+    Future.delayed(const Duration(seconds: 1), (){
       flutterTts.speak(AppStrings.intro_text + AppStrings.fruits);
     });
-    spellFruitName(0);
+    Future.delayed(const Duration(seconds: 4), (){
+      spellFruitName(0);
+    });
   }
 
   @override
@@ -83,7 +85,7 @@ class _FruitsScreenState extends State<FruitsScreen> {
     Size size = MediaQuery.of(context).size;
 
     return BackgroundImage(
-      pageTitle: AppStrings.animals,
+      pageTitle: AppStrings.fruits,
       topMargin: size.height * 0.02,
       width: size.width,
       height: size.height,

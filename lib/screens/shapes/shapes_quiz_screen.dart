@@ -196,13 +196,16 @@ class _ShapesQuizScreenState extends State<ShapesQuizScreen> with SingleTickerPr
                       itemCount: quizAnswers.length,
                       itemBuilder: (BuildContext context,int ind){
                         return AvatarGlow(
-                            endRadius: 100.0,
+                            endRadius: 90.0,
                             child: IconButton(
-                              iconSize: 180,
+                              iconSize: 200,
+                              padding: const EdgeInsets.all(0),
                               icon: Image.asset(
                                 "assets/images/shapes/" + quizAnswers[ind].shapeImage,
+                                fit: BoxFit.fill,
                               ),
                               onPressed: (){
+                                flutterTts.stop();
                                 ///Answer Correct
                                 if(quizAnswers[ind].shapeName == correctAnswer[0].shapeName){
                                   showDialog(
@@ -258,9 +261,9 @@ class _ShapesQuizScreenState extends State<ShapesQuizScreen> with SingleTickerPr
                                               textAlign: TextAlign.center,
                                             ),
                                             content: Image.asset(
-                                              "assets/images/quiz/skype-like.gif",
-                                              width: size.width * 0.4,
-                                              height: size.height * 0.3,
+                                              "assets/images/alert/alert_correct.gif",
+                                              width: size.width * 0.3,
+                                              height: size.height * 0.2,
                                             ),
                                           );
                                       }
@@ -287,10 +290,13 @@ class _ShapesQuizScreenState extends State<ShapesQuizScreen> with SingleTickerPr
                                             AppStrings.try_again,
                                             textAlign: TextAlign.center,
                                           ),
-                                          content: Image.asset(
-                                            "assets/images/quiz/skype-speechless.gif",
-                                            width: size.width * 0.4,
-                                            height: size.height * 0.3,
+                                          content: Padding(
+                                            padding: const EdgeInsets.all(20),
+                                            child: Image.asset(
+                                              "assets/images/alert/alert_wrong.gif",
+                                              width: size.width * 0.3,
+                                              height: size.height * 0.2,
+                                            ),
                                           ),
                                         );
                                       }

@@ -40,7 +40,9 @@ class _AnimalsScreenState extends State<AnimalsScreen> {
       Future.delayed(Duration(seconds: 1), (){
         flutterTts.speak(AppStrings.intro_text + AppStrings.animals);
       });
-      spellAnimalName(0);
+      Future.delayed(const Duration(seconds: 4), (){
+        spellAnimalName(0);
+      });
     }
 
   @override

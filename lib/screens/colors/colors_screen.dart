@@ -23,6 +23,7 @@ class _ColorsScreenState extends State<ColorsScreen> {
   late Color currentColor;
 
   late FlutterTts flutterTts;
+  bool comp = false;
 
   @override
   void initState() {
@@ -41,10 +42,12 @@ class _ColorsScreenState extends State<ColorsScreen> {
     flutterTts.setVolume(1);
     flutterTts.setLanguage("en-Us");
 
-    Future.delayed(Duration(seconds: 1), (){
+    Future.delayed(const Duration(seconds: 1), (){
       flutterTts.speak(AppStrings.intro_text + AppStrings.colours);
     });
-    spellColorName(0);
+    Future.delayed(const Duration(seconds: 4), (){
+      spellColorName(0);
+    });
   }
 
   @override
@@ -81,7 +84,7 @@ class _ColorsScreenState extends State<ColorsScreen> {
     Size size = MediaQuery.of(context).size;
 
     return BackgroundImage(
-      pageTitle: AppStrings.animals,
+      pageTitle: AppStrings.colours,
       topMargin: size.height * 0.02,
       width: size.width,
       height: size.height,

@@ -50,6 +50,7 @@ class VehiclesHomeScreen extends StatelessWidget {
               buttonImage: "assets/images/" + images[index],
 
               onTap: (){
+                flutterTts.stop();
                 Navigator.pushNamed(context, routes[index]);
               },
             ),

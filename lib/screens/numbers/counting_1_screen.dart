@@ -35,10 +35,13 @@ class _Counting1ScreenState extends State<Counting1Screen> {
     flutterTts.setVolume(1);
     flutterTts.setLanguage("en-Us");
 
-    Future.delayed(Duration(seconds: 1), (){
-      flutterTts.speak(AppStrings.intro_text + AppStrings.animals);
+    Future.delayed(const Duration(seconds: 1), (){
+      flutterTts.speak(AppStrings.intro_text + AppStrings.numbers);
     });
-    spellNumberName(0);
+    Future.delayed(const Duration(seconds: 4), (){
+      spellNumberName(0);
+    });
+
   }
 
   @override
@@ -84,16 +87,14 @@ class _Counting1ScreenState extends State<Counting1Screen> {
       child: Column(
         children: <Widget>[
           Container(
-            width: size.width * 0.8,
+            width: size.width,
             height: size.height * 0.75,
             alignment: Alignment.topCenter,
-            margin: EdgeInsets.only(top: size.height * 0.01, bottom: size.height * 0.01),
-            padding: EdgeInsets.only(top: size.height * 0.015),
             decoration: const BoxDecoration(
               image: DecorationImage(
                 alignment: Alignment.center,
                 image: AssetImage(
-                  "assets/images/common_blackboard.png",
+                  "assets/images/alphabet/woodern_board.png",
                 ),
                 fit: BoxFit.fill,
               ),
@@ -104,15 +105,6 @@ class _Counting1ScreenState extends State<Counting1Screen> {
                   width: size.width * 0.7,
                   height: size.height * 0.1,
                   alignment: Alignment.bottomCenter,
-                  /*child: Text(
-                    AppStrings.counting1,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: size.height * 0.06,
-                      fontFamily: 'Muli',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),*/
                 ),
                 Container(
                   width: size.width * 0.7,
@@ -139,7 +131,7 @@ class _Counting1ScreenState extends State<Counting1Screen> {
               ],
             ),
           ),
-
+          SizedBox(height: size.height * 0.03,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[

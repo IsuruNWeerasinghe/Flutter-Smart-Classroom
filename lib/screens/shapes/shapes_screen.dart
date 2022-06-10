@@ -41,11 +41,12 @@ class _ShapesScreenState extends State<ShapesScreen> {
     flutterTts.setVolume(1);
     flutterTts.setLanguage("en-Us");
 
-    Future.delayed(Duration(seconds: 1), (){
+    Future.delayed(const Duration(seconds: 1), (){
       flutterTts.speak(AppStrings.intro_text + AppStrings.shapes);
     });
-    spellShapeName(0);
-
+    Future.delayed(const Duration(seconds: 4), (){
+      spellShapeName(0);
+    });
   }
 
   @override

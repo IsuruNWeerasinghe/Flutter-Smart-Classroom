@@ -50,6 +50,7 @@ class NumbersScreen extends StatelessWidget {
               buttonImage: "assets/images/numbers/" + images[index],
 
               onTap: (){
+                flutterTts.stop();
                 Navigator.pushNamed(context, routes[index]);
               },
             ),

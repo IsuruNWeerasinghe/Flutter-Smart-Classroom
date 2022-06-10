@@ -33,6 +33,7 @@ class _UppercaseScreenState extends State<UppercaseScreen> {
     flutterTts.setPitch(8.0);
     flutterTts.setVolume(1);
     flutterTts.setLanguage("en-Us");
+
     Future.delayed(Duration(seconds: 1), (){
       flutterTts.speak(AppStrings.intro_text + AppStrings.uppercase + AppStrings.alphabet);
     });

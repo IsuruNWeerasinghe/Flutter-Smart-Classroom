@@ -137,7 +137,7 @@ class AppStrings{
 
   ///String in Numbers screen
   //static const String numbers = "Numbers";
-  static const String counting1 = "Counting 1";
+  static const String counting1 = "Counting";
   static const String counting2 = "Counting 2";
   static const String counting3 = "Counting3";
   //static const String quiz1 = "Quiz 1";

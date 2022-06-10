@@ -53,9 +53,9 @@ class _NumbersQuizScreenState extends State<NumbersQuizScreen> {
     quizColors = List.filled(3,1,growable: true);
     initialNumbersList = ['1','2','3','4','5','6','7','8','9'];
     initialNumbersList.shuffle();
-    quizImages = [AppColors.blue, AppColors.green, AppColors.purple, AppColors.red, AppColors.pink];
-    quizAnswers = List.filled(2, NumbersList(numberImage: AppColors.blue, numberName: ""), growable: false);
-    numbersList= List.filled(initialNumbersList.length, NumbersList(numberImage: AppColors.blue, numberName: ""), growable: true);
+    quizImages = [AppColors.brown, AppColors.green, AppColors.purple, AppColors.red, AppColors.pink];
+    quizAnswers = List.filled(2, NumbersList(numberImage: AppColors.green, numberName: ""), growable: false);
+    numbersList= List.filled(initialNumbersList.length, NumbersList(numberImage: AppColors.green, numberName: ""), growable: true);
 
     for(int i=0; i<initialNumbersList.length; i++){
       numbersList[i] = NumbersList(numberName: initialNumbersList[i], numberImage: quizImages[random.nextInt(quizImages.length)]);
@@ -204,14 +204,14 @@ class _NumbersQuizScreenState extends State<NumbersQuizScreen> {
                       itemCount: quizAnswers.length,
                       itemBuilder: (BuildContext context,int ind){
                         return AvatarGlow(
-                            endRadius: 100.0,
+                            endRadius: 90.0,
                             child: Material(     // Replace this child with your own
                               elevation: 20.0,
                               shape: const CircleBorder(),
                               child: CircleAvatar(
                                 backgroundColor: quizAnswers[ind].numberImage,
                                 foregroundColor: AppColors.white,
-                                radius: 50,
+                                radius: 70,
                                 child: TextButton(
                                   child: Padding(
                                     padding: const EdgeInsets.all(5),
@@ -219,7 +219,7 @@ class _NumbersQuizScreenState extends State<NumbersQuizScreen> {
                                       quizAnswers[ind].numberName,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          fontSize: size.height * 0.07,
+                                          fontSize: size.height * 0.08,
                                           fontFamily: 'Muli',
                                           color: AppColors.white,
                                           fontWeight: FontWeight.w600
@@ -227,6 +227,7 @@ class _NumbersQuizScreenState extends State<NumbersQuizScreen> {
                                     ),
                                   ),
                                   onPressed: (){
+                                    flutterTts.stop();
                                     ///Answer Correct
                                     if(quizAnswers[ind].numberName == correctAnswer[0].numberName){
                                       showDialog(
@@ -283,9 +284,9 @@ class _NumbersQuizScreenState extends State<NumbersQuizScreen> {
                                                   textAlign: TextAlign.center,
                                                 ),
                                                 content: Image.asset(
-                                                  "assets/images/quiz/skype-like.gif",
-                                                  width: size.width * 0.4,
-                                                  height: size.height * 0.3,
+                                                  "assets/images/alert/alert_correct.gif",
+                                                  width: size.width * 0.3,
+                                                  height: size.height * 0.2,
                                                 ),
                                               );
                                           }
@@ -313,10 +314,13 @@ class _NumbersQuizScreenState extends State<NumbersQuizScreen> {
                                                   AppStrings.try_again,
                                                   textAlign: TextAlign.center,
                                                 ),
-                                                content: Image.asset(
-                                                  "assets/images/quiz/skype-speechless.gif",
-                                                  width: size.width * 0.4,
-                                                  height: size.height * 0.3,
+                                                content: Padding(
+                                                  padding: const EdgeInsets.all(20),
+                                                  child: Image.asset(
+                                                    "assets/images/alert/alert_wrong.gif",
+                                                    width: size.width * 0.3,
+                                                    height: size.height * 0.2,
+                                                  ),
                                                 ),
                                               );
                                           }
