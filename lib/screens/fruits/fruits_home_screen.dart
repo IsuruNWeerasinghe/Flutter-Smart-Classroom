@@ -24,10 +24,10 @@ class FruitsHomeScreen extends StatelessWidget {
 
     Size size = MediaQuery.of(context).size;
 
-    List<Color> colors = [AppColors.pink, AppColors.yellow];
-    List<String> topics = [AppStrings.fruits, AppStrings.quiz1];
-    List<String> routes = [Routes.fruits_page, Routes.fruits_quiz_page];
-    List<String> images = ["home icons/home_fruits.png", "alphabet/alphabet_quiz_2.png"];
+    List<Color> colors = [AppColors.pink, AppColors.yellow, AppColors.blue];
+    List<String> topics = [AppStrings.fruits, AppStrings.quiz1, AppStrings.fruits_song];
+    List<String> routes = [Routes.fruits_page, Routes.fruits_quiz_page, Routes.fruits_song_page];
+    List<String> images = ["home icons/home_fruits.png", "alphabet/alphabet_quiz_2.png", "home icons/home_fruits.png"];
 
     return BackgroundImage(
       topMargin: 0.0,
@@ -38,8 +38,6 @@ class FruitsHomeScreen extends StatelessWidget {
 
       child: GridView.count(
         crossAxisCount: 2,
-        //crossAxisSpacing: 8.0,
-        //mainAxisSpacing: 5.0,
         shrinkWrap: true,
         children: List.generate(topics.length, (index){
           return Padding(

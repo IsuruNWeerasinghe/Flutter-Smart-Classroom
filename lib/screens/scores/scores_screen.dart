@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:littleclassroom/common_data/app_colors.dart';
 import 'package:littleclassroom/common_data/app_strings.dart';
 import 'package:littleclassroom/common_widgets/background_image.dart';
+import 'package:littleclassroom/common_widgets/loading_widget.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class ScoresScreen extends StatefulWidget {
@@ -15,6 +16,8 @@ class ScoresScreen extends StatefulWidget {
 }
 
 class _ScoresScreenState extends State<ScoresScreen> {
+  
+  
   ///Score showing dialog box
   showAlertDialog({required BuildContext context, required String title, required String score, required List<dynamic> question,
     required List<dynamic> tries}) {
@@ -151,7 +154,6 @@ class _ScoresScreenState extends State<ScoresScreen> {
 
     final FirebaseAuth auth = FirebaseAuth.instance;
     final String user = auth.currentUser!.uid;
-    List<String> dataField = ["Animals", "Colours", "Fruits", "Lowercase", "Numbers", "Shapes", "Uppercase", "Vegetables", "Vehicles"];
 
     return BackgroundImage(
       topMargin: 0.0,
@@ -165,9 +167,23 @@ class _ScoresScreenState extends State<ScoresScreen> {
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: LoadingWidget(),
               );
             }
+
+            if(snapshot.data!.size == 0){
+              return const Center(
+                child: Text(
+                    AppStrings.your_kid_doesnt_complete_any_quizzes_yet,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 17,
+                    color: AppColors.black,
+                  ),
+                ),
+              );
+            }
+
             return ListView.builder(
                 itemCount: snapshot.data!.size,
                 itemBuilder: (BuildContext context,int index){

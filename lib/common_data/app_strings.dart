@@ -13,7 +13,7 @@ class AppStrings{
   ///Strings in Welcome Screen
   static const String smart_classroom = "Smart Classroom";
   static const String register = "Register";
-  static const String login = "Login";
+  static const String login = "Log In";
 
   ///Strings in Register Screen
   //static const String smart_classroom = "Smart Classroom";
@@ -22,7 +22,7 @@ class AppStrings{
   static const String email = "Email";
   static const String password = "Password";
   static const String confirm_password = "Confirm Password";
-  static const String back_to = "Already have an account ?  ";
+  static const String already_have_an_account = "Already have an account ?  ";
   //static const String login = "Login";
   static const String error_child_name = "Child's Name cannot be empty.";
   static const String error_email = "Enter a valid Email.";
@@ -46,7 +46,7 @@ class AppStrings{
   //static const String email = "Email";
   //static const String login = "Login";
   //static const String forgot_password = "Forgot Password";
-  //static const String back_to = "Back To ";
+  static const String back_to = "Back To ";
   //static const String error_login_email = "Enter a valid Email";
   static const String submit = "Submit";
 
@@ -89,6 +89,7 @@ class AppStrings{
   static const String zebra = "Zebra";
 
   ///String in Fruits screen
+  static const String fruits_song = "Fruits Song";
   static const String apple = "Apple";
   static const String banana = "Banana";
   static const String grapes = "Grapes";
@@ -207,11 +208,18 @@ class AppStrings{
   //static const String submit = "Submit";
   static const String please_type_the_6_digit= "Please enter the 6 digit OTP that sent to your mobile number.";
 
-  ///Quiz popup screen
+  ///Close App popup screen
+  static const String exit_app = "Exit App";
+  static const String do_you_want_to_close_App = "Do you want to close App?";
+  static const String no = "No";
+  static const String yes = "Yes";
+
+  ///Parent's View screen
   static const String question = "Question";
   static const String tries = "Tries";
   static const String parents_view = "Parent's View";
   static const String score = "Score";
+  static const String your_kid_doesnt_complete_any_quizzes_yet = "Your kid doesn't complete\n any quizzes yet.";
   //static const String ok = "Ok";
 
 }

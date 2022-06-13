@@ -91,9 +91,9 @@ class _LowercaseScreenState extends State<LowercaseScreen> with SingleTickerProv
             shrinkWrap: true,
             children: List.generate(lowercaseLetters.length, (index){
               return TextButton(
-                /*style: ButtonStyle(
+                style: ButtonStyle(
                         overlayColor: MaterialStateProperty.all<Color>(AppColors.purple),
-                      ),*/
+                      ),
                 child: Text(
                   lowercaseLetters[index],
                   textAlign: TextAlign.center,

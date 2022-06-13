@@ -236,7 +236,7 @@ class _VehiclesQuizScreenState extends State<VehiclesQuizScreen> {
                                                   final FirebaseAuth auth = FirebaseAuth.instance;
                                                   final String user = auth.currentUser!.uid;
 
-                                                  FirebaseFirestore.instance.collection(user).doc(AppStrings.fruits)
+                                                  FirebaseFirestore.instance.collection(user).doc(AppStrings.vehicles)
                                                       .set({
                                                     'Result': score.toString(),
                                                     'QuestionCount': vehiclesList.length.toString(),

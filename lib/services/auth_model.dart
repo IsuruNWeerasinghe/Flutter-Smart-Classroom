@@ -16,6 +16,7 @@ import 'package:littleclassroom/services/base_model.dart';
 import 'package:littleclassroom/services/enum.dart';
 
 class AuthModel extends BaseModel {
+  bool isLoading = false;
 
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   late StreamSubscription<User?> user;
@@ -32,7 +33,9 @@ class AuthModel extends BaseModel {
   }
 
   ///Register new user
-  void createNewUser({required String email, required String password, required BuildContext context}) async {
+  Future<void> createNewUser({required String email, required String password, required BuildContext context}) async {
+    isLoading = true;
+    notifyListeners();
     try{
       //const LoadingWidget();
       setViewState(ViewState.Busy);
@@ -49,11 +52,22 @@ class AuthModel extends BaseModel {
           context: context,
           text: e.message.toString()
       );
+    } catch (e) {
+      print('Error : ' + e.toString()); // Displaying the error message
+      showSnackBar(
+          context: context,
+          text: e.toString()
+      );
+    }finally {
+      isLoading = false;
+      notifyListeners();
     }
   }
 
   ///log in using email & password
-  void logIn({required String email, required String password, required BuildContext context}) async {
+  Future<void> logIn({required String email, required String password, required BuildContext context}) async {
+    isLoading = true;
+    notifyListeners();
     try{
       setViewState(ViewState.Busy);
       await firebaseAuth.signInWithEmailAndPassword(
@@ -67,14 +81,24 @@ class AuthModel extends BaseModel {
           context: context,
           text: e.message.toString()
       );
+    } catch (e) {
+      print('Error : ' + e.toString()); // Displaying the error message
+      showSnackBar(
+          context: context,
+          text: e.toString()
+      );
+    }finally {
+      isLoading = false;
+      notifyListeners();
     }
 
   }
 
   ///log in using google
-  void signInWithGoogle({required BuildContext context}) async {
+  Future<void> signInWithGoogle({required BuildContext context}) async {
+    isLoading = true;
+    notifyListeners();
     try {
-      const LoadingWidget();
       if (kIsWeb) {
         GoogleAuthProvider googleProvider = GoogleAuthProvider();
 
@@ -106,13 +130,23 @@ class AuthModel extends BaseModel {
           context: context,
           text: e.message.toString()
       );
+    } catch (e) {
+      print('Error : ' + e.toString()); // Displaying the error message
+      showSnackBar(
+          context: context,
+          text: e.toString()
+      );
+    }finally {
+      isLoading = false;
+      notifyListeners();
     }
   }
 
   ///log in using facebook
-  void signInWithFacebook({required BuildContext context}) async {
+  Future<void> signInWithFacebook({required BuildContext context}) async {
+    isLoading = true;
+    notifyListeners();
     try {
-      const LoadingWidget();
       final LoginResult loginResult = await FacebookAuth.instance.login();
 
       final OAuthCredential facebookAuthCredential =
@@ -126,11 +160,20 @@ class AuthModel extends BaseModel {
           context: context,
           text: e.message.toString()
       );
+    } catch (e) {
+      print('Error : ' + e.toString()); // Displaying the error message
+      showSnackBar(
+          context: context,
+          text: e.toString()
+      );
+    }finally {
+      isLoading = false;
+      notifyListeners();
     }
   }
 
   ///log in using phone
-  void signInWithPhone({required BuildContext context}) async {
+  Future<void> signInWithPhone({required BuildContext context}) async {
     TextEditingController codeController = TextEditingController();
     TextEditingController phoneNumberController = TextEditingController(text: "+94");
     String phoneNumber;
@@ -147,7 +190,6 @@ class AuthModel extends BaseModel {
         Navigator.of(context).pop();
 
         try{
-          const LoadingWidget();
           if (kIsWeb) {
             // !!! Works only on web !!!
             ConfirmationResult result =
@@ -216,15 +258,25 @@ class AuthModel extends BaseModel {
               context: context,
               text: e.message.toString()
           );
+        } catch (e) {
+          print('Error : ' + e.toString()); // Displaying the error message
+          showSnackBar(
+              context: context,
+              text: e.toString()
+          );
+        }finally {
+          isLoading = false;
+          notifyListeners();
         }
       },
     );
   }
 
   ///log out
-  void logOut({required BuildContext context}) async {
+  Future<void> logOut({required BuildContext context}) async {
+    isLoading = true;
+    notifyListeners();
     try {
-      const LoadingWidget();
       setViewState(ViewState.Busy);
       await firebaseAuth.signOut();
       setViewState(ViewState.Ideal);
@@ -236,6 +288,15 @@ class AuthModel extends BaseModel {
           context: context,
           text: e.message.toString()
       );
+    } catch (e) {
+      print('Error : ' + e.toString()); // Displaying the error message
+      showSnackBar(
+          context: context,
+          text: e.toString()
+      );
+    }finally {
+      isLoading = false;
+      notifyListeners();
     }
   }
 }

@@ -230,7 +230,7 @@ class _ShapesQuizScreenState extends State<ShapesQuizScreen> with SingleTickerPr
                                               final FirebaseAuth auth = FirebaseAuth.instance;
                                               final String user = auth.currentUser!.uid;
 
-                                              FirebaseFirestore.instance.collection(user).doc(AppStrings.fruits)
+                                              FirebaseFirestore.instance.collection(user).doc(AppStrings.shapes)
                                                   .set({
                                                 'Result': score.toString(),
                                                 'QuestionCount': shapesList.length.toString(),

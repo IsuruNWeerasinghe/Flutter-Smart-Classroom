@@ -17,6 +17,7 @@ import 'package:littleclassroom/screens/forgot_password_screen.dart';
 import 'package:littleclassroom/screens/fruits/fruits_home_screen.dart';
 import 'package:littleclassroom/screens/fruits/fruits_quiz_screen.dart';
 import 'package:littleclassroom/screens/fruits/fruits_screen.dart';
+import 'package:littleclassroom/screens/fruits/fruits_song_screen.dart';
 import 'package:littleclassroom/screens/home_screen.dart';
 import 'package:littleclassroom/screens/login_screen.dart';
 import 'package:littleclassroom/screens/numbers/counting_1_screen.dart';
@@ -65,6 +66,7 @@ class Routes {
   static const String fruits_home_page = FruitsHomeScreen.routeName;
   static const String fruits_page = FruitsScreen.routeName;
   static const String fruits_quiz_page = FruitsQuizScreen.routeName;
+  static const String fruits_song_page = FruitsSongScreen.routeName;
 
   static const String vegetables_home_page = VegetablesHomeScreen.routeName;
   static const String vegetables_page = VegetablesScreen.routeName;

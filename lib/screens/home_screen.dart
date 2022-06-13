@@ -8,12 +8,10 @@ import 'package:littleclassroom/services/auth_model.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String routeName = '/home_page';
-
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     AuthModel authModel = AuthModel();
     authModel.userStateCheck();
 
@@ -24,33 +22,59 @@ class HomeScreen extends StatelessWidget {
     List<String> routes = [Routes.alphabet_page, Routes.numbers_page, Routes.colors_home_page, Routes.shapes_home_page, Routes.animals_home_page, Routes.vehicles_home_page, Routes.fruits_home_page, Routes.vegetables_home_page];
     List<String> images = ["home_alphabet.png", "home_numbers.png", "home_colors.png", "home_shapes.png", "home_animals.png", "home_vehicles.png", "home_fruits.png", "home_vegetables.png"];
 
-    return BackgroundImage(
-      topMargin: size.height * 0.0,
-      pageTitle: "Home",
-      width: size.width,
-      height: size.height,
-      isActiveAppBar: true,
-
-      child: GridView.count(
-        crossAxisCount: 2,
-        crossAxisSpacing: 0,
-        mainAxisSpacing: 0,
-        shrinkWrap: false,
-        children: List.generate(topics.length, (index){
-          return Padding(
-            padding: const EdgeInsets.all(25.0),
-            //padding: const EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 5),
-            child: CommonButton(
-              buttonColor: colors[index],
-              buttonText: topics[index],
-              buttonImage: "assets/images/home icons/" + images[index],
-
-              onTap: (){
-                Navigator.pushNamed(context, routes[index]);
-                },
+    Future<bool> showExitPopup() async {
+      return await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text(AppStrings.exit_app),
+          content: const Text(AppStrings.do_you_want_to_close_App),
+          actions:[
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child:const Text(AppStrings.no),
+              style: ElevatedButton.styleFrom(primary: AppColors.gray),
             ),
-          );
-        }),
+
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child:const Text(AppStrings.yes),
+            ),
+
+          ],
+        ),
+      )??false;
+    }
+    
+    return WillPopScope(
+      onWillPop: showExitPopup,
+      child: BackgroundImage(
+        topMargin: size.height * 0.0,
+        pageTitle: "Home",
+        width: size.width,
+        height: size.height,
+        isActiveAppBar: true,
+        isHomePage: true,
+
+        child: GridView.count(
+          crossAxisCount: 2,
+          crossAxisSpacing: 0,
+          mainAxisSpacing: 0,
+          shrinkWrap: false,
+          children: List.generate(topics.length, (index){
+            return Padding(
+              padding: const EdgeInsets.all(25.0),
+              child: CommonButton(
+                buttonColor: colors[index],
+                buttonText: topics[index],
+                buttonImage: "assets/images/home icons/" + images[index],
+
+                onTap: (){
+                  Navigator.pushNamed(context, routes[index]);
+                  },
+              ),
+            );
+          }),
+        ),
       ),
     );
   }

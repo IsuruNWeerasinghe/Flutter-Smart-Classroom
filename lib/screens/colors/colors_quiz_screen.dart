@@ -237,7 +237,7 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
                                                   final FirebaseAuth auth = FirebaseAuth.instance;
                                                   final String user = auth.currentUser!.uid;
 
-                                                  FirebaseFirestore.instance.collection(user).doc(AppStrings.fruits)
+                                                  FirebaseFirestore.instance.collection(user).doc(AppStrings.colours)
                                                       .set({
                                                     'Result': score.toString(),
                                                     'QuestionCount': colorsList.length.toString(),

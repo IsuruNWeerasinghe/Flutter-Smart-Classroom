@@ -48,11 +48,18 @@ class _ShapesScreenState extends State<ShapesScreen> {
       spellShapeName(0);
     });
   }
+  @override
+  void deactivate() {
+    flutterTts.stop();
 
+    super.deactivate();
+  }
   @override
   void dispose() {
-    flutterTts.stop();
+    // flutterTts.stop();
+    // flutterTts.pause();
     super.dispose();
+    flutterTts.stop();
   }
 
   ///Spell Animal's Name letter by letter
@@ -113,13 +120,16 @@ class _ShapesScreenState extends State<ShapesScreen> {
             ),
             child: Column(
               children: <Widget>[
-                Text(
+                /*Text(
                   AppStrings.shapes,
                   style: TextStyle(
                       fontSize: size.height * 0.06,
                       fontFamily: 'Muli',
                       fontWeight: FontWeight.w600
                   ),
+                ),*/
+                SizedBox(
+                  height: size.height * 0.1,
                 ),
                 Image.asset(
                   imageCurrentShape,

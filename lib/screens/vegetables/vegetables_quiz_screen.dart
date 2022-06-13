@@ -236,7 +236,7 @@ class _VegetablesQuizScreenState extends State<VegetablesQuizScreen> {
                                                   final FirebaseAuth auth = FirebaseAuth.instance;
                                                   final String user = auth.currentUser!.uid;
 
-                                                  FirebaseFirestore.instance.collection(user).doc(AppStrings.fruits)
+                                                  FirebaseFirestore.instance.collection(user).doc(AppStrings.vegetables)
                                                       .set({
                                                     'Result': score.toString(),
                                                     'QuestionCount': vegetablesList.length.toString(),

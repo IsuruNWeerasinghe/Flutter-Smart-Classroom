@@ -7,21 +7,44 @@ class LoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Container(
-          width: 100,
-          height: 100,
-          child: Column(
-            children: const <Widget>[
-              CircularProgressIndicator(
-                backgroundColor: AppColors.white,
-                color: AppColors.lightGreen,
-                strokeWidth: 5
+    return Center(
+      child: Container(
+        width: 200,
+        height: 200,
+        decoration: BoxDecoration(
+          color: AppColors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: const [
+              BoxShadow(
+                color: AppColors.gray,
+                offset: Offset(0.0, 4.0),
+                blurRadius: 1.0,
+                spreadRadius: 0.0,
               ),
-              Text(AppStrings.loading),
-            ],
-          ),
+            ]
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const <Widget>[
+            SizedBox(
+              width: 100,
+              height: 100,
+              child: CircularProgressIndicator(
+                  backgroundColor: AppColors.white,
+                  color: AppColors.green,
+                  strokeWidth: 5,
+              ),
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            Text(
+              AppStrings.loading,
+              style: TextStyle(
+                fontSize: 16
+              ),
+            ),
+          ],
         ),
       ),
     );

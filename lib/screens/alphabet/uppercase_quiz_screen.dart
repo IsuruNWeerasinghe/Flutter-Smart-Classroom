@@ -50,14 +50,14 @@ class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
     flutterTts.setLanguage("en-Us");
 
     quizColors = List.filled(3,1,growable: true);
-    uppercaseLetters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+    uppercaseLetters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Zed'];
     uppercaseLetters.shuffle();
     quizImages = [AppColors.blue, AppColors.green, AppColors.purple, AppColors.red, AppColors.pink];
     quizAnswers = List.filled(2, LettersList(letterImage: AppColors.blue, letterName: ""), growable: false);
     uppercaseLettersList= List.filled(uppercaseLetters.length, LettersList(letterImage: AppColors.blue, letterName: ""), growable: true);
 
     for(int i=0; i<uppercaseLetters.length; i++){
-      uppercaseLettersList[i] = LettersList(letterName: uppercaseLetters[i], letterImage: quizImages[random.nextInt(quizImages.length)]);
+      uppercaseLettersList[i] = LettersList(letterName: uppercaseLetters[i],letterImage: quizImages[random.nextInt(quizImages.length)]);
     }
 
     quizQuestion = List.filled(uppercaseLetters.length, "",growable: true);
@@ -87,7 +87,6 @@ class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
     } while (wrongAnswerOne == questionNo || wrongAnswerTwo == questionNo || wrongAnswerOne == wrongAnswerTwo);
 
     correctAnswer = [listOfNamesAndImages[questionNo]];
-    quizAnswers = [listOfNamesAndImages[questionNo], listOfNamesAndImages[wrongAnswerOne], listOfNamesAndImages[wrongAnswerTwo]];
     quizAnswers = [listOfNamesAndImages[questionNo], listOfNamesAndImages[wrongAnswerOne], listOfNamesAndImages[wrongAnswerTwo]];
 
     do {
@@ -220,7 +219,7 @@ class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(5),
                                   child: Text(
-                                    quizAnswers[ind].letterName,
+                                    quizAnswers[ind].letterName.characters.first,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: size.height * 0.08,
@@ -258,7 +257,7 @@ class _UppercaseQuizScreenState extends State<UppercaseQuizScreen> {
                                                 final FirebaseAuth auth = FirebaseAuth.instance;
                                                 final String user = auth.currentUser!.uid;
 
-                                                FirebaseFirestore.instance.collection(user).doc(AppStrings.lowercase)
+                                                FirebaseFirestore.instance.collection(user).doc(AppStrings.uppercase)
                                                     .set({
                                                   'Result': score.toString(),
                                                   'QuestionCount': uppercaseLettersList.length.toString(),

@@ -20,6 +20,7 @@ import 'package:littleclassroom/screens/forgot_password_screen.dart';
 import 'package:littleclassroom/screens/fruits/fruits_home_screen.dart';
 import 'package:littleclassroom/screens/fruits/fruits_quiz_screen.dart';
 import 'package:littleclassroom/screens/fruits/fruits_screen.dart';
+import 'package:littleclassroom/screens/fruits/fruits_song_screen.dart';
 import 'package:littleclassroom/screens/home_screen.dart';
 import 'package:littleclassroom/screens/login_screen.dart';
 import 'package:littleclassroom/screens/numbers/counting_1_screen.dart';
@@ -78,6 +79,7 @@ void main() async{
       Routes.fruits_home_page: (context) => const FruitsHomeScreen(),
       Routes.fruits_page: (context) => const FruitsScreen(),
       Routes.fruits_quiz_page: (context) => const FruitsQuizScreen(),
+      Routes.fruits_song_page: (context) => const FruitsSongScreen(),
 
       Routes.vegetables_home_page: (context) => const VegetablesHomeScreen(),
       Routes.vegetables_page: (context) => const VegetablesScreen(),

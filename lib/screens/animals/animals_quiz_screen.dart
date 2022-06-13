@@ -47,15 +47,15 @@ class _AnimalsQuizScreenState extends State<AnimalsQuizScreen> {
     flutterTts.setVolume(1);
     flutterTts.setLanguage("en-Us");
 
-    quizAnswers = List.filled(2, AnimalsList(animalImage: "", animalName: "", backgroundColor: AppColors.blue), growable: false);
+    quizAnswers = List.filled(2, AnimalsList(animalImage: "", animalName: "", backgroundColor: AppColors.red), growable: false);
     animalsList = [(AnimalsList(animalName: AppStrings.cat, animalImage: "Animals_cat.png", backgroundColor: AppColors.red)),
                     (AnimalsList(animalName: AppStrings.dog, animalImage: "Animals_dog.png", backgroundColor: AppColors.green)),
                     (AnimalsList(animalName: AppStrings.elephant, animalImage: "Animals_elephant.png", backgroundColor: AppColors.gray)),
-                    (AnimalsList(animalName: AppStrings.giraffe, animalImage: "Animals_giraffe.png", backgroundColor: AppColors.purple)),
-                    (AnimalsList(animalName: AppStrings.horse, animalImage: "Animals_horse.png", backgroundColor: AppColors.lightGreen)),
-                    (AnimalsList(animalName: AppStrings.lion, animalImage: "Animals_lion.png", backgroundColor: AppColors.darkGreen)),
-                    (AnimalsList(animalName: AppStrings.tiger, animalImage: "Animals_tiger.png", backgroundColor: AppColors.pink)),
-                    (AnimalsList(animalName: AppStrings.zebra, animalImage: "Animals_zebra.png", backgroundColor: AppColors.orange))];
+                    (AnimalsList(animalName: AppStrings.giraffe, animalImage: "Animals_giraffe.png", backgroundColor: AppColors.darkGreen)),
+                    (AnimalsList(animalName: AppStrings.horse, animalImage: "Animals_horse.png", backgroundColor: AppColors.yellow)),
+                    (AnimalsList(animalName: AppStrings.lion, animalImage: "Animals_lion.png", backgroundColor: AppColors.pink)),
+                    (AnimalsList(animalName: AppStrings.tiger, animalImage: "Animals_tiger.png", backgroundColor: AppColors.purple)),
+                    (AnimalsList(animalName: AppStrings.zebra, animalImage: "Animals_zebra.png", backgroundColor: AppColors.brown))];
 
     quizQuestion = List.filled(animalsList.length, "",growable: true);
     quizTries = List.filled(animalsList.length, "",growable: true);

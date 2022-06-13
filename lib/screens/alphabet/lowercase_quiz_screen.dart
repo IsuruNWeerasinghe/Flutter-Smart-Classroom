@@ -51,7 +51,7 @@ class _LowercaseQuizScreenState extends State<LowercaseQuizScreen> {
     flutterTts.setLanguage("en-Us");
 
     quizColors = List.filled(3,1,growable: true);
-    lowercaseLetters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+    lowercaseLetters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','zed'];
     lowercaseLetters.shuffle();
     quizImages = [AppColors.blue, AppColors.green, AppColors.purple, AppColors.red, AppColors.pink];
     quizAnswers = List.filled(2, LettersList(letterImage: AppColors.blue, letterName: ""), growable: false);
@@ -222,7 +222,7 @@ class _LowercaseQuizScreenState extends State<LowercaseQuizScreen> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(5),
                                     child: Text(
-                                      quizAnswers[ind].letterName,
+                                      quizAnswers[ind].letterName.characters.first,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontSize: size.height * 0.08,

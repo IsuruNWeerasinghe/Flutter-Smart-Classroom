@@ -25,7 +25,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   void initState() {
-    const LoadingWidget();
     super.initState();
 
     authModel = AuthModel();

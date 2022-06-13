@@ -49,16 +49,21 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
   }
 
   @override
+  void deactivate() {
+    flutterTts.stop();
+    super.deactivate();
+  }
+  @override
   void dispose() {
     flutterTts.stop();
     super.dispose();
   }
 
   ///Spell Intro
-  Future<void> spellIntro(String speakString) async {
+  /*Future<void> spellIntro(String speakString) async {
     flutterTts.speak(speakString);
     await Future.delayed(const Duration(seconds: 5));
-  }
+  }*/
   /// ///////////////////////////////////////
 
   ///Spell Animal's Name letter by letter
@@ -77,7 +82,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
       print(speakLetter[i]);
       await Future.delayed(const Duration(seconds: 1));
     }
-    Future.delayed(Duration(milliseconds: 500), (){
+    Future.delayed(const Duration(milliseconds: 500), (){
       flutterTts.speak(namesVegetables[vegetableIndex]);
     });
   }
@@ -114,13 +119,16 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
             ),
             child: Column(
               children: <Widget>[
-                Text(
+                /*Text(
                   AppStrings.vegetables,
                   style: TextStyle(
                       fontSize: size.height * 0.06,
                       fontFamily: 'Muli',
                       fontWeight: FontWeight.w600
                   ),
+                ),*/
+                SizedBox(
+                  height: size.height * 0.1,
                 ),
                 Image.asset(
                   imageCurrentVegetable,

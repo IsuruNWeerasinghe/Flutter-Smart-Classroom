@@ -27,7 +27,6 @@ class _ColorsScreenState extends State<ColorsScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     index = 0;
     namesColors = [AppStrings.red, AppStrings.green, AppStrings.blue, AppStrings.yellow, AppStrings.pink, AppStrings.brown, AppStrings.white, AppStrings.black];

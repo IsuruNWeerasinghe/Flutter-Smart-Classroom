@@ -22,7 +22,7 @@ class ConvertLettersToSpeakable {
           letters[i] =  "e";
           break;
         case 'F':
-          letters[i] =  "ef";
+          letters[i] =  "f";
           break;
         case 'G':
           letters[i] =  "gee";

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:littleclassroom/Other/convert_letters_to_speakable.dart';
@@ -21,9 +23,10 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
 
   late FlutterTts flutterTts;
 
+  late Timer timer1, timer2, timer3, timer4;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     index = 0;
     namesVehicles = [AppStrings.aeroplane, AppStrings.bus, AppStrings.car, AppStrings.motor_bicycle, AppStrings.ship, AppStrings.tractor, AppStrings.train, AppStrings.van];
@@ -38,18 +41,22 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
     flutterTts.setVolume(1);
     flutterTts.setLanguage("en-Us");
 
-    Future.delayed(const Duration(seconds: 1), (){
+    timer1 = Timer(const Duration(seconds: 1), () {
       flutterTts.speak(AppStrings.intro_text + AppStrings.vehicles);
     });
-    Future.delayed(const Duration(seconds: 4), (){
-      spellVehicleName(0);
+    timer2 = Timer(const Duration(seconds: 3), () {
     });
+    spellVehicleName(0);
 
   }
 
   @override
   void dispose() {
     flutterTts.stop();
+    timer1.cancel();
+    timer2.cancel();
+    timer3.cancel();
+    timer4.cancel();
     super.dispose();
   }
 
@@ -67,9 +74,11 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
     for (int i = 0; i < speakLetter.length; i++){
       flutterTts.speak(speakLetter[i]);
       print(speakLetter[i]);
-      await Future.delayed(const Duration(seconds: 1));
+      timer3 = Timer(const Duration(seconds: 1), () {
+        print(speakLetter[i]);
+      });
     }
-    Future.delayed(Duration(milliseconds: 500), (){
+    timer4 = Timer(const Duration(seconds: 4), () {
       flutterTts.speak(namesVehicles[vehicleIndex]);
     });
 
@@ -106,13 +115,16 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
             ),
             child: Column(
               children: <Widget>[
-                Text(
+                /*Text(
                   AppStrings.vehicles,
                   style: TextStyle(
                       fontSize: size.height * 0.075,
                       fontFamily: 'Muli',
                       fontWeight: FontWeight.w600
                   ),
+                ),*/
+                SizedBox(
+                  height: size.height * 0.1,
                 ),
                 Image.asset(
                   imageCurrentVehicle,

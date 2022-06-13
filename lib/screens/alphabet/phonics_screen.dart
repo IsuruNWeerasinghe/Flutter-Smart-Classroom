@@ -14,24 +14,21 @@ class PhonicsScreen extends StatefulWidget {
 
 class _PhonicsScreenState extends State<PhonicsScreen> {
   late int index;
-  late List<String> phonicsName, phonicsImage, uppercaseLetters, lowercaseLetters;
-  late String currentPhonicName, currentPhonicImage, currentUppercaseLetter, currentLowercaseLetter;
+  late List<String> phonicsName, phonicsImage, uppercaseLetters;
+  late String currentPhonicName, currentPhonicImage, currentUppercaseLetter;
 
   late FlutterTts flutterTts;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     index = 0;
     phonicsName = [AppStrings.apple, AppStrings.ball, AppStrings.cat, AppStrings.dog, AppStrings.elephant, AppStrings.fish, AppStrings.grapes, AppStrings.horse, AppStrings.ice_cream, AppStrings.jeep, AppStrings.kite, AppStrings.lion, AppStrings.mango, AppStrings.nurse, AppStrings.orange, AppStrings.pineapple, AppStrings.queen, AppStrings.rabbit, AppStrings.ship, AppStrings.tiger, AppStrings.umbrella, AppStrings.van, AppStrings.watermelon, AppStrings.xmas_tree, AppStrings.yoyo, AppStrings.zebra];
     phonicsImage = ["Phonics_Apple.png", "Phonics_Ball.png", "Phonics_Cat.png", "Phonics_Dog.png", "Phonics_Elephant.png", "Phonics_Fish.png", "Phonics_Grapes.png", "Phonics_Horse.png", "Phonics_Ice Cream.png", "Phonics_Jeep.png", "Phonics_Kite.png", "Phonics_Lion.png", "Phonics_Mango.png", "Phonics_Nurse.png", "Phonics_Orange.png", "Phonics_Pineapple.png", "Phonics_Queen.png", "Phonics_Rabbit.png", "Phonics_Ship.png", "Phonics_Tiger.png", "Phonics_Umbrella.png", "Phonics_Van.png", "Phonics_Watermelon.png", "Phonics_Xmas_Tree.png", "Phonics_Yoyo.png", "Phonics_Zebra.png"];
-    uppercaseLetters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
-    lowercaseLetters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+    uppercaseLetters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Zed'];
 
     currentPhonicName = phonicsName[0];
     currentPhonicImage = "assets/images/phonics/" + phonicsImage[0];
-    currentLowercaseLetter = lowercaseLetters[0];
     currentUppercaseLetter = uppercaseLetters[0];
 
     flutterTts = FlutterTts();
@@ -43,7 +40,6 @@ class _PhonicsScreenState extends State<PhonicsScreen> {
     Future.delayed(Duration(seconds: 1), (){
       flutterTts.speak(AppStrings.intro_text + AppStrings.phonics + ", " + ", "+ ", "+ uppercaseLetters[0] + "   for  " + phonicsName[0]);
     });
-
   }
 
   @override
@@ -52,17 +48,9 @@ class _PhonicsScreenState extends State<PhonicsScreen> {
     super.dispose();
   }
 
-  ///Spell Intro
-  Future<void> spellIntro(String speakString) async {
-    flutterTts.speak(speakString);
-    await Future.delayed(const Duration(seconds: 5));
-  }
-  /// ///////////////////////////////////////
-
   ///Spell Phonics letter by letter
   Future<void> spellPhonics(int phonicsIndex) async {
     String singleWord = uppercaseLetters[phonicsIndex] + "   for  " + phonicsName[phonicsIndex];
-
     flutterTts.speak(singleWord);
   }
   /// ///////////////////////////////////////
@@ -97,13 +85,13 @@ class _PhonicsScreenState extends State<PhonicsScreen> {
               children: <Widget>[
                 SizedBox(height: size.height * 0.1,),
                 Text(
-                  currentUppercaseLetter,
+                  currentUppercaseLetter.characters.first,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: AppColors.white,
-                    fontSize: size.height * 0.075,
-                    fontFamily: 'Muli',
-                    fontWeight: FontWeight.w600
+                      color: AppColors.white,
+                      fontSize: size.height * 0.075,
+                      fontFamily: 'Muli',
+                      fontWeight: FontWeight.w600
                   ),
                 ),
                 SizedBox(height: size.height * 0.05,),
@@ -139,7 +127,6 @@ class _PhonicsScreenState extends State<PhonicsScreen> {
                   setState(() {
                     currentPhonicName = phonicsName[index];
                     currentPhonicImage = "assets/images/phonics/" + phonicsImage[index];
-                    currentLowercaseLetter = lowercaseLetters[index];
                     currentUppercaseLetter = uppercaseLetters[index];
                     spellPhonics(index);
                   });
@@ -164,7 +151,6 @@ class _PhonicsScreenState extends State<PhonicsScreen> {
                   setState(() {
                     currentPhonicName = phonicsName[index];
                     currentPhonicImage = "assets/images/phonics/" + phonicsImage[index];
-                    currentLowercaseLetter = lowercaseLetters[index];
                     currentUppercaseLetter = uppercaseLetters[index];
                     spellPhonics(index);
                   });

@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/foundation.dart';
 
 @immutable
@@ -26,4 +27,4 @@ class TestResultsDataModel {
       'testResult': testResult,
     };
   }
-}
+}*/

@@ -40,6 +40,12 @@ class _UppercaseScreenState extends State<UppercaseScreen> {
 
   }
 
+  @override
+  void dispose() {
+    flutterTts.stop();
+    super.dispose();
+  }
+
   ///Spell Animal's Name letter by letter
   Future<void> spellLetter(int letterIndex) async {
     List<String> singleWord = lowercaseLetters[letterIndex].trim().split("");

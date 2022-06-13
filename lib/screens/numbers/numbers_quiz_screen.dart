@@ -254,7 +254,7 @@ class _NumbersQuizScreenState extends State<NumbersQuizScreen> {
                                                   final FirebaseAuth auth = FirebaseAuth.instance;
                                                   final String user = auth.currentUser!.uid;
 
-                                                  FirebaseFirestore.instance.collection(user).doc(AppStrings.lowercase)
+                                                  FirebaseFirestore.instance.collection(user).doc(AppStrings.numbers)
                                                       .set({
                                                     'Result': score.toString(),
                                                     'QuestionCount': numbersList.length.toString(),
