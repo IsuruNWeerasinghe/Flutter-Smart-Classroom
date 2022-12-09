@@ -9,9 +9,31 @@ A fully responsive mobile application that specially developed for grade 1 stude
   Figma
   
 ##  Screens
-
-<div style="width:60px ; height:60px">
-![Screenshot_20220611-201411](https://user-images.githubusercontent.com/62087826/206624085-a6800a15-6d52-42b3-ac08-dd9a88e6d543.jpg)
-<div>
+<table>
+  <tr>
+    <th scope="col"><img src="https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screenshot_20220611-201411.jpg" width="200" height="400"></th>
+    <th scope="col"><img src="https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screenshot_20220611-201418.jpg" width="200" height="400"></th>
+    <th scope="col"><img src="https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screenshot_20220611-201428.jpg" width="200" height="400"></th>
+  </tr>
+  <tr>
+    <th scope="col"><img src="https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screenshot_20220614-071855.jpg" width="200" height="400"></th>
+    <th scope="col"><img src="https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screenshot_20220614-071905.jpg" width="200" height="400"></th>
+    <th scope="col"><img src="https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screenshot_20220608-225147.jpg" width="200" height="400"></th> 
+  </tr>
+  <tr>
+    <th scope="col"><img src="https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screenshot_20220609-000232.jpg" width="200" height="400"></th>
+    <th scope="col"><img src="https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screenshot_20220609-000208.jpg" width="200" height="400"></th>
+    <th scope="col"><img src="https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screenshot_20220609-000243.jpg" width="200" height="400"></th>
+  </tr>
+  <tr>
+    <th scope="col"><img src="https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screenshot_20220609-000306.jpg" width="200" height="400"></th>
+    <th scope="col"><img src="https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screenshot_20220609-000624.jpg" width="200" height="400"></th>
+    <th scope="col"><img src="https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screenshot_20220614-071935.jpg" width="200" height="400"></th>
+  </tr>
+  <tr>
+    <th scope="col"><img src="https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screenshot_20220609-000334.jpg" width="200" height="400"></th>
+    <th scope="col"><img src="https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screenshot_20220610-201436.jpg" width="200" height="400"></th>
+    <th scope="col"><img src="https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screenshot_20220610-201443.jpg" width="200" height="400"></th>
+  </tr>
   
-<img src="https://user-images.githubusercontent.com/62087826/206624085-a6800a15-6d52-42b3-ac08-dd9a88e6d543.jpg" width="200" height="400">
+</table>
