@@ -8,10 +8,6 @@ A fully responsive mobile application that specially developed for grade 1 stude
   Android Studio,
   Figma
 
-##  Screen Record
-[![Watch the video](https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screenshot_20220611-201411.jpg)](https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screen_record_1.mp4)
-
-
 ##  Screens
 <table>
   <tr>
