@@ -9,10 +9,8 @@ A fully responsive mobile application that specially developed for grade 1 stude
   Figma
 
 ##  Screen Record
-<video width="320" height="240" autoplay>
-  <source src="https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screen_record_1.mp4" type="video/mp4">
-Your browser does not support the video tag.
-</video>
+[![Watch the video](https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screenshot_20220611-201411.jpg)](https://github.com/IsuruNWeerasinghe/Flutter-Smart-Classroom/blob/master/Screenshots/Screen_record_1.mp4)
+
 
 ##  Screens
 <table>
